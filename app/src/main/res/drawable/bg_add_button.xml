@@ -1,0 +1,8 @@
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#33FFFFFF">   <!-- màu ripple (trắng 20% opacity) -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#E91E63"/> <!-- nền đỏ -->
+        </shape>
+    </item>
+</ripple>
