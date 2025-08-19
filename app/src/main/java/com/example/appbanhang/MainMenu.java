@@ -17,7 +17,7 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainMenu extends AppCompatActivity {
 
     private RecyclerView rvProducts;
     private final List<Product> productList = new ArrayList<>();
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     /** Tải tất cả sản phẩm */
     private void loadAll() {
-        db.collection("food_001") // đổi thành "products" nếu bạn dùng tên đó
+        db.collection("food_001")
                 .orderBy("name", Query.Direction.ASCENDING)
                 .get()
                 .addOnSuccessListener(snap -> {
@@ -132,4 +132,3 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
-
