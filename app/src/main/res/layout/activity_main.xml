@@ -22,8 +22,8 @@
             android:orientation="vertical"
             android:padding="4dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true">
+            android:clickable="false"
+            android:focusable="false">
 
             <ImageView
                 android:layout_width="60dp"
@@ -49,6 +49,8 @@
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_centerVertical="true">
 
             <!-- Nội dung chính của nút giỏ hàng -->
@@ -58,14 +60,15 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="4dp"
-                android:clickable="true"
-                android:focusable="true"
+                android:clickable="false"
+
                 android:background="?attr/selectableItemBackgroundBorderless">
 
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:scaleType="centerCrop"
+
                     android:src="@drawable/r1" />
 
                 <TextView

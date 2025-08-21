@@ -32,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); // layout có rvProducts + các nút category
 
+
+        //Nhan button cart
+        findViewById(R.id.btnCart).setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(MainActivity.this, CartActivity.class);
+            startActivity(intent);
+        });
         tvCartBadge = findViewById(R.id.tvCartBadge);   // <- quan trọng
         updateCartBadge();
         // RecyclerView
@@ -43,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnAddToCartListener(p -> {
             cartCount++;
             updateCartBadge();
+
+
         });
         // Firestore
         db = FirebaseFirestore.getInstance();
