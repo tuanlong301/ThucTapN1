@@ -26,7 +26,11 @@
             android:exported="false" />
 
         <activity
-            android:name=".MainMenu"
+        android:name=".MainMenu"
+        android:exported="false" />
+
+        <activity
+            android:name=".AdminMenu"
             android:exported="false" />
 
 

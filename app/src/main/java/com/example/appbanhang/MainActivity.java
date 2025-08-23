@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                                             Intent intent = new Intent(MainActivity.this, MainMenu.class);
                                             startActivity(intent);
                                         } else if ("admin".equals(role)) {
-                                            Intent intent = new Intent(MainActivity.this, MainMenu.class);
+                                            Intent intent = new Intent(MainActivity.this, AdminMenu.class);
                                             startActivity(intent);
                                         }
                                         finish();
