@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +31,8 @@ public class CartActivity extends AppCompatActivity {
     private View emptyView, footerBar;
     private TextView tvTotal;
     private Button btnOrder;
-    private final List<CartItem> items = new ArrayList<>();
+    private LinearLayout layoutPaymentMethod;
+    private final List<Object> items = new ArrayList<>(); // Sử dụng Object để chứa cả CartItem và ghi chú
     private CartAdapter cartAdapter;
     private FirebaseFirestore db;
 
@@ -42,21 +46,22 @@ public class CartActivity extends AppCompatActivity {
         footerBar = findViewById(R.id.footerBar);
         tvTotal = findViewById(R.id.tvTotal);
         btnOrder = findViewById(R.id.btnCheckout);
+        layoutPaymentMethod = findViewById(R.id.layoutPaymentMethod);
 
         rv.setLayoutManager(new LinearLayoutManager(this));
 
         cartAdapter = new CartAdapter(this, items, new CartAdapter.OnQtyClick() {
             @Override
             public void onPlus(int pos) {
-                if (pos >= 0 && pos < items.size()) {
-                    changeQty(items.get(pos), 1);
+                if (pos >= 0 && pos < items.size() - 1) { // -1 để tránh ghi chú
+                    changeQty((CartItem) items.get(pos), 1);
                 }
             }
 
             @Override
             public void onMinus(int pos) {
-                if (pos >= 0 && pos < items.size()) {
-                    CartItem item = items.get(pos);
+                if (pos >= 0 && pos < items.size() - 1) { // -1 để tránh ghi chú
+                    CartItem item = (CartItem) items.get(pos);
                     if (item.qty != null && item.qty <= 1) {
                         deleteItem(item);
                     } else {
@@ -75,16 +80,35 @@ public class CartActivity extends AppCompatActivity {
 
         // Xử lý nút Đặt hàng
         btnOrder.setOnClickListener(v -> {
-            Toast.makeText(CartActivity.this, "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
+            String note = cartAdapter.getNote(); // Lấy ghi chú từ adapter
+            int selectedPaymentId = ((RadioGroup) findViewById(R.id.rgPaymentMethod)).getCheckedRadioButtonId();
+            String paymentMethod = (selectedPaymentId == R.id.rbCash) ? "Tiền mặt" :
+                    (selectedPaymentId == R.id.rbTransfer) ? "Chuyển khoản" : "Chưa chọn";
+
+            if (items.isEmpty() || items.size() == 1) { // Kiểm tra nếu chỉ có ghi chú hoặc rỗng
+                Toast.makeText(CartActivity.this, "Giỏ hàng trống!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (selectedPaymentId == -1) {
+                Toast.makeText(CartActivity.this, "Vui lòng chọn phương thức thanh toán!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Toast.makeText(CartActivity.this, "Đặt hàng thành công!\nGhi chú: " + note + "\nPhương thức: " + paymentMethod, Toast.LENGTH_LONG).show();
             clearCart();
         });
+    }
+
+    public void togglePaymentMethod(View v) {
+        boolean isVisible = layoutPaymentMethod.getVisibility() == View.VISIBLE;
+        layoutPaymentMethod.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     }
 
     private void loadCart() {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         if (uid == null) {
             Toast.makeText(this, "Không thể tải giỏ hàng: Chưa đăng nhập", Toast.LENGTH_SHORT).show();
-            finish(); // Đóng activity nếu không có uid
+            finish();
             return;
         }
         Log.d(TAG, "Loading cart for uid: " + uid);
@@ -94,6 +118,7 @@ public class CartActivity extends AppCompatActivity {
                     items.clear();
                     if (snap.isEmpty()) {
                         Log.d(TAG, "Cart is empty");
+                        items.add(new NoteItem("")); // Thêm ghi chú rỗng nếu giỏ rỗng
                     } else {
                         for (DocumentSnapshot d : snap.getDocuments()) {
                             CartItem it = d.toObject(CartItem.class);
@@ -103,6 +128,7 @@ public class CartActivity extends AppCompatActivity {
                                 Log.d(TAG, "Loaded item: " + it.name + ", qty: " + it.qty);
                             }
                         }
+                        items.add(new NoteItem("")); // Thêm ghi chú cuối danh sách
                     }
                     cartAdapter.notifyDataSetChanged();
                     updateUIState();
@@ -114,7 +140,7 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void updateUIState() {
-        if (items.isEmpty()) {
+        if (items.isEmpty() || (items.size() == 1 && items.get(0) instanceof NoteItem)) {
             emptyView.setVisibility(View.VISIBLE);
             rv.setVisibility(View.GONE);
             footerBar.setVisibility(View.GONE);
@@ -128,10 +154,13 @@ public class CartActivity extends AppCompatActivity {
             btnOrder.setAlpha(1.0f);
 
             double sum = 0;
-            for (CartItem c : items) {
-                double price = (c.price == null ? 0 : c.price);
-                long qty = (c.qty == null ? 0 : c.qty);
-                sum += price * qty;
+            for (Object obj : items) {
+                if (obj instanceof CartItem) {
+                    CartItem c = (CartItem) obj;
+                    double price = (c.price == null ? 0 : c.price);
+                    long qty = (c.qty == null ? 0 : c.qty);
+                    sum += price * qty;
+                }
             }
             NumberFormat f = NumberFormat.getInstance(new Locale("vi", "VN"));
             tvTotal.setText(f.format(sum) + " đ");
@@ -187,5 +216,17 @@ public class CartActivity extends AppCompatActivity {
         public Long qty;
 
         public CartItem() {}
+    }
+
+    /** Model cho ghi chú */
+    public static class NoteItem {
+        public String note;
+
+        public NoteItem(String note) {
+            this.note = note;
+        }
+
+        public String getNote() { return note; }
+        public void setNote(String note) { this.note = note; }
     }
 }

@@ -1,143 +1,90 @@
 package com.example.appbanhang;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
-import android.view.View;              // <-- thêm
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView rvProducts;
-    private final List<Product> productList = new ArrayList<>();
-    private ProductAdapter adapter;
+    private EditText etEmail, etPassword;
+    private Button btnLogin;
+    private TextView tvForgotPassword;
     private FirebaseFirestore db;
-
-    private int cartCount = 0;
-    private TextView tvCartBadge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); // layout có rvProducts + các nút category
+        setContentView(R.layout.activity_login);
 
-
-        //Nhan button cart
-        findViewById(R.id.btnCart).setOnClickListener(v -> {
-            android.content.Intent intent = new android.content.Intent(MainActivity.this, CartActivity.class);
-            startActivity(intent);
-        });
-        tvCartBadge = findViewById(R.id.tvCartBadge);   // <- quan trọng
-        updateCartBadge();
-        // RecyclerView
-        rvProducts = findViewById(R.id.rvProducts);
-        rvProducts.setLayoutManager(new GridLayoutManager(this, 3));
-        adapter = new ProductAdapter(this, productList);
-        rvProducts.setAdapter(adapter);
-
-        adapter.setOnAddToCartListener(p -> {
-            cartCount++;
-            updateCartBadge();
-
-
-        });
-        // Firestore
         db = FirebaseFirestore.getInstance();
+        etEmail = findViewById(R.id.etEmail);
+        etPassword = findViewById(R.id.etPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+        tvForgotPassword = findViewById(R.id.tvForgotPassword); // Thêm TextView cho quên mật khẩu
 
-        // Đăng nhập ẩn danh rồi gắn click + load mặc định
-        FirebaseAuth.getInstance().signInAnonymously()
-                .addOnSuccessListener(r -> {
-                    Log.d("AUTH", "Anonymous sign-in OK: " + r.getUser().getUid());
-                    wireCategoryClicks();   // gắn sự kiện các nút
-                    loadAll();              // mặc định hiển thị tất cả
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("AUTH", "Anonymous sign-in FAIL", e);
-                    Toast.makeText(this, "Auth FAIL: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                });
-    }
+        // Xử lý nút Đăng nhập
+        btnLogin.setOnClickListener(v -> {
+            String email = etEmail.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
 
-    /** Gắn click cho các nút category bạn đã code cứng trong XML */
-    private void wireCategoryClicks() {
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(MainActivity.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        if (findViewById(R.id.btnBestSeller) != null)
-            findViewById(R.id.btnBestSeller).setOnClickListener(v -> loadByCategory("bestseller"));
+            // Kiểm tra thông tin đăng nhập từ Firestore trong collection acc
+            db.collection("acc")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                boolean found = false;
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    String tk = document.getString("tk");
+                                    String mk = document.getString("mk");
+                                    String role = document.getString("role");
 
-//        if (findViewById(R.id.btnPromo) != null)
-//            findViewById(R.id.btnPromo).setOnClickListener(v -> loadByCategory("promo"));
-//
-//        if (findViewById(R.id.btnPasta) != null)
-//            findViewById(R.id.btnPasta).setOnClickListener(v -> loadByCategory("pasta"));
-//
-//        if (findViewById(R.id.btnDrink) != null)
-//            findViewById(R.id.btnDrink).setOnClickListener(v -> loadByCategory("drink"));
-//
-//        // Nếu muốn thêm nút “Tất cả” thì đặt id btnAll trong XML
-//        if (findViewById(R.id.btnAll) != null)
-//            findViewById(R.id.btnAll).setOnClickListener(v -> loadAll());
-    }
-
-    /** Tải tất cả sản phẩm */
-    private void loadAll() {
-        db.collection("food_001") // đổi thành "products" nếu bạn dùng tên đó
-                .orderBy("name", Query.Direction.ASCENDING)
-                .get()
-                .addOnSuccessListener(snap -> {
-                    productList.clear();
-                    for (DocumentSnapshot doc : snap.getDocuments()) {
-                        Product p = doc.toObject(Product.class);
-                        if (p != null) productList.add(p);
-                    }
-                    adapter.notifyDataSetChanged();
-                    Toast.makeText(this, "Loaded " + productList.size() + " items (all)", Toast.LENGTH_SHORT).show();
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("FIRESTORE", "READ FAIL", e);
-                    Toast.makeText(this, "Lỗi tải dữ liệu: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                });
-    }
-
-    /** Lọc theo category (field 'category' trong từng document) */
-    private void loadByCategory(String cat) {
-        db.collection("food_001")
-                .whereEqualTo("category", cat)
-                .get()
-                .addOnSuccessListener(snap -> {
-                    productList.clear();
-                    for (DocumentSnapshot d : snap.getDocuments()) {
-                        Product p = d.toObject(Product.class);
-                        if (p != null) productList.add(p);
-                    }
-                    // Sort tại client theo name
-                    java.util.Collections.sort(productList, (a, b) -> {
-                        if (a.getName() == null) return -1;
-                        if (b.getName() == null) return 1;
-                        return a.getName().compareToIgnoreCase(b.getName());
+                                    if (tk != null && tk.equals(email) && mk != null && mk.equals(password)) {
+                                        found = true;
+                                        Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                                        if ("user".equals(role)) {
+                                            Intent intent = new Intent(MainActivity.this, MainMenu.class);
+                                            startActivity(intent);
+                                        } else if ("admin".equals(role)) {
+                                            Intent intent = new Intent(MainActivity.this, MainMenu.class);
+                                            startActivity(intent);
+                                        }
+                                        finish();
+                                        break;
+                                    }
+                                }
+                                if (!found) {
+                                    Toast.makeText(MainActivity.this, "Email hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(MainActivity.this, "Lỗi: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
                     });
-                    adapter.notifyDataSetChanged();
-                });
-    }
+        });
 
-    private void updateCartBadge() {
-        if (tvCartBadge == null) return;
-        if (cartCount <= 0) {
-            tvCartBadge.setVisibility(View.GONE);
-        } else {
-            // Hiển thị 99+
-            tvCartBadge.setText(cartCount > 99 ? "99+" : String.valueOf(cartCount));
-            tvCartBadge.setVisibility(View.VISIBLE);
-        }
+        // Xử lý quên mật khẩu
+        tvForgotPassword.setOnClickListener(v -> {
+            Toast.makeText(MainActivity.this, "Liên hệ admin để lấy mật khẩu", Toast.LENGTH_SHORT).show();
+        });
     }
 }
-

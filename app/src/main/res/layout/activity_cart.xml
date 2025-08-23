@@ -73,51 +73,119 @@
         android:clipToPadding="false"
         android:visibility="gone"/>
 
-    <!-- FOOTER: Tổng tiền + nút đặt (mặc định ẨN) -->
+    <!-- FOOTER: Tổng tiền + nút đặt + nút chọn phương thức thanh toán (mặc định ẨN) -->
     <LinearLayout
         android:id="@+id/footerBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="16dp"
         android:background="#FFFFFFFF"
         android:visibility="gone">
 
+        <!-- Nút chọn phương thức thanh toán -->
         <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/layoutPaymentTrigger"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="togglePaymentMethod">
 
             <TextView
-                android:id="@+id/tvSubtotalLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tổng tiền:"
-                android:textSize="14sp"
-                android:textColor="#333333" />
-
-            <TextView
-                android:id="@+id/tvTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0 đ"
-                android:textSize="20sp"
+                android:text="Chọn phương thức thanh toán"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#E91E63" />
+                android:textColor="#333333"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end"
+                android:src="@android:drawable/ic_menu_more"
+                android:contentDescription="Mở phương thức thanh toán"/>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnCheckout"
-            android:layout_width="220dp"
-            android:layout_height="56dp"
-            android:text="Đặt hàng"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:backgroundTint="#FF4D6D"
-            android:textColor="#FFFFFF"
-            android:enabled="false"
-            android:alpha="0.5"/>
+        <!-- Phương thức thanh toán (ẩn ban đầu) -->
+        <LinearLayout
+            android:id="@+id/layoutPaymentMethod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <RadioGroup
+                android:id="@+id/rgPaymentMethod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/rbCash"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tiền mặt"
+                    android:textSize="14sp"
+                    android:padding="8dp"/>
+
+                <RadioButton
+                    android:id="@+id/rbTransfer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Chuyển khoản"
+                    android:textSize="14sp"
+                    android:padding="8dp"/>
+            </RadioGroup>
+        </LinearLayout>
+
+        <!-- Tổng tiền -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvSubtotalLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tổng tiền:"
+                    android:textSize="14sp"
+                    android:textColor="#333333" />
+
+                <TextView
+                    android:id="@+id/tvTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 đ"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#E91E63" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnCheckout"
+                android:layout_width="220dp"
+                android:layout_height="56dp"
+                android:text="Đặt hàng"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:backgroundTint="#FF4D6D"
+                android:textColor="#FFFFFF"
+                android:enabled="false"
+                android:alpha="0.5"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
