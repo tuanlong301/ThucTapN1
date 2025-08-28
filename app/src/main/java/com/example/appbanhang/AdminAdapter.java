@@ -16,11 +16,11 @@ public class AdminAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new PendingOrdersFragment(); // Placeholder cho tab Đơn hàng
+                return new PendingOrdersFragment(); // Đơn hàng chưa xử lý
             case 1:
-                return new ConfirmedOrdersFragment(); // Placeholder cho tab Đơn hàng đã xác nhận
+                return new ConfirmedOrdersFragment(); // Đơn hàng đã xác nhận
             case 2:
-                return new TablesFragment(); // Placeholder cho tab Quản lý bàn
+                return new TablesFragment(); // Quản lý bàn
             default:
                 return new PendingOrdersFragment();
         }

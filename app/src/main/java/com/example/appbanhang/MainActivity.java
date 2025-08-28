@@ -2,89 +2,179 @@ package com.example.appbanhang;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     private EditText etEmail, etPassword;
     private Button btnLogin;
     private TextView tvForgotPassword;
+
+    private FirebaseAuth auth;
     private FirebaseFirestore db;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        db   = FirebaseFirestore.getInstance();
+
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        tvForgotPassword = findViewById(R.id.tvForgotPassword); // Thêm TextView cho quên mật khẩu
+        tvForgotPassword = findViewById(R.id.tvForgotPassword);
 
-        // Xử lý nút Đăng nhập
-        btnLogin.setOnClickListener(v -> {
-            String email = etEmail.getText().toString().trim();
-            String password = etPassword.getText().toString().trim();
+        btnLogin.setOnClickListener(v -> doLogin());
+        tvForgotPassword.setOnClickListener(v ->
+                Toast.makeText(this, "Liên hệ admin để đặt lại mật khẩu", Toast.LENGTH_SHORT).show()
+        );
+    }
 
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(MainActivity.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
-                return;
-            }
+    private void doLogin() {
+        String email = etEmail.getText().toString().trim();
+        String pass  = etPassword.getText().toString().trim();
 
-            // Kiểm tra thông tin đăng nhập từ Firestore trong collection acc
-            db.collection("acc")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                boolean found = false;
-                                for (DocumentSnapshot document : task.getResult()) {
-                                    String tk = document.getString("tk");
-                                    String mk = document.getString("mk");
-                                    String role = document.getString("role");
+        if (email.isEmpty() || pass.isEmpty()) {
+            toast("Vui lòng nhập đầy đủ thông tin!");
+            return;
+        }
 
-                                    if (tk != null && tk.equals(email) && mk != null && mk.equals(password)) {
-                                        found = true;
-                                        Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                                        if ("user".equals(role)) {
-                                            Intent intent = new Intent(MainActivity.this, MainMenu.class);
-                                            startActivity(intent);
-                                        } else if ("admin".equals(role)) {
-                                            Intent intent = new Intent(MainActivity.this, AdminMenu.class);
-                                            startActivity(intent);
-                                        }
-                                        finish();
-                                        break;
-                                    }
-                                }
-                                if (!found) {
-                                    Toast.makeText(MainActivity.this, "Email hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
-                                }
-                            } else {
-                                Toast.makeText(MainActivity.this, "Lỗi: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                            }
+        btnLogin.setEnabled(false);
+
+        // Tránh dính phiên anonymous cũ
+        auth.signOut();
+
+        auth.signInWithEmailAndPassword(email, pass)
+                .addOnSuccessListener(res -> {
+                    FirebaseUser user = res.getUser();
+                    if (user == null) {
+                        btnLogin.setEnabled(true);
+                        toast("Không lấy được thông tin người dùng!");
+                        return;
+                    }
+                    String uid = user.getUid();
+                    String mail = user.getEmail();
+                    Log.d(TAG, "Login OK uid=" + uid + ", email=" + mail);
+
+                    fetchProfileThenLaunch(uid, mail);
+                })
+                .addOnFailureListener(e -> {
+                    btnLogin.setEnabled(true);
+                    if (e instanceof FirebaseAuthException) {
+                        String code = ((FirebaseAuthException) e).getErrorCode();
+                        Log.e(TAG, "Auth error: " + code, e);
+                        switch (code) {
+                            case "ERROR_INVALID_EMAIL":        toast("Email không hợp lệ."); break;
+                            case "ERROR_USER_NOT_FOUND":       toast("Tài khoản không tồn tại."); break;
+                            case "ERROR_WRONG_PASSWORD":       toast("Mật khẩu không đúng."); break;
+                            case "ERROR_OPERATION_NOT_ALLOWED":toast("Provider Email/Password chưa bật."); break;
+                            default:                           toast("Đăng nhập thất bại: " + code);
                         }
-                    });
-        });
+                    } else {
+                        toast("Đăng nhập thất bại: " + e.getMessage());
+                    }
+                });
+    }
 
-        // Xử lý quên mật khẩu
-        tvForgotPassword.setOnClickListener(v -> {
-            Toast.makeText(MainActivity.this, "Liên hệ admin để lấy mật khẩu", Toast.LENGTH_SHORT).show();
-        });
+    /** Đọc acc/{uid}; nếu chưa có thì tìm theo tk=email và migrate sang acc/{uid}. Sau đó cache tên & điều hướng theo role. */
+    private void fetchProfileThenLaunch(String uid, @Nullable String email) {
+        db.collection("acc").document(uid).get()
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+                        String name = safe(doc.getString("name"), "Khách");
+                        String role = safe(doc.getString("role"), "user");
+                        // đảm bảo doc có các khóa chuẩn
+                        Map<String, Object> base = new HashMap<>();
+                        base.put("uid", uid);
+                        if (email != null) base.put("tk", email);
+                        db.collection("acc").document(uid).set(base, SetOptions.merge());
+
+                        cacheName(name);
+                        launchByRole(role, name);
+                    } else if (email != null && !email.isEmpty()) {
+                        // Fallback: tìm doc cũ theo email
+                        db.collection("acc").whereEqualTo("tk", email).limit(1).get()
+                                .addOnSuccessListener(q -> {
+                                    if (!q.isEmpty()) {
+                                        DocumentSnapshot d = q.getDocuments().get(0);
+                                        String name = safe(d.getString("name"), "Khách");
+                                        String role = safe(d.getString("role"), "user");
+
+                                        // Migrate sang acc/{uid} để lần sau đọc thẳng
+                                        Map<String, Object> data = d.getData() != null ? new HashMap<>(d.getData()) : new HashMap<>();
+                                        data.put("uid", uid);
+                                        data.put("tk", email);
+                                        db.collection("acc").document(uid).set(data, SetOptions.merge());
+
+                                        cacheName(name);
+                                        launchByRole(role, name);
+                                    } else {
+                                        // Không có hồ sơ — vẫn cho vào app như user thường
+                                        cacheName("Khách");
+                                        launchByRole("user", "Khách");
+                                    }
+                                })
+                                .addOnFailureListener(e -> {
+                                    btnLogin.setEnabled(true);
+                                    toast("Lỗi tìm hồ sơ: " + e.getMessage());
+                                });
+                    } else {
+                        // Không có email để đối chiếu
+                        cacheName("Khách");
+                        launchByRole("user", "Khách");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    btnLogin.setEnabled(true);
+                    toast("Lỗi đọc hồ sơ: " + e.getMessage());
+                });
+    }
+
+    private void cacheName(String name) {
+        getSharedPreferences("app", MODE_PRIVATE)
+                .edit()
+                .putString("profile_name", name)
+                .apply();
+    }
+
+    private void launchByRole(String roleRaw, String name) {
+        btnLogin.setEnabled(true);
+        String role = roleRaw == null ? "user" : roleRaw.trim().toLowerCase();
+        toast("Xin chào " + (name != null ? name : ""));
+        if ("admin".equals(role)) {
+            startActivity(new Intent(this, AdminMenu.class));
+        } else {
+            startActivity(new Intent(this, MainMenu.class));
+        }
+        finish();
+    }
+
+    private String safe(String v, String def) {
+        return (v == null || v.trim().isEmpty()) ? def : v.trim();
+    }
+
+    private void toast(String m) {
+        Toast.makeText(this, m, Toast.LENGTH_LONG).show();
     }
 }

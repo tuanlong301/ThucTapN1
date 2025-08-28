@@ -4,7 +4,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
-
+import android.widget.Toast;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -45,13 +45,12 @@ public class AdminMenu extends AppCompatActivity {
 
         // Xử lý nút Refresh
         findViewById(R.id.btnRefresh).setOnClickListener(v -> {
-            // Placeholder: Logic refresh (sẽ kết nối với Firestore sau)
-            // Ví dụ: Gọi adapter.notifyDataSetChanged() trong fragment
+            adapter.notifyDataSetChanged(); // Cập nhật lại dữ liệu
         });
 
-        // Xử lý nút In tất cả hóa đơn
+        // Xử lý nút In tất cả hóa đơn (placeholder)
         findViewById(R.id.btnPrintAll).setOnClickListener(v -> {
-            // Placeholder: Logic in tất cả hóa đơn (sẽ tích hợp PrintManager sau)
+            Toast.makeText(this, "Chức năng in đang được phát triển!", Toast.LENGTH_SHORT).show();
         });
     }
 }
