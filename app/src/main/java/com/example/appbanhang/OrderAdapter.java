@@ -1,103 +1,150 @@
 package com.example.appbanhang;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.Map;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
+public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
 
-    private Context context;
-    private List<Order> orders;
-    private boolean isPendingTab;
+    public enum Mode { PENDING, CONFIRMED }
 
-    public OrderAdapter(Context context, boolean isPendingTab) {
-        this.context = context;
-        this.isPendingTab = isPendingTab;
+    public interface OnAction {
+        void onConfirm(String orderId);
+        void onCancel(String orderId);
+        void onPay(String orderId);
+        void onPrint(String orderId);
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    private final List<Order> data = new ArrayList<>();
+    private final Mode mode;
+    private final OnAction cb;
+    private String highlightId;
+
+    public OrderAdapter(Mode mode, OnAction cb) {
+        this.mode = mode; this.cb = cb;
+    }
+
+    public void submit(List<Order> list) {
+        data.clear();
+        data.addAll(list);
         notifyDataSetChanged();
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_order, parent, false);
-        return new ViewHolder(view);
+    public int indexOf(String id) {
+        for (int i = 0; i < data.size(); i++) if (id.equals(data.get(i).id)) return i;
+        return -1;
+    }
+
+    public void highlight(String id) { this.highlightId = id; notifyDataSetChanged(); }
+
+    @NonNull @Override
+    public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_order, parent, false);
+        return new VH(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Order order = orders.get(position);
+    public void onBindViewHolder(@NonNull VH h, int pos) {
+        Order o = data.get(pos);
 
-        holder.tvTableNumber.setText("Bàn: " + order.getTableNumber());
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault());
-        holder.tvTimestamp.setText("Thời gian: " + sdf.format(order.getTimestamp()));
+        String title = "Bàn số: " + (o.tableNumber != null ? o.tableNumber :
+                (o.name != null ? o.name : ""));
+        h.tvTableNumber.setText(title);
 
-        // Hiển thị chi tiết món
-        StringBuilder details = new StringBuilder();
-        for (Map<String, Object> item : order.getItems()) {
-            details.append(item.get("name")).append(" (x").append(item.get("qty")).append(") - ")
-                    .append(item.get("price")).append("đ, ");
-        }
-        if (details.length() > 0) details.setLength(details.length() - 2); // Xóa dấu phẩy cuối
-        holder.tvOrderDetails.setText(details.toString());
+        String timeStr = (o.timestampStr != null && !o.timestampStr.isEmpty())
+                ? o.timestampStr
+                : (o.createdAt != null ? o.createdAt.toString() : "");
+        h.tvTimestamp.setText("Đặt lúc: " + timeStr);
 
-        if (order.getNotes() != null && !order.getNotes().isEmpty()) {
-            holder.tvNotes.setText("Ghi chú: " + order.getNotes());
-            holder.tvNotes.setVisibility(View.VISIBLE);
+        h.tvOrderDetails.setText(parseItemsLine(o.items));
+
+        if (o.notes != null && !o.notes.trim().isEmpty()) {
+            h.tvNotes.setVisibility(View.VISIBLE);
+            h.tvNotes.setText("Ghi chú: " + o.notes);
         } else {
-            holder.tvNotes.setVisibility(View.GONE);
+            h.tvNotes.setVisibility(View.GONE);
         }
-        holder.tvTotal.setText("Tổng: " + (int) order.getTotal() + "đ");
 
-        // Hiển thị nút theo tab
-        if (isPendingTab) {
-            holder.btnConfirm.setVisibility(View.VISIBLE);
-            holder.btnCancel.setVisibility(View.VISIBLE);
-            holder.btnPayment.setVisibility(View.GONE);
-            holder.btnPrint.setVisibility(View.GONE);
-        } else {
-            holder.btnConfirm.setVisibility(View.GONE);
-            holder.btnCancel.setVisibility(View.GONE);
-            holder.btnPayment.setVisibility(View.VISIBLE);
-            holder.btnPrint.setVisibility(View.VISIBLE);
+        h.tvTotal.setText("Tổng: " + (o.total != null ? o.total : "0") + " đ");
+
+        if (mode == Mode.PENDING) {
+            h.btnConfirm.setVisibility(View.VISIBLE);
+            h.btnCancel.setVisibility(View.VISIBLE);
+            h.btnPayment.setVisibility(View.GONE);
+            h.btnPrint.setVisibility(View.GONE);
+
+            h.btnConfirm.setOnClickListener(v -> cb.onConfirm(o.id));
+            h.btnCancel.setOnClickListener(v -> cb.onCancel(o.id));
+        } else { // CONFIRMED
+            h.btnConfirm.setVisibility(View.GONE);
+            h.btnCancel.setVisibility(View.GONE);
+            h.btnPayment.setVisibility(View.VISIBLE);
+            h.btnPrint.setVisibility(View.VISIBLE);
+
+            h.btnPayment.setOnClickListener(v -> cb.onPay(o.id));
+            h.btnPrint.setOnClickListener(v -> cb.onPrint(o.id));
         }
+
+        h.itemView.setAlpha((highlightId != null && highlightId.equals(o.id)) ? 1f : 0.98f);
     }
 
-    @Override
-    public int getItemCount() {
-        return orders != null ? orders.size() : 0;
-    }
+    @Override public int getItemCount() { return data.size(); }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class VH extends RecyclerView.ViewHolder {
         TextView tvTableNumber, tvTimestamp, tvOrderDetails, tvNotes, tvTotal;
         Button btnConfirm, btnCancel, btnPayment, btnPrint;
+        VH(@NonNull View v) {
+            super(v);
+            tvTableNumber  = v.findViewById(R.id.tvTableNumber);
+            tvTimestamp    = v.findViewById(R.id.tvTimestamp);
+            tvOrderDetails = v.findViewById(R.id.tvOrderDetails);
+            tvNotes        = v.findViewById(R.id.tvNotes);
+            tvTotal        = v.findViewById(R.id.tvTotal);
+            btnConfirm     = v.findViewById(R.id.btnConfirm);
+            btnCancel      = v.findViewById(R.id.BtnCancel); // id của bạn là BtnCancel (B hoa)
+            btnPayment     = v.findViewById(R.id.btnPayment);
+            btnPrint       = v.findViewById(R.id.btnPrint);
+        }
+    }
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvTableNumber = itemView.findViewById(R.id.tvTableNumber);
-            tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
-            tvOrderDetails = itemView.findViewById(R.id.tvOrderDetails);
-            tvNotes = itemView.findViewById(R.id.tvNotes);
-            tvTotal = itemView.findViewById(R.id.tvTotal);
-            btnConfirm = itemView.findViewById(R.id.btnConfirm);
-            btnCancel = itemView.findViewById(R.id.BtnCancel);
-            btnPayment = itemView.findViewById(R.id.btnPayment);
-            btnPrint = itemView.findViewById(R.id.btnPrint);
+    // ===== Model khớp dữ liệu Firestore =====
+    public static class Order {
+        public String id;
+        public String userId;
+        public String name;         // tên người đặt/ bàn
+        public String items;        // bạn đang lưu dạng chuỗi
+        public String total;
+        public String notes;
+        public String paymentMethod;
+        public String status;
+        public java.util.Date createdAt;
+        public String timestampStr;
+        public String tableNumber;  // nếu có
+        public Order() {}
+    }
+
+    private String parseItemsLine(String raw) {
+        if (raw == null || raw.isEmpty()) return "Món: (trống)";
+        try {
+            List<String> parts = new ArrayList<>();
+            Matcher m = Pattern
+                    .compile("\\{[^}]*\"name\"\\s*:\\s*\"([^\"]+)\"[^}]*\"qty\"\\s*:\\s*(\\d+)[^}]*\\}")
+                    .matcher(raw);
+            while (m.find()) parts.add(m.group(1) + " (" + m.group(2) + ")");
+            return parts.isEmpty() ? raw : "Món: " + String.join(", ", parts);
+        } catch (Exception e) {
+            return raw;
         }
     }
 }
