@@ -31,21 +31,28 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
     private String highlightId;
 
     public OrderAdapter(Mode mode, OnAction cb) {
-        this.mode = mode; this.cb = cb;
+        this.mode = mode;
+        this.cb = cb;
     }
 
     public void submit(List<Order> list) {
         data.clear();
-        data.addAll(list);
+        if (list != null) data.addAll(list);
         notifyDataSetChanged();
     }
 
     public int indexOf(String id) {
-        for (int i = 0; i < data.size(); i++) if (id.equals(data.get(i).id)) return i;
+        if (id == null) return -1;
+        for (int i = 0; i < data.size(); i++) {
+            if (id.equals(data.get(i).id)) return i;
+        }
         return -1;
     }
 
-    public void highlight(String id) { this.highlightId = id; notifyDataSetChanged(); }
+    public void highlight(String id) {
+        this.highlightId = id;
+        notifyDataSetChanged();
+    }
 
     @NonNull @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -57,9 +64,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
     @Override
     public void onBindViewHolder(@NonNull VH h, int pos) {
         Order o = data.get(pos);
-
-        String title = "Bàn số: " + (o.tableNumber != null ? o.tableNumber :
-                (o.name != null ? o.name : ""));
+        String title = "Bàn số: " + (o.name != null ? o.name : "");
         h.tvTableNumber.setText(title);
 
         String timeStr = (o.timestampStr != null && !o.timestampStr.isEmpty())
@@ -112,28 +117,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
             tvNotes        = v.findViewById(R.id.tvNotes);
             tvTotal        = v.findViewById(R.id.tvTotal);
             btnConfirm     = v.findViewById(R.id.btnConfirm);
-            btnCancel      = v.findViewById(R.id.BtnCancel); // id của bạn là BtnCancel (B hoa)
+            btnCancel      = v.findViewById(R.id.BtnCancel);
             btnPayment     = v.findViewById(R.id.btnPayment);
             btnPrint       = v.findViewById(R.id.btnPrint);
         }
     }
 
-    // ===== Model khớp dữ liệu Firestore =====
-    public static class Order {
-        public String id;
-        public String userId;
-        public String name;         // tên người đặt/ bàn
-        public String items;        // bạn đang lưu dạng chuỗi
-        public String total;
-        public String notes;
-        public String paymentMethod;
-        public String status;
-        public java.util.Date createdAt;
-        public String timestampStr;
-        public String tableNumber;  // nếu có
-        public Order() {}
-    }
-
+    // Parse chuỗi items -> "Món: A (2), B (1)"
     private String parseItemsLine(String raw) {
         if (raw == null || raw.isEmpty()) return "Món: (trống)";
         try {

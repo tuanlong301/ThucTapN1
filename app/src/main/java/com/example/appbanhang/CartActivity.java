@@ -182,13 +182,15 @@ public class CartActivity extends AppCompatActivity {
         Map<String, Object> order = new HashMap<>();
         order.put("userId", uid);
         order.put("name", name);
-        order.put("items", getItemsListString()); // đang lưu chuỗi theo format cũ
+        order.put("items", getItemsListString());
         order.put("total", String.valueOf(calculateTotal()));
         order.put("notes", note);
         order.put("paymentMethod", paymentMethod);
         order.put("status", "pending");
-        order.put("timestamp", new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(new Date()));
-
+        order.put("timestamp", FieldValue.serverTimestamp()); // QUAN TRỌNG
+        order.put("timestampStr",
+                new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault())
+                        .format(new java.util.Date()));
         db.collection("orders")
                 .add(order)
                 .addOnSuccessListener(r -> {

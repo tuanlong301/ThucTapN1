@@ -3,7 +3,9 @@ package com.example.appbanhang;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,7 +14,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.firestore.*;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +27,7 @@ public class PendingOrdersFragment extends Fragment {
 
     public static PendingOrdersFragment newInstance() {
         PendingOrdersFragment f = new PendingOrdersFragment();
-        f.setArguments(new Bundle()); // sẵn để đặt highlight_id
+        f.setArguments(new Bundle());
         return f;
     }
 
@@ -32,29 +38,31 @@ public class PendingOrdersFragment extends Fragment {
     @Nullable private String highlightId;
 
     @SuppressLint("MissingInflatedId")
-    @Nullable @Override
-    public View onCreateView(@NonNull LayoutInflater inf, @Nullable ViewGroup parent, @Nullable Bundle s) {
-        View v = inf.inflate(R.layout.fragment_orders, parent, false);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_orders, container, false);
+
         rv = v.findViewById(R.id.rvGeneric);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
 
         adapter = new OrderAdapter(OrderAdapter.Mode.PENDING, new OrderAdapter.OnAction() {
             @Override public void onConfirm(String orderId) { updateStatus(orderId, "confirmed"); }
             @Override public void onCancel(String orderId)  { updateStatus(orderId, "canceled"); }
-            @Override public void onPay(String orderId)     { /* not used here */ }
-            @Override public void onPrint(String orderId)   { /* not used here */ }
+            @Override public void onPay(String orderId)     { /* not dùng ở pending */ }
+            @Override public void onPrint(String orderId)   { /* not dùng ở pending */ }
         });
         rv.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
 
-        // nhận highlight_id từ AdminAdapter
+        // nhận highlight_id nếu có
         Bundle args = getArguments();
         if (args != null) highlightId = args.getString("highlight_id");
 
-        // nhận sự kiện Refresh từ AdminMenu (tuỳ chọn)
+        // nhận sự kiện refresh từ AdminMenu
         getParentFragmentManager().setFragmentResultListener(
-                "force_refresh", this, (k, b) -> {
+                "force_refresh", this, (key, b) -> {
                     rv.scrollToPosition(0);
                     adapter.highlight(null);
                 }
@@ -63,28 +71,36 @@ public class PendingOrdersFragment extends Fragment {
         return v;
     }
 
-    @Override public void onStart() {
+    @Override
+    public void onStart() {
         super.onStart();
+
+        // Query tất cả orders có status = pending, sắp xếp theo timestamp
         reg = db.collection("orders")
                 .whereEqualTo("status", "pending")
-                .orderBy("createdAt", Query.Direction.DESCENDING)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
                 .addSnapshotListener((snap, e) -> {
-                    if (e != null || snap == null) return;
-                    List<OrderAdapter.Order> list = new ArrayList<>();
+                    if (e != null) {
+                        if (getContext()!=null) {
+                            Toast.makeText(getContext(), "Lỗi tải đơn: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                        e.printStackTrace();
+                        return;
+                    }
+                    if (snap == null) return;
+
+                    List<Order> list = new ArrayList<>();
                     for (DocumentSnapshot d : snap.getDocuments()) {
-                        OrderAdapter.Order o = new OrderAdapter.Order();
+                        Order o = d.toObject(Order.class);
+                        if (o == null) o = new Order();
                         o.id = d.getId();
-                        o.name = d.getString("name");
-                        o.items = d.getString("items");
-                        o.total = d.getString("total");
-                        o.notes = d.getString("notes");
-                        o.paymentMethod = d.getString("paymentMethod");
-                        o.status = d.getString("status");
-                        o.createdAt = d.getDate("createdAt");
-                        o.timestampStr = d.getString("timestampStr");
-                        o.tableNumber = d.getString("tableNumber");
+
+                        // map timestamp Firestore -> createdAt nếu cần
+                        o.createdAt = d.getDate("timestamp");
+
                         list.add(o);
                     }
+
                     adapter.submit(list);
 
                     if (!TextUtils.isEmpty(highlightId)) {
@@ -98,7 +114,8 @@ public class PendingOrdersFragment extends Fragment {
                 });
     }
 
-    @Override public void onStop() {
+    @Override
+    public void onStop() {
         super.onStop();
         if (reg != null) { reg.remove(); reg = null; }
     }
@@ -110,5 +127,9 @@ public class PendingOrdersFragment extends Fragment {
                 .addOnFailureListener(e -> toast("Lỗi: " + e.getMessage()));
     }
 
-    private void toast(String m) { if (getContext()!=null) Toast.makeText(getContext(), m, Toast.LENGTH_SHORT).show(); }
+    private void toast(String m) {
+        if (getContext() != null) {
+            Toast.makeText(getContext(), m, Toast.LENGTH_SHORT).show();
+        }
+    }
 }

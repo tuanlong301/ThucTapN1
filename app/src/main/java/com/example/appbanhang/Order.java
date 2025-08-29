@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Order {
     public String id;
-    public String userId;        // uid firebase user
+    public String userId;
     public String name;          // số bàn = name từ acc
     public String items;         // danh sách món (chuỗi json)
     public String total;
