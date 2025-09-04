@@ -22,7 +22,7 @@
             android:orientation="vertical"
             android:padding="4dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="false"
+            android:clickable="true"
             android:focusable="false">
 
             <ImageView
