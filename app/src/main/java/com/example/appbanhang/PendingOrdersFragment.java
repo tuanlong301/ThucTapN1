@@ -122,10 +122,16 @@ public class PendingOrdersFragment extends Fragment {
 
     private void updateStatus(String orderId, String newStatus) {
         db.collection("orders").document(orderId)
-                .update("status", newStatus, "updatedAt", FieldValue.serverTimestamp())
+                .update(
+                        "status", newStatus,
+                        "updatedAt", FieldValue.serverTimestamp(),
+                        newStatus.equals("confirmed") ? "confirmedAt" : "updatedAt",
+                        FieldValue.serverTimestamp()
+                )
                 .addOnSuccessListener(v -> toast("Cập nhật: " + newStatus))
                 .addOnFailureListener(e -> toast("Lỗi: " + e.getMessage()));
     }
+
 
     private void toast(String m) {
         if (getContext() != null) {
