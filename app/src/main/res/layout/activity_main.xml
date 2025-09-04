@@ -160,6 +160,7 @@
 
                     <!-- Item 2 -->
                     <LinearLayout
+                        android:id="@+id/btnkm"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
@@ -187,6 +188,7 @@
 
                     <!-- Item 3 -->
                     <LinearLayout
+                        android:id="@+id/btnCM"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
@@ -214,6 +216,7 @@
 
                     <!-- Item 4 -->
                     <LinearLayout
+                        android:id="@+id/btnNuoc"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"

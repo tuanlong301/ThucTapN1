@@ -58,6 +58,10 @@ public class MainMenu extends AppCompatActivity {
         FirebaseAuth.getInstance().signInAnonymously()
                 .addOnSuccessListener(r -> {
                     wireCategoryClicks();
+                    wireCategoryClicks1();
+                    wireCategoryClicks2();
+                    wireCategoryClicks3();
+
                     listenCartCount();  // <- badge realtime
                     loadAll();
                 })
@@ -67,7 +71,23 @@ public class MainMenu extends AppCompatActivity {
     private void wireCategoryClicks() {
         View best = findViewById(R.id.btnBestSeller);
         if (best != null) best.setOnClickListener(v -> loadByCategory("bestseller"));
-        // Thêm các nút khác nếu có: promo/pasta/drink...
+
+    }
+
+    private void wireCategoryClicks1() {
+        View best = findViewById(R.id.btnkm);
+        if (best != null) best.setOnClickListener(v -> loadByCategory("km"));
+
+    }
+    private void wireCategoryClicks2() {
+        View best = findViewById(R.id.btnCM);
+        if (best != null) best.setOnClickListener(v -> loadByCategory("cm"));
+
+    }
+    private void wireCategoryClicks3() {
+        View best = findViewById(R.id.btnNuoc);
+        if (best != null) best.setOnClickListener(v -> loadByCategory("nuoc"));
+
     }
 
     /** Hiển thị tất cả món */
