@@ -177,8 +177,7 @@ public class CartActivity extends AppCompatActivity {
 
     /** Lưu đơn */
     private void saveOrder(String note, String paymentMethod, String name) {
-        String uid = auth.getCurrentUser().getUid();
-
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Map<String, Object> order = new HashMap<>();
         order.put("userId", uid);
         order.put("name", name);
@@ -186,19 +185,36 @@ public class CartActivity extends AppCompatActivity {
         order.put("total", String.valueOf(calculateTotal()));
         order.put("notes", note);
         order.put("paymentMethod", paymentMethod);
+
+        // --- TRẠNG THÁI ĐƠN ---
         order.put("status", "pending");
-        order.put("timestamp", FieldValue.serverTimestamp()); // QUAN TRỌNG
+
+        // --- TRẠNG THÁI TIỀN ---
+        if ("Tiền mặt".equalsIgnoreCase(paymentMethod)) {
+            order.put("paymentStatus", "unpaid");
+        } else if ("Chuyển khoản".equalsIgnoreCase(paymentMethod)) {
+            order.put("paymentStatus", "awaiting_transfer");
+        } else {
+            order.put("paymentStatus", "unpaid");
+        }
+
+        // --- THỜI GIAN ---
+        order.put("timestamp", FieldValue.serverTimestamp()); // dùng để orderBy ở Admin
         order.put("timestampStr",
                 new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault())
                         .format(new java.util.Date()));
-        db.collection("orders")
+
+        FirebaseFirestore.getInstance().collection("orders")
                 .add(order)
-                .addOnSuccessListener(r -> {
-                    toast("Đặt hàng thành công!");
+                .addOnSuccessListener(doc -> {
+                    Toast.makeText(this, "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
                     clearCart();
                 })
-                .addOnFailureListener(e -> toast("Lỗi đặt hàng: " + e.getMessage()));
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Lỗi đặt hàng: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
     }
+
 
     /** Lấy tên theo acc/{uid}; nếu thiếu thì fallback tk=email và migrate; cache lại để lần sau dùng ngay */
     private void fetchOrdererNameAndSave(String uid, String note, String paymentMethod) {

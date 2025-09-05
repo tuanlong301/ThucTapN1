@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Header: Bàn số và Thời gian đặt hàng -->
+        <!-- Header: Bàn số (trái)  +  Nhóm (Đặt lúc - Phương thức) (phải) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,16 +28,32 @@
                 android:text="Bàn số: 5"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#333333"/>
+                android:textColor="#333333" />
 
-            <TextView
-                android:id="@+id/tvTimestamp"
+            <!-- Nhóm căn phải -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Đặt lúc: 2025-08-23 14:57"
-                android:textSize="14sp"
-                android:textColor="#6B7280"
-                android:paddingStart="8dp"/>
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvTimestamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đặt lúc: 2025-08-23 14:57"
+                    android:textSize="14sp"
+                    android:textColor="#6B7280" />
+
+                <TextView
+                    android:id="@+id/tvPayment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chuyển khoản"
+                    android:textSize="14sp"
+                    android:textColor="#6B7280"
+                    android:paddingStart="8dp" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- Body: Danh sách món và Ghi chú -->
@@ -50,7 +66,7 @@
             android:textColor="#6B7280"
             android:layout_marginTop="8dp"
             android:maxLines="3"
-            android:ellipsize="end"/>
+            android:ellipsize="end" />
 
         <TextView
             android:id="@+id/tvNotes"
@@ -61,7 +77,7 @@
             android:textStyle="italic"
             android:textColor="#9E9E9E"
             android:layout_marginTop="4dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <!-- Footer: Tổng tiền -->
         <TextView
@@ -72,9 +88,9 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="#E91E63"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp" />
 
-        <!-- Nút hành động (tùy tab: pending chỉ Xác nhận, confirmed có Thanh toán và In) -->
+        <!-- Hành động -->
         <LinearLayout
             android:id="@+id/layoutActions"
             android:layout_width="match_parent"
@@ -91,7 +107,8 @@
                 android:textAllCaps="false"
                 android:backgroundTint="#4CAF50"
                 android:textColor="#FFFFFF"
-                android:visibility="gone"/>
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/BtnCancel"
                 android:layout_width="0dp"
@@ -101,7 +118,7 @@
                 android:textAllCaps="false"
                 android:backgroundTint="#4CAF50"
                 android:textColor="#FFFFFF"
-                android:visibility="gone"/><!-- Ẩn ở tab confirmed -->
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/btnPayment"
@@ -113,7 +130,7 @@
                 android:backgroundTint="#FF4D6D"
                 android:textColor="#FFFFFF"
                 android:visibility="gone"
-                android:layout_marginStart="8dp"/> <!-- Hiện ở tab confirmed -->
+                android:layout_marginStart="8dp" />
 
             <Button
                 android:id="@+id/btnPrint"
@@ -125,7 +142,7 @@
                 android:backgroundTint="#2196F3"
                 android:textColor="#FFFFFF"
                 android:visibility="gone"
-                android:layout_marginStart="8dp"/> <!-- Hiện ở tab confirmed -->
+                android:layout_marginStart="8dp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
