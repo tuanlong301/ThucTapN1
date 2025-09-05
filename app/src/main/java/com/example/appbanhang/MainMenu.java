@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -38,6 +40,8 @@ public class MainMenu extends AppCompatActivity {
 
         tvCartBadge = findViewById(R.id.tvCartBadge);
         updateCartBadge();
+        findViewById(R.id.btnCallStaff).setOnClickListener(v -> callStaff());
+
 
         rvProducts = findViewById(R.id.rvProducts);
         rvProducts.setLayoutManager(new GridLayoutManager(this, 3));
@@ -190,4 +194,76 @@ public class MainMenu extends AppCompatActivity {
             tvCartBadge.setVisibility(View.VISIBLE);
         }
     }
+    /**Goi nhan vien */
+    private void callStaff() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null) {
+            Toast.makeText(this, "Chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String uid = auth.getCurrentUser().getUid();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // 1) Chống spam 2 phút: lấy lần gọi gần nhất của bàn này
+        db.collection("staff_calls")
+                .whereEqualTo("userId", uid)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .limit(1)
+
+                .get()
+                .addOnSuccessListener(snap -> {
+                    long now = System.currentTimeMillis();
+                    boolean allow = true;
+                    if (!snap.isEmpty()) {
+                        DocumentSnapshot last = snap.getDocuments().get(0);
+                        java.util.Date t = last.getDate("createdAt");
+                        if (t != null && (now - t.getTime()) < 2 * 60 * 1000) { // < 2 phút
+                            allow = false;
+                        }
+                    }
+                    if (!allow) {
+                        new androidx.appcompat.app.AlertDialog.Builder(this)
+                                .setTitle("Vui lòng đợi")
+                                .setMessage("Bạn đã gọi nhân viên gần đây. Vui lòng đợi trong giây lát (tối đa 2 phút) trước khi gọi lại.")
+                                .setPositiveButton("OK", null)
+                                .show();
+                        return;
+                    }
+
+                    // 2) Lấy tên bàn từ acc theo uid (bạn đã dùng trước đó ở CartActivity)
+                    db.collection("acc").document(uid).get()
+                            .addOnSuccessListener(accDoc -> {
+                                String tableName = accDoc.getString("name"); // “Bàn 1”, “Bàn 2”, ...
+                                if (tableName == null) tableName = "Khách";
+
+                                // 3) Tạo ticket
+                                Map<String, Object> call = new java.util.HashMap<>();
+                                call.put("userId", uid);
+                                call.put("tableName", tableName);
+                                call.put("createdAt", com.google.firebase.firestore.FieldValue.serverTimestamp());
+                                call.put("status", "queued");
+
+                                db.collection("staff_calls")
+                                        .add(call)
+                                        .addOnSuccessListener(ref -> {
+                                            // 4) Báo cho khách biết đã thông báo nhân viên
+                                            new androidx.appcompat.app.AlertDialog.Builder(this)
+                                                    .setTitle("Đã gửi yêu cầu")
+                                                    .setMessage("Đã thông báo cho nhân viên. Vui lòng đợi trong giây lát.")
+                                                    .setPositiveButton("OK", null)
+                                                    .show();
+                                        })
+                                        .addOnFailureListener(e ->
+                                                Toast.makeText(this, "Lỗi gửi yêu cầu: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                                        );
+                            })
+                            .addOnFailureListener(e ->
+                                    Toast.makeText(this, "Lỗi lấy thông tin bàn: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                            );
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Lỗi kiểm tra lịch sử gọi: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
+    }
+
 }
