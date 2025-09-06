@@ -42,35 +42,39 @@ public class MainMenu extends AppCompatActivity {
         updateCartBadge();
         findViewById(R.id.btnCallStaff).setOnClickListener(v -> callStaff());
 
-
         rvProducts = findViewById(R.id.rvProducts);
         rvProducts.setLayoutManager(new GridLayoutManager(this, 3));
         adapter = new ProductAdapter(this, productList);
         rvProducts.setAdapter(adapter);
-
-        // Khi bấm nút + trên từng item
         adapter.setOnAddToCartListener(this::addToCart);
-
-        // Nút mở giỏ hàng
-        findViewById(R.id.btnCart).setOnClickListener(v -> {
-            startActivity(new android.content.Intent(MainMenu.this, CartActivity.class));
-        });
+        findViewById(R.id.btnCart).setOnClickListener(v ->
+                startActivity(new android.content.Intent(MainMenu.this, CartActivity.class)));
 
         db = FirebaseFirestore.getInstance();
 
-        // Đăng nhập ẩn danh rồi mới wire sự kiện và load
-        FirebaseAuth.getInstance().signInAnonymously()
-                .addOnSuccessListener(r -> {
-                    wireCategoryClicks();
-                    wireCategoryClicks1();
-                    wireCategoryClicks2();
-                    wireCategoryClicks3();
-
-                    listenCartCount();  // <- badge realtime
-                    loadAll();
-                })
-                .addOnFailureListener(e -> Toast.makeText(this, "Auth FAIL: " + e.getMessage(), Toast.LENGTH_LONG).show());
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null) {
+            // Chỉ dùng ẩn danh khi thật sự chưa đăng nhập
+            auth.signInAnonymously()
+                    .addOnSuccessListener(r -> initUIData())
+                    .addOnFailureListener(e ->
+                            Toast.makeText(this, "Auth FAIL: " + e.getMessage(), Toast.LENGTH_LONG).show());
+        } else {
+            initUIData();    // đã đăng nhập -> chạy luôn
+        }
     }
+
+    // gom phần gán click + lắng nghe + load dữ liệu vào đây
+    private void initUIData() {
+        wireCategoryClicks();
+        wireCategoryClicks1();
+        wireCategoryClicks2();
+        wireCategoryClicks3();
+
+        listenCartCount();
+        loadAll();
+    }
+
 
     private void wireCategoryClicks() {
         View best = findViewById(R.id.btnBestSeller);
@@ -195,6 +199,7 @@ public class MainMenu extends AppCompatActivity {
         }
     }
     /**Goi nhan vien */
+
     private void callStaff() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
@@ -204,66 +209,65 @@ public class MainMenu extends AppCompatActivity {
         String uid = auth.getCurrentUser().getUid();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // 1) Chống spam 2 phút: lấy lần gọi gần nhất của bàn này
+        // 1) Chống spam 2 phút
         db.collection("staff_calls")
                 .whereEqualTo("userId", uid)
-                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .orderBy("createdAt", Query.Direction.DESCENDING)
                 .limit(1)
-
                 .get()
                 .addOnSuccessListener(snap -> {
                     long now = System.currentTimeMillis();
-                    boolean allow = true;
                     if (!snap.isEmpty()) {
-                        DocumentSnapshot last = snap.getDocuments().get(0);
-                        java.util.Date t = last.getDate("createdAt");
-                        if (t != null && (now - t.getTime()) < 2 * 60 * 1000) { // < 2 phút
-                            allow = false;
+                        java.util.Date t = snap.getDocuments().get(0).getDate("createdAt");
+                        if (t != null && (now - t.getTime()) < 2 * 60 * 1000) {
+                            new androidx.appcompat.app.AlertDialog.Builder(this)
+                                    .setTitle("Vui lòng đợi")
+                                    .setMessage("Bạn đã gọi nhân viên gần đây. Vui lòng chờ tối đa 2 phút trước khi gọi lại.")
+                                    .setPositiveButton("OK", null)
+                                    .show();
+                            return;
                         }
                     }
-                    if (!allow) {
-                        new androidx.appcompat.app.AlertDialog.Builder(this)
-                                .setTitle("Vui lòng đợi")
-                                .setMessage("Bạn đã gọi nhân viên gần đây. Vui lòng đợi trong giây lát (tối đa 2 phút) trước khi gọi lại.")
-                                .setPositiveButton("OK", null)
-                                .show();
-                        return;
-                    }
 
-                    // 2) Lấy tên bàn từ acc theo uid (bạn đã dùng trước đó ở CartActivity)
-                    db.collection("acc").document(uid).get()
-                            .addOnSuccessListener(accDoc -> {
-                                String tableName = accDoc.getString("name"); // “Bàn 1”, “Bàn 2”, ...
-                                if (tableName == null) tableName = "Khách";
+                    // 2) Lấy tên bàn từ collection acc
+                    db.collection("acc")
+                            .whereEqualTo("uid", uid)   // tìm doc có field uid = current uid
+                            .limit(1)
+                            .get()
+                            .addOnSuccessListener(accSnap -> {
+                                String tableName = "Khách";
+                                if (!accSnap.isEmpty()) {
+                                    tableName = accSnap.getDocuments().get(0).getString("name");
+                                    if (tableName == null || tableName.trim().isEmpty()) {
+                                        tableName = "Khách";
+                                    }
+                                }
 
-                                // 3) Tạo ticket
-                                Map<String, Object> call = new java.util.HashMap<>();
+                                // 3) Tạo request gọi NV
+                                Map<String, Object> call = new HashMap<>();
                                 call.put("userId", uid);
-                                call.put("tableName", tableName);
-                                call.put("createdAt", com.google.firebase.firestore.FieldValue.serverTimestamp());
+                                call.put("name", tableName);   // <-- lưu đúng field name
+                                call.put("createdAt", FieldValue.serverTimestamp());
                                 call.put("status", "queued");
 
                                 db.collection("staff_calls")
                                         .add(call)
-                                        .addOnSuccessListener(ref -> {
-                                            // 4) Báo cho khách biết đã thông báo nhân viên
-                                            new androidx.appcompat.app.AlertDialog.Builder(this)
-                                                    .setTitle("Đã gửi yêu cầu")
-                                                    .setMessage("Đã thông báo cho nhân viên. Vui lòng đợi trong giây lát.")
-                                                    .setPositiveButton("OK", null)
-                                                    .show();
-                                        })
+                                        .addOnSuccessListener(ref ->
+                                                new androidx.appcompat.app.AlertDialog.Builder(this)
+                                                        .setTitle("Đã gửi yêu cầu")
+                                                        .setMessage("Đã thông báo cho nhân viên. Vui lòng đợi.")
+                                                        .setPositiveButton("OK", null)
+                                                        .show())
                                         .addOnFailureListener(e ->
-                                                Toast.makeText(this, "Lỗi gửi yêu cầu: " + e.getMessage(), Toast.LENGTH_LONG).show()
-                                        );
+                                                Toast.makeText(this, "Lỗi gửi yêu cầu: " + e.getMessage(), Toast.LENGTH_LONG).show());
                             })
                             .addOnFailureListener(e ->
-                                    Toast.makeText(this, "Lỗi lấy thông tin bàn: " + e.getMessage(), Toast.LENGTH_LONG).show()
-                            );
+                                    Toast.makeText(this, "Lỗi lấy thông tin bàn: " + e.getMessage(), Toast.LENGTH_LONG).show());
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(this, "Lỗi kiểm tra lịch sử gọi: " + e.getMessage(), Toast.LENGTH_LONG).show()
-                );
+                        Toast.makeText(this, "Lỗi kiểm tra lịch sử gọi: " + e.getMessage(), Toast.LENGTH_LONG).show());
     }
 
 }
+
+

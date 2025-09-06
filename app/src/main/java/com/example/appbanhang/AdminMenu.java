@@ -80,7 +80,7 @@ public class AdminMenu extends AppCompatActivity {
         callReg = FirebaseFirestore.getInstance()
                 .collection("staff_calls")
                 .whereEqualTo("status", "queued")                  // ← khớp với MainMenu
-                .orderBy("timestamp", Query.Direction.DESCENDING)  // ← khớp field thời gian
+                .orderBy("createdAt", Query.Direction.DESCENDING)  // ← khớp field thời gian
                 .addSnapshotListener((snap, e) -> {
                     if (e != null || snap == null) return;
 
@@ -105,14 +105,15 @@ public class AdminMenu extends AppCompatActivity {
 
         isShowingCallDialog = true;
 
-        DocumentSnapshot d = callQueue.peekFirst(); // xem phần tử đầu
-        String tableName = d.getString("tableName");
+        DocumentSnapshot d = callQueue.peekFirst();
+        String name = d.getString("name");
         java.util.Date t = d.getDate("createdAt");
         String when = t != null ? new SimpleDateFormat("HH:mm", Locale.getDefault()).format(t) : null;
 
         StringBuilder msg = new StringBuilder();
-        msg.append("Bàn: ").append(tableName != null ? tableName : "?");
+        msg.append("Bàn: ").append(name != null ? name : "?");
         if (when != null) msg.append(" • gọi lúc ").append(when);
+
 
         new AlertDialog.Builder(this)
                 .setTitle("Gọi nhân viên")
