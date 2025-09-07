@@ -19,9 +19,11 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.VH> {
 
     public static class TableRow {
         public String userId;
-        public String name;      // "Bàn 1"
-        public String status;    // "Trống" | "Đang phục vụ" | "Đang gọi NV" | "Đặt trước"
-        public String sub;       // "Đặt lúc 14:57" hoặc "Gọi lúc 14:10"...
+        public String name;   // "Bàn 1"
+
+        public String status;
+        // ví dụ: "Vào lúc 19:14 08/09" (có thể null)
+        public String sub;
     }
 
     private final List<TableRow> data = new ArrayList<>();
@@ -31,11 +33,12 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.VH> {
 
     public void submit(List<TableRow> list) {
         data.clear();
-        data.addAll(list);
+        if (list != null) data.addAll(list);
         notifyDataSetChanged();
     }
 
-    @NonNull @Override
+    @NonNull
+    @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_table, parent, false);
@@ -46,24 +49,50 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.VH> {
     public void onBindViewHolder(@NonNull VH h, int pos) {
         final TableRow r = data.get(pos);
 
+        // Tên bàn
         h.tvTableName.setText(r.name != null ? r.name : "(?)");
-        h.tvStatus.setText("Trạng thái: " + (r.status != null ? r.status : "Không rõ"));
-        h.tvSub.setText(r.sub != null ? r.sub : "");
 
-        // Màu chữ theo trạng thái
-        int c;
-        if ("Đang phục vụ".equalsIgnoreCase(r.status)) c = 0xFF16A34A;         // xanh lá
-        else if ("Đang gọi NV".equalsIgnoreCase(r.status)) c = 0xFFEAB308;    // vàng
-        else if ("Đặt trước".equalsIgnoreCase(r.status)) c = 0xFF3B82F6;      // xanh dương
-        else c = 0xFF6B7280;                                                  // xám
-        h.tvStatus.setTextColor(c);
+        // Build dòng trạng thái 1 dòng
+        String st = (r.status == null) ? "Không rõ" : r.status;
+        String line = "Trạng thái: " + st;
+        if (r.sub != null && !r.sub.trim().isEmpty()) {
+            line += " • " + r.sub.trim();
+        }
+        h.tvStatus.setText(line);
 
+        // Dọn/ẩn dòng phụ để không bị “bóng ma”
+        if (h.tvSub != null) {
+            h.tvSub.setText(null);
+            h.tvSub.setVisibility(View.GONE);
+        }
+
+        // Màu theo trạng thái (map tên mới)
+        h.tvStatus.setTextColor(colorForStatus(st));
+
+        // Click
         h.itemView.setOnClickListener(v -> {
             if (onClick != null) onClick.onClick(r);
         });
     }
 
-    @Override public int getItemCount() { return data.size(); }
+    @Override
+    public int getItemCount() { return data.size(); }
+
+    private int colorForStatus(String status) {
+        if (status == null) return 0xFF6B7280; // xám
+
+        String s = status.toLowerCase();
+
+        if (s.contains("đang sử dụng") || s.contains("đang phục vụ")) {
+            return 0xFF16A34A; // xanh lá
+        }
+
+        if (s.contains("đã đặt trước")) {
+            return 0xFF3B82F6; // xanh dương
+        }
+
+        return 0xFF6B7280; // xám
+    }
 
     static class VH extends RecyclerView.ViewHolder {
         TextView tvTableName, tvStatus, tvSub;
@@ -71,6 +100,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.VH> {
             super(v);
             tvTableName = v.findViewById(R.id.tvTableName);
             tvStatus    = v.findViewById(R.id.tvTableStatus);
+            // Có thể không dùng nữa, nhưng vẫn bind để dọn state khi view tái sử dụng
             tvSub       = v.findViewById(R.id.tvTableSub);
         }
     }

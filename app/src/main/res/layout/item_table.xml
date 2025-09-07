@@ -40,6 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Được đặt từ lúc…"
+            android:visibility="gone"
             android:textColor="#9CA3AF"
             android:textSize="12sp"
             android:layout_marginTop="2dp" />
