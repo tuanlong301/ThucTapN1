@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
-    id("com.google.gms.google-services") // Plugin Firebase
+    id("com.google.gms.google-services")
+    alias(libs.plugins.kotlin.android) // Plugin Firebase
 }
 
 android {
@@ -29,6 +30,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -37,6 +41,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.core.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -51,4 +56,6 @@ dependencies {
     implementation ("com.google.android.material:material:1.12.0")
     implementation ("androidx.viewpager2:viewpager2:1.0.0")
     implementation ("androidx.appcompat:appcompat:1.7.0")
+    implementation ("androidx.core:core:1.13.1")
+    implementation ("androidx.core:core-ktx:1.13.1")
 }

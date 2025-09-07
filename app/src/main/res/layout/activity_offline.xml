@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:gravity="center"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="24dp" android:background="#FFF7F8">
+
+    <ImageView
+        android:layout_width="96dp" android:layout_height="96dp"
+        android:src="@android:drawable/stat_notify_error" />
+
+    <TextView
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Mất kết nối mạng"
+        android:textSize="20sp" android:textStyle="bold"
+        android:layout_marginTop="16dp" android:textColor="#333333"/>
+
+    <TextView
+        android:id="@+id/tvHint"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Vui lòng kiểm tra Wi-Fi/4G. Chúng tôi sẽ tự động tiếp tục khi có mạng."
+        android:textSize="14sp" android:textColor="#6B7280"
+        android:gravity="center" android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnRetry"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Thử lại" android:layout_marginTop="20dp"
+        android:backgroundTint="#FF4D6D" android:textColor="#FFFFFF"/>
+</LinearLayout>

@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.Locale;
 
-public class AdminMenu extends AppCompatActivity {
+public class AdminMenu extends BaseActivity {
 
     // ==== Hàng đợi gọi nhân viên ====
     private ListenerRegistration callReg;

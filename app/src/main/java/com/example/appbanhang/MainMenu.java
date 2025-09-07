@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MainMenu extends AppCompatActivity {
+public class MainMenu extends BaseActivity  {
 
     private RecyclerView rvProducts;
     private final List<Product> productList = new ArrayList<>();

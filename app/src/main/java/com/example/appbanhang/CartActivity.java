@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.firebase.firestore.DocumentReference;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,7 +28,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends BaseActivity  {
 
     private static final String TAG = "CartActivity";
 

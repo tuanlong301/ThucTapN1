@@ -4,9 +4,12 @@ junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.6.1"
-material = "1.10.0"
-activity = "1.8.0"
+material = "1.12.0"        # <= nâng từ 1.10.0 (ổn với SDK 34)
+activity = "1.8.2"         # <= an toàn với SDK 34
 constraintlayout = "2.1.4"
+# Kotlin: nếu build cảnh báo, hạ về 1.9.24 (khuyến nghị với AGP 8.6.0)
+kotlin = "2.1.0"
+coreKtx = "1.13.1"         # <= GHIM, tránh 1.17.0 (đòi SDK 36 + AGP 8.9.1)
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -17,14 +20,15 @@ material = { group = "com.google.android.material", name = "material", version.r
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
-
-
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version = "33.2.0" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 
+# core-ktx & core thường — cùng version 1.13.1 (tương thích compileSdk 34)
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+core = { group = "androidx.core", name = "core", version.ref = "coreKtx" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-
-
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

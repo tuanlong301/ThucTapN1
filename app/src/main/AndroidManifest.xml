@@ -33,6 +33,16 @@
             android:name=".AdminMenu"
             android:exported="false" />
 
+        <activity
+            android:name=".App"
+            />
+
+        <activity
+            android:name=".OfflineActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
 
 
     </application>
