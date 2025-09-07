@@ -1,35 +1,30 @@
-Ứng dụng App Bán Hàng được xây dựng trên nền tảng Android (Java), hướng đến quản lý và vận hành một cửa hàng/nhà hàng nhỏ. Các chức năng chính:
+# App Bán Hàng (Android)
 
-1. Quản lý sản phẩm
+## 📌 Giới thiệu chức năng
 
-Hiển thị danh sách sản phẩm với hình ảnh, mô tả, giá bán.
+Ứng dụng **App Bán Hàng** hỗ trợ quản lý bán hàng và nhà hàng nhỏ. Các chức năng chính:
 
-Cho phép thêm sản phẩm vào giỏ hàng nhanh chóng.
+### 🛍️ 1. Quản lý sản phẩm
+- Hiển thị danh sách sản phẩm với hình ảnh, mô tả và giá.
+- Thêm sản phẩm vào giỏ hàng nhanh chóng.
 
-2. Giỏ hàng
+### 🛒 2. Giỏ hàng
+- Xem danh sách sản phẩm đã chọn.
+- Tăng/giảm số lượng sản phẩm trong giỏ.
+- Tính tổng tiền tự động.
+- Chọn phương thức thanh toán (tiền mặt, chuyển khoản).
 
-Hiển thị các mặt hàng đã chọn.
+### 📦 3. Quản trị đơn hàng (Admin)
+- **Đơn hàng chờ**: xem, xác nhận hoặc hủy đơn.
+- **Đơn đã xác nhận**: quản lý đơn đã duyệt, hỗ trợ thanh toán và in hóa đơn.
+- **Quản lý bàn**: hiển thị trạng thái bàn (trống/đang phục vụ).
 
-Tăng/giảm số lượng sản phẩm.
+### 🌐 4. Kết nối mạng
+- Hoạt động với dữ liệu online qua Firebase/Firestore.
+- Phát hiện khi **mất mạng**, chuyển đến màn hình Offline và cho phép **thử lại**.
 
-Tính tổng tiền theo thời gian thực.
-
-Chọn phương thức thanh toán (tiền mặt, chuyển khoản).
-
-3. Quản trị đơn hàng (Admin)
-
-Tab Đơn hàng chờ: xem và xác nhận/hủy đơn mới.
-
-Tab Đã xác nhận: quản lý đơn đã duyệt, hỗ trợ thanh toán và in hóa đơn.
-
-Tab Quản lý bàn: hiển thị trạng thái bàn (trống, đang phục vụ).
-
-4. Mạng & kết nối
-
-Hoạt động với dữ liệu online (Firestore, Firebase).
-
-Có màn hình xử lý offline: phát hiện mất mạng, cho phép “Thử lại”.
-
-5. Đăng nhập & phân quyền
-
-Đăng nhập bằng Firebase Authentication.
+### 🔑 5. Đăng nhập & phân quyền
+- Đăng nhập bằng Firebase Authentication.
+- Phân quyền:
+  - **Người dùng**: đặt hàng, quản lý giỏ hàng.
+  - **Nhân viên**: quản lý đơn hàng, bàn và xác nhận thanh toán.
