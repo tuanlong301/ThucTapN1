@@ -26,6 +26,8 @@ public class AdminMenu extends AppCompatActivity {
     private ListenerRegistration callReg;
     private final LinkedList<DocumentSnapshot> callQueue = new LinkedList<>();
     private boolean isShowingCallDialog = false;
+    private boolean isRefreshAllowed = true;
+    private final long REFRESH_DELAY = 1000;
 
     // ==== UI ====
     @Override
@@ -58,9 +60,17 @@ public class AdminMenu extends AppCompatActivity {
         }).attach();
 
         // Nút Refresh: gửi "force_refresh" cho các fragment đang lắng nghe
-        findViewById(R.id.btnRefresh).setOnClickListener(v -> {
+        View btnRefresh = findViewById(R.id.btnRefresh);
+        btnRefresh.setOnClickListener(v -> {
+            // disable để tránh spam
+            v.setEnabled(false);
+
+            // thực hiện refresh
             getSupportFragmentManager().setFragmentResult("force_refresh", new Bundle());
             Toast.makeText(this, "Đã làm mới dữ liệu", Toast.LENGTH_SHORT).show();
+
+            // bật lại sau 1 giây
+            v.postDelayed(() -> v.setEnabled(true), 1000);
         });
 
         // Nút In tất cả hóa đơn (placeholder)

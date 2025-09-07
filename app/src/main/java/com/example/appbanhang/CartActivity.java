@@ -207,11 +207,21 @@ public class CartActivity extends AppCompatActivity {
         FirebaseFirestore.getInstance().collection("orders")
                 .add(order)
                 .addOnSuccessListener(doc -> {
-                    Toast.makeText(this, "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
-                    clearCart();
+                    // Hiện thông báo bằng AlertDialog thay cho Toast
+                    new androidx.appcompat.app.AlertDialog.Builder(this)
+                            .setTitle("Thông báo")
+                            .setMessage("Đặt hàng thành công!")
+                            .setPositiveButton("OK", (dlg, w) -> {
+                                clearCart();
+                            })
+                            .show();
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(this, "Lỗi đặt hàng: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                        new androidx.appcompat.app.AlertDialog.Builder(this)
+                                .setTitle("Lỗi")
+                                .setMessage("Lỗi đặt hàng: " + e.getMessage())
+                                .setPositiveButton("OK", null)
+                                .show()
                 );
     }
 
