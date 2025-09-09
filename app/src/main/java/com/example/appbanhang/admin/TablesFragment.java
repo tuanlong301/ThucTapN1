@@ -1,4 +1,4 @@
-package com.example.appbanhang;
+package com.example.appbanhang.admin;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.appbanhang.R;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;

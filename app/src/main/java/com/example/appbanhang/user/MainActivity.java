@@ -1,4 +1,4 @@
-package com.example.appbanhang;
+package com.example.appbanhang.user;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +9,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.appbanhang.BaseActivity;
+import com.example.appbanhang.R;
+import com.example.appbanhang.admin.AdminMenu;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,7 +23,7 @@ import com.google.firebase.firestore.SetOptions;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends BaseActivity  {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
 

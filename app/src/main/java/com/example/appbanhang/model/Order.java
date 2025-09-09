@@ -1,4 +1,4 @@
-package com.example.appbanhang;
+package com.example.appbanhang.model;
 
 import java.util.Date;
 

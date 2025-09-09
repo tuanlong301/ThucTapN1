@@ -1,4 +1,4 @@
-package com.example.appbanhang;
+package com.example.appbanhang.user;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,9 +8,11 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.firebase.firestore.DocumentReference;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.example.appbanhang.BaseActivity;
+import com.example.appbanhang.R;
+import com.example.appbanhang.user.adapter.CartAdapter;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,13 +24,12 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class CartActivity extends BaseActivity  {
+public class CartActivity extends BaseActivity {
 
     private static final String TAG = "CartActivity";
 

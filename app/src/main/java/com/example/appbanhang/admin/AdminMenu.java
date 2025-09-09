@@ -1,16 +1,16 @@
-package com.example.appbanhang;
+package com.example.appbanhang.admin;
 
 import android.os.Bundle;
 import android.widget.Toast;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.app.AlertDialog;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.appbanhang.BaseActivity;
+import com.example.appbanhang.R;
+import com.example.appbanhang.admin.adapter.AdminAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,15 +33,15 @@ public class AdminMenu extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
+        setContentView(com.example.appbanhang.R.layout.activity_admin);
 
         // Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(com.example.appbanhang.R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Tabs + Pager
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
-        ViewPager2 viewPager = findViewById(R.id.viewPager);
+        TabLayout tabLayout = findViewById(com.example.appbanhang.R.id.tabLayout);
+        ViewPager2 viewPager = findViewById(com.example.appbanhang.R.id.viewPager);
 
         // Lấy orderId vừa tạo (nếu đi từ CartActivity)
         String highlightId = getIntent().getStringExtra("justCreatedOrderId");
@@ -60,7 +60,7 @@ public class AdminMenu extends BaseActivity {
         }).attach();
 
         // Nút Refresh: gửi "force_refresh" cho các fragment đang lắng nghe
-        View btnRefresh = findViewById(R.id.btnRefresh);
+        View btnRefresh = findViewById(com.example.appbanhang.R.id.btnRefresh);
         btnRefresh.setOnClickListener(v -> {
             // disable để tránh spam
             v.setEnabled(false);

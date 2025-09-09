@@ -1,4 +1,4 @@
-package com.example.appbanhang;
+package com.example.appbanhang.model;
 
 public class Product {
     private String id;

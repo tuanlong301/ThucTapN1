@@ -13,7 +13,7 @@
         android:theme="@style/Theme.AppBanHang"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".user.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,15 +22,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CartActivity"
+            android:name=".user.CartActivity"
             android:exported="false" />
 
         <activity
-        android:name=".MainMenu"
+        android:name=".user.MainMenu"
         android:exported="false" />
 
         <activity
-            android:name=".AdminMenu"
+            android:name=".admin.AdminMenu"
             android:exported="false" />
 
         <activity

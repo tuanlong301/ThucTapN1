@@ -1,4 +1,4 @@
-package com.example.appbanhang;
+package com.example.appbanhang.user;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,10 +8,13 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.appbanhang.BaseActivity;
+import com.example.appbanhang.user.adapter.ProductAdapter;
+import com.example.appbanhang.R;
+import com.example.appbanhang.model.Product;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -21,9 +24,8 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class MainMenu extends BaseActivity  {
+public class MainMenu extends BaseActivity {
 
     private RecyclerView rvProducts;
     private final List<Product> productList = new ArrayList<>();

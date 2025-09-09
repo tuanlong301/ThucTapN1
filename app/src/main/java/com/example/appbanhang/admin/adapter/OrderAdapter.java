@@ -1,4 +1,7 @@
-package com.example.appbanhang;
+package com.example.appbanhang.admin.adapter;
+import com.example.appbanhang.R;
+import com.example.appbanhang.model.Order;
+import com.example.appbanhang.utils.InvoiceUtils;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,7 +115,20 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
             h.btnConfirm.setVisibility(View.GONE);
             h.btnCancel.setVisibility(View.GONE);
             h.btnPrint.setVisibility(View.VISIBLE);
-            h.btnPrint.setOnClickListener(v -> cb.onPrint(o.id));
+            h.btnPrint.setOnClickListener(v -> {
+                String invoiceId = o.id;                        // mã hóa đơn
+                String tableName = o.name;                      // "Bàn số ..."
+                String details   = parseItemsLine(o.items);     // gộp món từ chuỗi items
+                String total     = (o.total == null ? "0" : String.valueOf(o.total)) + " đ";
+
+                InvoiceUtils.exportInvoiceToPdf(
+                        v.getContext(),
+                        invoiceId,
+                        tableName,
+                        details,
+                        total
+                );
+            });
 
             boolean isPaid = "paid".equalsIgnoreCase(o.paymentStatus);
 

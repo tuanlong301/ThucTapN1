@@ -1,4 +1,4 @@
-package com.example.appbanhang;
+package com.example.appbanhang.admin;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -14,6 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.appbanhang.R;
+import com.example.appbanhang.admin.adapter.OrderAdapter;
+import com.example.appbanhang.model.Order;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;

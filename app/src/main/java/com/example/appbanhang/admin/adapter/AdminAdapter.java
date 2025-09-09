@@ -1,4 +1,4 @@
-package com.example.appbanhang;
+package com.example.appbanhang.admin.adapter;
 
 import android.os.Bundle;
 
@@ -7,6 +7,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.example.appbanhang.admin.PendingOrdersFragment;
+import com.example.appbanhang.admin.TablesFragment;
+import com.example.appbanhang.admin.ConfirmedOrdersFragment;
 
 /**
  * ViewPager2 adapter cho Admin:

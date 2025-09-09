@@ -1,4 +1,4 @@
-package com.example.appbanhang;
+package com.example.appbanhang.user.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.appbanhang.R;
+import com.example.appbanhang.model.Product;
 
 import java.util.List;
 import java.util.Locale;

@@ -1,4 +1,4 @@
-package com.example.appbanhang;
+package com.example.appbanhang.admin;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -17,6 +17,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.appbanhang.admin.adapter.OrderAdapter;
+import com.example.appbanhang.R;
+import com.example.appbanhang.model.Order;
 import com.google.firebase.firestore.*;
 
 import java.util.ArrayList;
@@ -39,7 +42,7 @@ public class ConfirmedOrdersFragment extends Fragment {
     @SuppressLint("MissingInflatedId")
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle s) {
-        View v = inflater.inflate(R.layout.fragment_orders, container, false);
+        View v = inflater.inflate(com.example.appbanhang.R.layout.fragment_orders, container, false);
         rv = v.findViewById(R.id.rvGeneric);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
 
