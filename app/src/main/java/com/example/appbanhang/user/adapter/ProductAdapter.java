@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appbanhang.R;
 import com.example.appbanhang.model.Product;
+import com.example.appbanhang.net.NetworkMonitor;   // ★ thêm
+import com.example.appbanhang.ui.Dialogs;           // ★ thêm
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 import java.util.Locale;
@@ -25,10 +28,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private final Context context;
     private final List<Product> productList;
+    private boolean onlineNow = true;  // ★ cho phép activity cập nhật trạng thái mạng
 
     public ProductAdapter(Context context, List<Product> productList) {
         this.context = context;
         this.productList = productList;
+        this.onlineNow = NetworkMonitor.get(context).hasInternetNow(); // init
+        setHasStableIds(true);
+    }
+
+    /** ★ Gọi từ Activity khi mạng thay đổi để refresh enable/disable nút */
+    public void setOnline(boolean online) {
+        if (this.onlineNow != online) {
+            this.onlineNow = online;
+            notifyDataSetChanged();
+        }
+    }
+
+    @Override public long getItemId(int position) {
+        Product p = productList.get(position);
+        return p.getId() != null ? p.getId().hashCode() : position;
     }
 
     @NonNull @Override
@@ -52,7 +71,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
 
         if (p.getImageUrl() != null && !p.getImageUrl().isEmpty()) {
-            com.bumptech.glide.Glide.with(context)
+            Glide.with(context)
                     .load(p.getImageUrl())
                     .centerCrop()
                     .placeholder(R.drawable.ic_launcher_foreground)
@@ -64,9 +83,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             h.imgProduct.setImageResource(R.drawable.ic_launcher_foreground);
         }
 
-        h.btnAdd.setOnClickListener(v -> {
-            if (onAddToCartListener != null) onAddToCartListener.onAdd(p);
+        // ★ Vô hiệu hoá khi offline
+        boolean online = onlineNow && NetworkMonitor.get(h.itemView.getContext()).hasInternetNow();
+        h.btnAdd.setEnabled(online);
 
+        h.btnAdd.setOnClickListener(v -> {
+            // ★ Nếu offline -> chỉ hiện dialog, không gọi onAdd
+            if (!NetworkMonitor.get(v.getContext()).hasInternetNow()) {
+                Dialogs.noInternet(v.getContext());
+                return;
+            }
+            if (onAddToCartListener != null) onAddToCartListener.onAdd(p);
         });
     }
 

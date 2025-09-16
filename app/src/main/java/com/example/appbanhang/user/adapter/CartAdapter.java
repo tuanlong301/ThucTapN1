@@ -1,5 +1,6 @@
 package com.example.appbanhang.user.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,17 +15,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.appbanhang.user.CartActivity;
 import com.example.appbanhang.R;
+import com.example.appbanhang.net.NetworkMonitor;
+import com.example.appbanhang.user.CartActivity;
 
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Adapter hiển thị giỏ hàng: mỗi item là CartItem với các trường từ Firestore.
- * Không chơi notifyDataSetChanged bừa — chỉ refresh đúng dòng thay đổi để mượt.
- */
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.VH> {
 
     public interface OnQtyClick {
@@ -33,7 +31,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.VH> {
     }
 
     private final Context ctx;
-    private final List<Object> data; // Sử dụng Object để chứa cả CartItem và NoteItem
+    private final List<Object> data; // CartItem + NoteItem
     private final OnQtyClick cb;
     private final NumberFormat money = NumberFormat.getInstance(new Locale("vi", "VN"));
     private String note = "";
@@ -49,13 +47,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.VH> {
     public long getItemId(int position) {
         Object item = data.get(position);
         if (item instanceof CartActivity.CartItem) {
-            return ((CartActivity.CartItem) item).id != null ? ((CartActivity.CartItem) item).id.hashCode() : position;
+            return ((CartActivity.CartItem) item).id != null
+                    ? ((CartActivity.CartItem) item).id.hashCode()
+                    : position;
         }
-        return position; // ID cho NoteItem
+        return position; // NoteItem
     }
 
-    @NonNull
-    @Override
+    @NonNull @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == 1) { // NoteItem
             View v = LayoutInflater.from(ctx).inflate(R.layout.item_note, parent, false);
@@ -73,18 +72,21 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.VH> {
     @Override
     public void onBindViewHolder(@NonNull VH h, int pos) {
         Object item = data.get(pos);
+
         if (item instanceof CartActivity.CartItem) {
             CartActivity.CartItem cartItem = (CartActivity.CartItem) item;
+
             h.tvName.setText(cartItem.name != null ? cartItem.name : "Không có tên");
             h.tvSub.setText("1 x " + (cartItem.name != null ? cartItem.name : "Không có tên"));
+
             long qty = cartItem.qty != null ? cartItem.qty : 0;
             h.tvQty.setText(String.valueOf(qty));
+
             double line = (cartItem.price != null ? cartItem.price : 0) * qty;
             h.tvLineTotal.setText(money.format(line) + " đ");
 
             if (cartItem.imageUrl != null && !cartItem.imageUrl.isEmpty()) {
-                Glide.with(ctx)
-                        .load(cartItem.imageUrl)
+                Glide.with(ctx).load(cartItem.imageUrl)
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_foreground)
                         .error(R.drawable.ic_launcher_foreground)
@@ -93,43 +95,57 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.VH> {
                 h.ivThumb.setImageResource(R.drawable.ic_launcher_foreground);
             }
 
+            // Cập nhật trạng thái nút theo mạng + qty
+            updateButtonsEnabled(h, qty);
+
             h.btnPlus.setOnClickListener(v -> {
-                int adapterPos = h.getAbsoluteAdapterPosition();
-                if (adapterPos != RecyclerView.NO_POSITION && cb != null) {
-                    cb.onPlus(adapterPos);
+                if (!NetworkMonitor.get(v.getContext()).hasInternetNow()) {
+                    showNoInternet(v.getContext());
+                    return;
                 }
+                int adapterPos = h.getAbsoluteAdapterPosition();
+                if (adapterPos != RecyclerView.NO_POSITION && cb != null) cb.onPlus(adapterPos);
             });
 
             h.btnMinus.setOnClickListener(v -> {
-                int adapterPos = h.getAbsoluteAdapterPosition();
-                if (adapterPos != RecyclerView.NO_POSITION && cb != null) {
-                    cb.onMinus(adapterPos);
+                if (!NetworkMonitor.get(v.getContext()).hasInternetNow()) {
+                    showNoInternet(v.getContext());
+                    return;
                 }
+                int adapterPos = h.getAbsoluteAdapterPosition();
+                if (adapterPos != RecyclerView.NO_POSITION && cb != null) cb.onMinus(adapterPos);
             });
+
         } else if (item instanceof CartActivity.NoteItem) {
             CartActivity.NoteItem noteItem = (CartActivity.NoteItem) item;
             h.etNote.setText(noteItem.getNote());
             h.etNote.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {}
-                @Override
-                public void afterTextChanged(Editable s) {
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                @Override public void afterTextChanged(Editable s) {
                     noteItem.setNote(s.toString());
-                    note = s.toString(); // Cập nhật note toàn cục
+                    note = s.toString();
                 }
             });
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return data != null ? data.size() : 0;
+    @Override public int getItemCount() { return data != null ? data.size() : 0; }
+
+    public String getNote() { return note; }
+
+    private void updateButtonsEnabled(@NonNull VH h, long qty) {
+        boolean online = NetworkMonitor.get(h.itemView.getContext()).hasInternetNow();
+        h.btnPlus.setEnabled(online);
+        h.btnMinus.setEnabled(online && qty > 0); // không cho trừ về 0
     }
 
-    public String getNote() {
-        return note;
+    private void showNoInternet(Context ctx) {
+        new AlertDialog.Builder(ctx)
+                .setTitle("Mất kết nối")
+                .setMessage("Không có internet. Vui lòng kiểm tra kết nối và thử lại.")
+                .setPositiveButton("OK", null)
+                .show();
     }
 
     static class VH extends RecyclerView.ViewHolder {
@@ -137,7 +153,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.VH> {
         TextView tvName, tvSub, tvQty, tvLineTotal;
         TextView btnMinus, btnPlus;
         EditText etNote;
-
         VH(@NonNull View v) {
             super(v);
             ivThumb = v.findViewById(R.id.imgThumb);
@@ -147,7 +162,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.VH> {
             tvLineTotal = v.findViewById(R.id.tvLineTotal);
             btnMinus = v.findViewById(R.id.btnMinus);
             btnPlus = v.findViewById(R.id.btnPlus);
-            etNote = v.findViewById(R.id.etNote); // Chỉ có trong item_note
+            etNote = v.findViewById(R.id.etNote);
         }
     }
 }

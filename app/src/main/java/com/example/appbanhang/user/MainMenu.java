@@ -203,6 +203,16 @@ public class MainMenu extends BaseActivity {
     /**Goi nhan vien */
 
     private void callStaff() {
+        if (!requireOnline()) {
+            // 🚨 Không cho queue Firestore khi offline
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Mất kết nối")
+                    .setMessage("Không thể gửi yêu cầu khi mất mạng. Vui lòng kết nối lại internet.")
+                    .setPositiveButton("OK", null)
+                    .show();
+            return;
+        }
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
             Toast.makeText(this, "Chưa đăng nhập!", Toast.LENGTH_SHORT).show();

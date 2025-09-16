@@ -113,31 +113,45 @@ public class AdminMenu extends BaseActivity {
         if (isShowingCallDialog) return;
         if (callQueue.isEmpty()) return;
 
+        DocumentSnapshot d = callQueue.peekFirst();
+
+        // ⚡ Bỏ qua nếu doc không hợp lệ
+        if (d == null || !"queued".equals(d.getString("status"))) {
+            callQueue.pollFirst();
+            maybeShowNextCall();
+            return;
+        }
+
+        String name = d.getString("name");
+        if (name == null || name.trim().isEmpty()) {
+            // Không hiển thị yêu cầu không có tên bàn
+            callQueue.pollFirst();
+            maybeShowNextCall();
+            return;
+        }
+
         isShowingCallDialog = true;
 
-        DocumentSnapshot d = callQueue.peekFirst();
-        String name = d.getString("name");
         java.util.Date t = d.getDate("createdAt");
         String when = t != null ? new SimpleDateFormat("HH:mm", Locale.getDefault()).format(t) : null;
 
         StringBuilder msg = new StringBuilder();
-        msg.append("Bàn: ").append(name != null ? name : "?");
+        msg.append("Bàn: ").append(name);
         if (when != null) msg.append(" • gọi lúc ").append(when);
-
 
         new AlertDialog.Builder(this)
                 .setTitle("Gọi nhân viên")
                 .setMessage(msg.toString())
-                .setCancelable(false) // xử xong mới tới yêu cầu tiếp theo
+                .setCancelable(false)
                 .setPositiveButton("Đã nhận", (dlg, w) -> acknowledgeCall(d))
                 .setNegativeButton("Bỏ qua", (dlg, w) -> {
-                    // Bỏ qua yêu cầu này (không cập nhật DB), chuyển sang cái tiếp theo
                     callQueue.pollFirst();
                     isShowingCallDialog = false;
                     maybeShowNextCall();
                 })
                 .show();
     }
+
 
     private void acknowledgeCall(DocumentSnapshot d) {
         String callId = d.getId();

@@ -11,8 +11,10 @@ import android.widget.Toast;
 
 import com.example.appbanhang.BaseActivity;
 import com.example.appbanhang.R;
+import com.example.appbanhang.net.NetworkMonitor;
 import com.example.appbanhang.user.adapter.CartAdapter;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,8 +47,13 @@ public class CartActivity extends BaseActivity {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
 
+    // Lắng nghe mạng để khi online lại -> reload giỏ
+    private final NetworkMonitor.Listener netListener = ok -> {
+        if (ok) reloadCart();
+    };
+
     @Override
-    protected void onCreate(Bundle b) {
+    protected void onCreate(@Nullable Bundle b) {
         super.onCreate(b);
         setContentView(R.layout.activity_cart);
 
@@ -66,12 +73,19 @@ public class CartActivity extends BaseActivity {
         rv.setLayoutManager(new LinearLayoutManager(this));
         cartAdapter = new CartAdapter(this, items, new CartAdapter.OnQtyClick() {
             @Override public void onPlus(int pos) {
-                if (pos >= 0 && pos < items.size() - 1) changeQty((CartItem) items.get(pos), 1);
+                if (pos >= 0 && pos < items.size() - 1) {
+                    // Nếu offline -> CartAdapter đã chặn, ở đây vẫn an toàn
+                    changeQty((CartItem) items.get(pos), +1);
+                }
             }
             @Override public void onMinus(int pos) {
                 if (pos >= 0 && pos < items.size() - 1) {
                     CartItem it = (CartItem) items.get(pos);
-                    if (it.qty != null && it.qty <= 1) deleteItem(it); else changeQty(it, -1);
+                    if (it.qty != null && it.qty <= 1) {
+                        deleteItem(it);
+                    } else {
+                        changeQty(it, -1);
+                    }
                 }
             }
         });
@@ -82,21 +96,30 @@ public class CartActivity extends BaseActivity {
         btnOrder.setOnClickListener(v -> onCheckout());
 
         // Load data
-        loadCart();
-        // Optional: làm mới cache tên trong nền để lần sau luôn sẵn sàng
-        refreshCachedNameAsync();
+        reloadCart();
+        refreshCachedNameAsync(); // không chặn UI
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        NetworkMonitor.get(this).addListener(netListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        NetworkMonitor.get(this).removeListener(netListener);
     }
 
     /** Nhấn Đặt hàng */
     private void onCheckout() {
-        // Ghi chú ở cuối list (CartAdapter cung cấp)
+        if (!requireOnline()) return; // chặn đặt hàng khi offline
+
         String note = cartAdapter.getNote();
 
         RadioGroup rgPaymentMethod = findViewById(R.id.rgPaymentMethod);
-        if (rgPaymentMethod == null) {
-            toast("Lỗi: Không tìm thấy phương thức thanh toán!");
-            return;
-        }
+        if (rgPaymentMethod == null) { toast("Lỗi: Không tìm thấy phương thức thanh toán!"); return; }
         int checkedId = rgPaymentMethod.getCheckedRadioButtonId();
         String paymentMethod = (checkedId == R.id.rbCash) ? "Tiền mặt"
                 : (checkedId == R.id.rbTransfer) ? "Chuyển khoản" : null;
@@ -105,22 +128,19 @@ public class CartActivity extends BaseActivity {
         if (paymentMethod == null) { toast("Vui lòng chọn phương thức thanh toán!"); return; }
         if (auth.getCurrentUser() == null) { toast("Chưa đăng nhập!"); return; }
 
-        // Lấy tên từ cache (ưu tiên để không bị "Khách")
         String cachedName = getSharedPreferences("app", MODE_PRIVATE).getString("profile_name", null);
         if (cachedName != null && !cachedName.trim().isEmpty()) {
             saveOrder(note, paymentMethod, cachedName.trim());
-            // làm mới cache trong nền cho lần sau
             refreshCachedNameAsync();
             return;
         }
 
-        // Chưa có cache → đọc theo UID (fallback email nếu cần)
         String uid = auth.getCurrentUser().getUid();
         fetchOrdererNameAndSave(uid, note, paymentMethod);
     }
 
     /** Tải giỏ hàng theo uid hiện tại */
-    private void loadCart() {
+    private void reloadCart() {
         if (auth.getCurrentUser() == null) {
             toast("Không thể tải giỏ hàng: Chưa đăng nhập");
             finish();
@@ -179,6 +199,8 @@ public class CartActivity extends BaseActivity {
 
     /** Lưu đơn */
     private void saveOrder(String note, String paymentMethod, String name) {
+        if (!requireOnline()) return;
+
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Map<String, Object> order = new HashMap<>();
         order.put("userId", uid);
@@ -188,10 +210,7 @@ public class CartActivity extends BaseActivity {
         order.put("notes", note);
         order.put("paymentMethod", paymentMethod);
 
-        // --- TRẠNG THÁI ĐƠN ---
         order.put("status", "pending");
-
-        // --- TRẠNG THÁI TIỀN ---
         if ("Tiền mặt".equalsIgnoreCase(paymentMethod)) {
             order.put("paymentStatus", "unpaid");
         } else if ("Chuyển khoản".equalsIgnoreCase(paymentMethod)) {
@@ -200,24 +219,20 @@ public class CartActivity extends BaseActivity {
             order.put("paymentStatus", "unpaid");
         }
 
-        // --- THỜI GIAN ---
-        order.put("timestamp", FieldValue.serverTimestamp()); // dùng để orderBy ở Admin
+        order.put("timestamp", FieldValue.serverTimestamp());
         order.put("timestampStr",
                 new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault())
                         .format(new java.util.Date()));
 
         FirebaseFirestore.getInstance().collection("orders")
                 .add(order)
-                .addOnSuccessListener(doc -> {
-                    // Hiện thông báo bằng AlertDialog thay cho Toast
-                    new androidx.appcompat.app.AlertDialog.Builder(this)
-                            .setTitle("Thông báo")
-                            .setMessage("Đặt hàng thành công!")
-                            .setPositiveButton("OK", (dlg, w) -> {
-                                clearCart();
-                            })
-                            .show();
-                })
+                .addOnSuccessListener(doc ->
+                        new androidx.appcompat.app.AlertDialog.Builder(this)
+                                .setTitle("Thông báo")
+                                .setMessage("Đặt hàng thành công!")
+                                .setPositiveButton("OK", (dlg, w) -> clearCart())
+                                .show()
+                )
                 .addOnFailureListener(e ->
                         new androidx.appcompat.app.AlertDialog.Builder(this)
                                 .setTitle("Lỗi")
@@ -227,9 +242,9 @@ public class CartActivity extends BaseActivity {
                 );
     }
 
-
-    /** Lấy tên theo acc/{uid}; nếu thiếu thì fallback tk=email và migrate; cache lại để lần sau dùng ngay */
     private void fetchOrdererNameAndSave(String uid, String note, String paymentMethod) {
+        if (!requireOnline()) return;
+
         db.collection("acc").document(uid).get()
                 .addOnSuccessListener(doc -> {
                     if (doc.exists()) {
@@ -247,8 +262,6 @@ public class CartActivity extends BaseActivity {
                                     if (!q.isEmpty()) {
                                         DocumentSnapshot d = q.getDocuments().get(0);
                                         String name = safeName(d.getString("name"));
-
-                                        // migrate sang acc/{uid} cho chuẩn
                                         Map<String, Object> data = d.getData() != null ? new HashMap<>(d.getData()) : new HashMap<>();
                                         data.put("uid", uid);
                                         data.put("tk", email);
@@ -272,7 +285,6 @@ public class CartActivity extends BaseActivity {
                 });
     }
 
-    /** Làm mới cache tên trong nền (không chặn luồng) */
     private void refreshCachedNameAsync() {
         if (auth.getCurrentUser() == null) return;
         String uid = auth.getCurrentUser().getUid();
@@ -292,7 +304,6 @@ public class CartActivity extends BaseActivity {
 
     private String safeName(String n) { return (n == null || n.trim().isEmpty()) ? "Khách" : n.trim(); }
 
-    /** Tạo chuỗi items theo format hiện tại */
     private String getItemsListString() {
         StringBuilder sb = new StringBuilder("[ ");
         for (Object obj : items) {
@@ -320,44 +331,46 @@ public class CartActivity extends BaseActivity {
         return sum;
     }
 
-    /** Dùng trong XML: android:onClick="togglePaymentMethod" */
     public void togglePaymentMethod(View v) {
         View panel = findViewById(R.id.layoutPaymentMethod);
-        if (panel == null) {
-            toast("Thiếu layoutPaymentMethod trong layout!");
-            return;
-        }
+        if (panel == null) { toast("Thiếu layoutPaymentMethod trong layout!"); return; }
         panel.setVisibility(panel.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 
     private void changeQty(CartItem item, int delta) {
+        if (!requireOnline()) return; // chặn thao tác khi offline
         if (item == null || item.id == null || auth.getCurrentUser() == null) return;
+
         String uid = auth.getCurrentUser().getUid();
         db.collection("carts").document(uid).collection("items")
                 .document(item.id)
                 .update("qty", FieldValue.increment(delta))
-                .addOnSuccessListener(v -> loadCart())
+                .addOnSuccessListener(v -> reloadCart())
                 .addOnFailureListener(e -> toast("Lỗi cập nhật số lượng: " + e.getMessage()));
     }
 
     private void deleteItem(CartItem item) {
+        if (!requireOnline()) return; // chặn thao tác khi offline
         if (item == null || item.id == null || auth.getCurrentUser() == null) return;
+
         String uid = auth.getCurrentUser().getUid();
         db.collection("carts").document(uid).collection("items")
                 .document(item.id)
                 .delete()
-                .addOnSuccessListener(v -> loadCart())
+                .addOnSuccessListener(v -> reloadCart())
                 .addOnFailureListener(e -> toast("Lỗi xóa sản phẩm: " + e.getMessage()));
     }
 
     private void clearCart() {
+        if (!requireOnline()) return; // chặn offline
         if (auth.getCurrentUser() == null) return;
+
         String uid = auth.getCurrentUser().getUid();
         db.collection("carts").document(uid).collection("items")
                 .get()
                 .addOnSuccessListener(snap -> {
                     for (DocumentSnapshot d : snap.getDocuments()) d.getReference().delete();
-                    loadCart();
+                    reloadCart();
                 })
                 .addOnFailureListener(e -> toast("Lỗi xóa giỏ hàng: " + e.getMessage()));
     }

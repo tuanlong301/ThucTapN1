@@ -42,6 +42,7 @@ public class MainActivity extends BaseActivity {
         auth = FirebaseAuth.getInstance();
         db   = FirebaseFirestore.getInstance();
 
+
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
@@ -57,14 +58,19 @@ public class MainActivity extends BaseActivity {
         String email = etEmail.getText().toString().trim();
         String pass  = etPassword.getText().toString().trim();
 
+        // 1) Validate input trước
         if (email.isEmpty() || pass.isEmpty()) {
             toast("Vui lòng nhập đầy đủ thông tin!");
             return;
         }
 
+        // 2) Check mạng trước khi gọi Firebase
+        if (!requireOnline()) return;
+
+        // 3) Disable nút rồi mới gọi Firebase
         btnLogin.setEnabled(false);
 
-        // Tránh dính phiên anonymous cũ
+        // Clear phiên cũ nếu có
         auth.signOut();
 
         auth.signInWithEmailAndPassword(email, pass)
@@ -75,10 +81,9 @@ public class MainActivity extends BaseActivity {
                         toast("Không lấy được thông tin người dùng!");
                         return;
                     }
-                    String uid = user.getUid();
+                    String uid  = user.getUid();
                     String mail = user.getEmail();
                     Log.d(TAG, "Login OK uid=" + uid + ", email=" + mail);
-
                     fetchProfileThenLaunch(uid, mail);
                 })
                 .addOnFailureListener(e -> {
@@ -87,11 +92,11 @@ public class MainActivity extends BaseActivity {
                         String code = ((FirebaseAuthException) e).getErrorCode();
                         Log.e(TAG, "Auth error: " + code, e);
                         switch (code) {
-                            case "ERROR_INVALID_EMAIL":        toast("Email không hợp lệ."); break;
-                            case "ERROR_USER_NOT_FOUND":       toast("Tài khoản không tồn tại."); break;
-                            case "ERROR_WRONG_PASSWORD":       toast("Mật khẩu không đúng."); break;
-                            case "ERROR_OPERATION_NOT_ALLOWED":toast("Provider Email/Password chưa bật."); break;
-                            default:                           toast("Đăng nhập thất bại: " + code);
+                            case "ERROR_INVALID_EMAIL":         toast("Email không hợp lệ."); break;
+                            case "ERROR_USER_NOT_FOUND":        toast("Tài khoản không tồn tại."); break;
+                            case "ERROR_WRONG_PASSWORD":        toast("Mật khẩu không đúng."); break;
+                            case "ERROR_OPERATION_NOT_ALLOWED": toast("Provider Email/Password chưa bật."); break;
+                            default:                            toast("Đăng nhập thất bại: " + code);
                         }
                     } else {
                         toast("Đăng nhập thất bại: " + e.getMessage());
@@ -101,12 +106,18 @@ public class MainActivity extends BaseActivity {
 
     /** Đọc acc/{uid}; nếu chưa có thì tìm theo tk=email và migrate sang acc/{uid}. Sau đó cache tên & điều hướng theo role. */
     private void fetchProfileThenLaunch(String uid, @Nullable String email) {
+        if (!requireOnline()) {
+            btnLogin.setEnabled(true);
+            return;
+        }
+
         db.collection("acc").document(uid).get()
                 .addOnSuccessListener(doc -> {
                     if (doc.exists()) {
+                        // ✅ Hồ sơ đã có → đọc và merge
                         String name = safe(doc.getString("name"), "Khách");
                         String role = safe(doc.getString("role"), "user");
-                        // đảm bảo doc có các khóa chuẩn
+
                         Map<String, Object> base = new HashMap<>();
                         base.put("uid", uid);
                         if (email != null) base.put("tk", email);
@@ -114,8 +125,9 @@ public class MainActivity extends BaseActivity {
 
                         cacheName(name);
                         launchByRole(role, name);
+
                     } else if (email != null && !email.isEmpty()) {
-                        // Fallback: tìm doc cũ theo email
+                        // ✅ Fallback: tìm hồ sơ theo email
                         db.collection("acc").whereEqualTo("tk", email).limit(1).get()
                                 .addOnSuccessListener(q -> {
                                     if (!q.isEmpty()) {
@@ -123,8 +135,10 @@ public class MainActivity extends BaseActivity {
                                         String name = safe(d.getString("name"), "Khách");
                                         String role = safe(d.getString("role"), "user");
 
-                                        // Migrate sang acc/{uid} để lần sau đọc thẳng
-                                        Map<String, Object> data = d.getData() != null ? new HashMap<>(d.getData()) : new HashMap<>();
+                                        // Gán UID mới vào doc cũ
+                                        Map<String, Object> data = d.getData() != null
+                                                ? new HashMap<>(d.getData())
+                                                : new HashMap<>();
                                         data.put("uid", uid);
                                         data.put("tk", email);
                                         db.collection("acc").document(uid).set(data, SetOptions.merge());
@@ -132,19 +146,22 @@ public class MainActivity extends BaseActivity {
                                         cacheName(name);
                                         launchByRole(role, name);
                                     } else {
-                                        // Không có hồ sơ — vẫn cho vào app như user thường
-                                        cacheName("Khách");
-                                        launchByRole("user", "Khách");
+                                        // ❌ Không tự tạo doc mới
+                                        toast("Tài khoản chưa được khởi tạo hồ sơ. Liên hệ admin!");
+                                        auth.signOut();
+                                        btnLogin.setEnabled(true);
                                     }
                                 })
                                 .addOnFailureListener(e -> {
                                     btnLogin.setEnabled(true);
                                     toast("Lỗi tìm hồ sơ: " + e.getMessage());
                                 });
+
                     } else {
-                        // Không có email để đối chiếu
-                        cacheName("Khách");
-                        launchByRole("user", "Khách");
+                        // ❌ Không có email để đối chiếu
+                        toast("Tài khoản chưa có hồ sơ. Liên hệ admin!");
+                        auth.signOut();
+                        btnLogin.setEnabled(true);
                     }
                 })
                 .addOnFailureListener(e -> {
@@ -152,6 +169,7 @@ public class MainActivity extends BaseActivity {
                     toast("Lỗi đọc hồ sơ: " + e.getMessage());
                 });
     }
+
 
     private void cacheName(String name) {
         getSharedPreferences("app", MODE_PRIVATE)
