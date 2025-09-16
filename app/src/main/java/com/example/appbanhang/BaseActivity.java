@@ -14,6 +14,8 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
+import com.example.appbanhang.net.NetworkMonitor;
+
 public abstract class BaseActivity extends AppCompatActivity {
 
     private ConnectivityManager cm;
@@ -53,13 +55,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+
     protected void onStart() {
         super.onStart();
-        registerNet();
-        if (!isOnline()) {
-            goOfflineIfNeeded();
-        }
+        NetworkMonitor.get(this).setListener(ok -> {
+            if (!ok) {
+                startActivity(new Intent(this, OfflineActivity.class));
+            }
+        });
     }
+
 
     @Override
     protected void onStop() {
