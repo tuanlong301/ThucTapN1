@@ -2,7 +2,7 @@ package com.example.appbanhang.admin.adapter;
 import com.example.appbanhang.R;
 import com.example.appbanhang.model.Order;
 import com.example.appbanhang.utils.InvoiceUtils;
-
+import com.example.appbanhang.utils.InvoiceUtilss;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,7 +88,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
             h.tvNotes.setVisibility(View.GONE);
         }
 
-        h.tvTotal.setText("Tổng: " + (o.total != null ? o.total : "0") + " đ");
+
+        h.tvTotal.setText("Tổng: " + InvoiceUtilss.formatVnd(o.total));
+
+
+
+
 
         // Payment line (phương thức + trạng thái tiền)
         if (h.tvPayment != null) {
@@ -106,7 +111,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
             h.btnConfirm.setVisibility(View.VISIBLE);
             h.btnCancel.setVisibility(View.VISIBLE);
             h.btnPayment.setVisibility(View.GONE);
-            h.btnPrint.setVisibility(View.GONE);
+            h.btnPrint.setVisibility(View.VISIBLE);
 
             h.btnConfirm.setOnClickListener(v -> cb.onConfirm(o.id));
             h.btnCancel.setOnClickListener(v -> cb.onCancel(o.id));
