@@ -1,8 +1,9 @@
 package com.example.appbanhang.admin.adapter;
+
 import com.example.appbanhang.R;
 import com.example.appbanhang.model.Order;
-import com.example.appbanhang.utils.InvoiceUtils;
 import com.example.appbanhang.utils.InvoiceUtilss;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
     public OrderAdapter(Mode mode, OnAction cb) {
         this.mode = mode;
         this.cb = cb;
+        setHasStableIds(true);
     }
 
     public void submit(List<Order> list) {
@@ -57,13 +59,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
         notifyDataSetChanged();
     }
 
+    @Override public long getItemId(int position) {
+        Order o = data.get(position);
+        return (o != null && o.id != null) ? o.id.hashCode() : position;
+    }
+
     @NonNull @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_order, parent, false);
         return new VH(v);
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull VH h, int pos) {
@@ -88,12 +94,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
             h.tvNotes.setVisibility(View.GONE);
         }
 
-
+        // Tổng tiền (dùng util của bạn – đã có overload String/Number)
         h.tvTotal.setText("Tổng: " + InvoiceUtilss.formatVnd(o.total));
-
-
-
-
 
         // Payment line (phương thức + trạng thái tiền)
         if (h.tvPayment != null) {
@@ -111,7 +113,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
             h.btnConfirm.setVisibility(View.VISIBLE);
             h.btnCancel.setVisibility(View.VISIBLE);
             h.btnPayment.setVisibility(View.GONE);
-            h.btnPrint.setVisibility(View.VISIBLE);
+            h.btnPrint.setVisibility(View.GONE);
 
             h.btnConfirm.setOnClickListener(v -> cb.onConfirm(o.id));
             h.btnCancel.setOnClickListener(v -> cb.onCancel(o.id));
@@ -120,26 +122,23 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
             h.btnConfirm.setVisibility(View.GONE);
             h.btnCancel.setVisibility(View.GONE);
             h.btnPrint.setVisibility(View.VISIBLE);
-            h.btnPrint.setOnClickListener(v -> {
-                String invoiceId = o.id;                        // mã hóa đơn
-                String tableName = o.name;                      // "Bàn số ..."
-                String details   = parseItemsLine(o.items);     // gộp món từ chuỗi items
-                String total     = (o.total == null ? "0" : String.valueOf(o.total)) + " đ";
-
-                InvoiceUtils.exportInvoiceToPdf(
-                        v.getContext(),
-                        invoiceId,
-                        tableName,
-                        details,
-                        total
-                );
-            });
 
             boolean isPaid = "paid".equalsIgnoreCase(o.paymentStatus);
 
+            // In HÓA ĐƠN: chỉ khi đã paid; nếu chưa, đẩy sang cập nhật thanh toán
+            h.btnPrint.setEnabled(isPaid);
+            h.btnPrint.setAlpha(isPaid ? 1f : 0.5f);
+            h.btnPrint.setOnClickListener(v -> {
+                if (isPaid) {
+                    cb.onPrint(o.id);   // fragment in + set printed=true
+                } else {
+                    cb.onPay(o.id);     // yêu cầu cập nhật thanh toán trước
+                }
+            });
+
             if (!isPaid) {
                 h.btnPayment.setVisibility(View.VISIBLE);
-                h.btnPayment.setText("Cập nhật thanh toán"); // mở dialog: đã thanh toán / hủy đơn
+                h.btnPayment.setText("Cập nhật thanh toán");
                 h.btnPayment.setOnClickListener(v -> cb.onPay(o.id));
             } else {
                 h.btnPayment.setVisibility(View.GONE);
@@ -149,15 +148,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
         h.itemView.setAlpha((highlightId != null && highlightId.equals(o.id)) ? 1f : 0.98f);
     }
 
-
-
     @Override public int getItemCount() { return data.size(); }
-
-    // OrderAdapter.java
 
     static class VH extends RecyclerView.ViewHolder {
         TextView tvTableNumber, tvTimestamp, tvOrderDetails, tvNotes, tvTotal;
-        TextView tvPayment; // <- thêm dòng này
+        TextView tvPayment;
         Button btnConfirm, btnCancel, btnPayment, btnPrint;
 
         VH(@NonNull View v) {
@@ -167,17 +162,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
             tvOrderDetails = v.findViewById(R.id.tvOrderDetails);
             tvNotes        = v.findViewById(R.id.tvNotes);
             tvTotal        = v.findViewById(R.id.tvTotal);
-
-            // Có thể null nếu XML chưa thêm; phần onBind đã check null.
             tvPayment      = v.findViewById(R.id.tvPayment);
 
             btnConfirm     = v.findViewById(R.id.btnConfirm);
-            btnCancel      = v.findViewById(R.id.BtnCancel); // B hoa đúng id bạn
+            btnCancel      = v.findViewById(R.id.BtnCancel);
             btnPayment     = v.findViewById(R.id.btnPayment);
             btnPrint       = v.findViewById(R.id.btnPrint);
         }
     }
-
 
     // Parse chuỗi items -> "Món: A (2), B (1)"
     private String parseItemsLine(String raw) {
