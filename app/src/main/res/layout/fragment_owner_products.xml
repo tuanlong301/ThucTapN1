@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Thanh tìm kiếm đơn giản -->
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:padding="12dp" android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="0dp" android:layout_height="40dp"
+            android:layout_weight="1" android:hint="Tìm món"
+            android:background="@android:drawable/editbox_background"/>
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="80dp" android:layout_height="40dp"
+            android:text="Tìm" android:textAllCaps="false"
+            android:layout_marginStart="8dp" android:backgroundTint="#FF4D6D"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvProducts"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:padding="12dp" android:clipToPadding="false"/>
+
+        <TextView
+            android:id="@+id/tvEmpty"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="center" android:text="Chưa có món nào"
+            android:textSize="18sp" android:textColor="@android:color/darker_gray"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddProduct"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_margin="16dp" android:contentDescription="Thêm món"
+        android:layout_gravity="end"/>
+</LinearLayout>

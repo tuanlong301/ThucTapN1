@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.example.appbanhang.BaseActivity;
 import com.example.appbanhang.R;
 import com.example.appbanhang.admin.AdminMenu;
+import com.example.appbanhang.owner.ChuQuanMenuActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
@@ -184,8 +185,10 @@ public class MainActivity extends BaseActivity {
         toast("Xin chào " + (name != null ? name : ""));
         if ("admin".equals(role)) {
             startActivity(new Intent(this, AdminMenu.class));
-        } else {
+        } else if ("user".equals(role)) {
             startActivity(new Intent(this, MainMenu.class));
+        } else {
+            startActivity(new Intent(this, ChuQuanMenuActivity.class));
         }
         finish();
     }

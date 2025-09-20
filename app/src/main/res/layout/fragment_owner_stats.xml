@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:fillViewport="true" android:background="#FFF7F8">
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="16dp">
+
+        <!-- Quick filters -->
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnToday"
+                android:layout_width="0dp" android:layout_height="40dp"
+                android:layout_weight="1" android:text="Hôm nay"
+                android:textAllCaps="false" android:backgroundTint="#FF4D6D"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/btnThisWeek"
+                android:layout_width="0dp" android:layout_height="40dp"
+                android:layout_weight="1" android:text="Tuần này"
+                android:textAllCaps="false" android:layout_marginStart="8dp"
+                android:backgroundTint="#FF4D6D" android:textColor="#FFFFFF"/>
+
+            <Button
+                android:id="@+id/btnThisMonth"
+                android:layout_width="0dp" android:layout_height="40dp"
+                android:layout_weight="1" android:text="Tháng này"
+                android:textAllCaps="false" android:layout_marginStart="8dp"
+                android:backgroundTint="#FF4D6D" android:textColor="#FFFFFF"/>
+        </LinearLayout>
+
+        <!-- Range pickers -->
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="12dp">
+
+            <Button
+                android:id="@+id/btnFromDate"
+                android:layout_width="0dp" android:layout_height="48dp"
+                android:layout_weight="1" android:text="Từ ngày"
+                android:textAllCaps="false" android:backgroundTint="#FFFFFF"
+                android:textColor="#333333"/>
+
+            <Button
+                android:id="@+id/btnToDate"
+                android:layout_width="0dp" android:layout_height="48dp"
+                android:layout_weight="1" android:text="Đến ngày"
+                android:textAllCaps="false" android:layout_marginStart="8dp"
+                android:backgroundTint="#FFFFFF" android:textColor="#333333"/>
+
+            <Button
+                android:id="@+id/btnApply"
+                android:layout_width="120dp" android:layout_height="48dp"
+                android:text="Lọc" android:textAllCaps="false"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="#FF4D6D" android:textColor="#FFFFFF"/>
+        </LinearLayout>
+
+        <!-- Cards -->
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:id="@+id/cardRevenue"
+                android:layout_width="0dp" android:layout_height="100dp"
+                android:layout_weight="1" android:orientation="vertical"
+                android:padding="12dp" android:background="#FFFFFFFF"
+                android:elevation="2dp">
+
+                <TextView android:text="Doanh thu" android:textSize="13sp"
+                    android:textColor="#6B7280" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tvRevenue"
+                    android:text="0 đ" android:textStyle="bold" android:textSize="20sp"
+                    android:textColor="#E91E63" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardOrders"
+                android:layout_width="0dp" android:layout_height="100dp"
+                android:layout_weight="1" android:orientation="vertical"
+                android:padding="12dp" android:background="#FFFFFFFF"
+                android:elevation="2dp" android:layout_marginStart="8dp">
+
+                <TextView android:text="Số đơn" android:textSize="13sp"
+                    android:textColor="#6B7280" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tvOrderCount"
+                    android:text="0" android:textStyle="bold" android:textSize="20sp"
+                    android:textColor="#E91E63" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardAvg"
+                android:layout_width="0dp" android:layout_height="100dp"
+                android:layout_weight="1" android:orientation="vertical"
+                android:padding="12dp" android:background="#FFFFFFFF"
+                android:elevation="2dp" android:layout_marginStart="8dp">
+
+                <TextView android:text="Trung bình/đơn" android:textSize="13sp"
+                    android:textColor="#6B7280" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tvAvg"
+                    android:text="0 đ" android:textStyle="bold" android:textSize="20sp"
+                    android:textColor="#E91E63" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Best sellers -->
+        <TextView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Món bán chạy" android:textStyle="bold"
+            android:textSize="16sp" android:layout_marginTop="16dp"
+            android:textColor="#333333"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTopItems"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:paddingTop="8dp" android:clipToPadding="false"/>
+    </LinearLayout>
+</ScrollView>

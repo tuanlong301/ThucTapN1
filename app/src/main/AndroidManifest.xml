@@ -39,6 +39,13 @@
             android:screenOrientation="landscape"/>
 
 
+        <activity
+            android:name=".owner.ChuQuanMenuActivity"
+            android:exported="false"
+            android:screenOrientation="landscape"/>
+
+
+
 
         <activity
             android:name=".OfflineActivity"
