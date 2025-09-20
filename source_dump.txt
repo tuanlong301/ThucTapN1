@@ -1,0 +1,2096 @@
+# ==================================================
+# Path: C:\Users\xayda\AndroidStudioProjects\ThucTapN1
+# Detected tech: android, java
+# ==================================================
+
+## DIRECTORY STRUCTURE
+```
+ThucTapN1/
+├── .git/
+├── .gradle/
+│   ├── 8.9/
+│   │   ├── checksums/
+│   │   │   └── checksums.lock
+│   │   ├── dependencies-accessors/
+│   │   │   ├── 802aa940145f7c4a049bb8a9832942f79fd9057f/
+│   │   │   │   ├── classes/
+│   │   │   │   │   └── org/
+│   │   │   │   │       └── gradle/
+│   │   │   │   │           └── accessors/
+│   │   │   │   │               └── dm/
+│   │   │   │   │                   ├── LibrariesForLibs$AndroidPluginAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibs$BundleAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibs$CoreLibraryAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibs$EspressoLibraryAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibs$ExtLibraryAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibs$FirebaseLibraryAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibs$KotlinPluginAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibs$PluginAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibs$VersionAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibs.class
+│   │   │   │   │                   ├── LibrariesForLibsInPluginsBlock$AndroidPluginAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibsInPluginsBlock$BundleAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibsInPluginsBlock$CoreLibraryAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibsInPluginsBlock$EspressoLibraryAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibsInPluginsBlock$ExtLibraryAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibsInPluginsBlock$FirebaseLibraryAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibsInPluginsBlock$KotlinPluginAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibsInPluginsBlock$PluginAccessors.class
+│   │   │   │   │                   ├── LibrariesForLibsInPluginsBlock$VersionAccessors.class
+│   │   │   │   │                   └── LibrariesForLibsInPluginsBlock.class
+│   │   │   │   ├── sources/
+│   │   │   │   │   └── org/
+│   │   │   │   │       └── gradle/
+│   │   │   │   │           └── accessors/
+│   │   │   │   │               └── dm/
+│   │   │   │   │                   ├── LibrariesForLibs.java
+│   │   │   │   │                   └── LibrariesForLibsInPluginsBlock.java
+│   │   │   │   └── metadata.bin
+│   │   │   └── gc.properties
+│   │   ├── executionHistory/
+│   │   │   ├── executionHistory.bin
+│   │   │   └── executionHistory.lock
+│   │   ├── expanded/
+│   │   ├── fileChanges/
+│   │   │   └── last-build.bin
+│   │   ├── fileHashes/
+│   │   │   ├── fileHashes.bin
+│   │   │   ├── fileHashes.lock
+│   │   │   └── resourceHashesCache.bin
+│   │   ├── vcsMetadata/
+│   │   └── gc.properties
+│   ├── buildOutputCleanup/
+│   │   ├── buildOutputCleanup.lock
+│   │   ├── cache.properties
+│   │   └── outputFiles.bin
+│   ├── vcs-1/
+│   │   └── gc.properties
+│   ├── config.properties
+│   └── file-system.probe
+├── .idea/
+├── app/
+│   ├── build/
+│   ├── src/
+│   │   ├── androidTest/
+│   │   │   └── java/
+│   │   │       └── com/
+│   │   │           └── example/
+│   │   │               └── appbanhang/
+│   │   │                   └── ExampleInstrumentedTest.java
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/
+│   │   │   │       └── example/
+│   │   │   │           └── appbanhang/
+│   │   │   │               ├── admin/
+│   │   │   │               │   ├── adapter/
+│   │   │   │               │   │   ├── AdminAdapter.java
+│   │   │   │               │   │   ├── OrderAdapter.java
+│   │   │   │               │   │   └── TableAdapter.java
+│   │   │   │               │   ├── AdminMenu.java
+│   │   │   │               │   ├── ConfirmedOrdersFragment.java
+│   │   │   │               │   ├── PendingOrdersFragment.java
+│   │   │   │               │   └── TablesFragment.java
+│   │   │   │               ├── model/
+│   │   │   │               │   ├── Order.java
+│   │   │   │               │   └── Product.java
+│   │   │   │               ├── net/
+│   │   │   │               │   └── NetworkMonitor.java
+│   │   │   │               ├── owner/
+│   │   │   │               │   ├── ChuQuanMenuActivity.java
+│   │   │   │               │   ├── OwnerPagerAdapter.java
+│   │   │   │               │   ├── OwnerProductsFragment.java
+│   │   │   │               │   ├── OwnerStatsFragment.java
+│   │   │   │               │   └── OwnerTablesFragment.java
+│   │   │   │               ├── ui/
+│   │   │   │               │   └── Dialogs.java
+│   │   │   │               ├── user/
+│   │   │   │               │   ├── adapter/
+│   │   │   │               │   │   ├── CartAdapter.java
+│   │   │   │               │   │   └── ProductAdapter.java
+│   │   │   │               │   ├── CartActivity.java
+│   │   │   │               │   ├── MainActivity.java
+│   │   │   │               │   └── MainMenu.java
+│   │   │   │               ├── utils/
+│   │   │   │               │   ├── InvoiceUtils.java
+│   │   │   │               │   └── InvoiceUtilss.java
+│   │   │   │               ├── BaseActivity.java
+│   │   │   │               ├── MyApp.java
+│   │   │   │               └── OfflineActivity.java
+│   │   │   ├── res/
+│   │   │   │   ├── color/
+│   │   │   │   │   └── chip_text_selector.xml
+│   │   │   │   ├── drawable/
+│   │   │   │   │   ├── back.png
+│   │   │   │   │   ├── bg_add_button.xml
+│   │   │   │   │   ├── bg_badge.xml
+│   │   │   │   │   ├── bg_btn_qty.xml
+│   │   │   │   │   ├── bg_cart_item.xml
+│   │   │   │   │   ├── bg_chip_selected.xml
+│   │   │   │   │   ├── bg_chip_selector.xml
+│   │   │   │   │   ├── bg_chip_unselected.xml
+│   │   │   │   │   ├── bg_qty_box.xml
+│   │   │   │   │   ├── bs1.jpg
+│   │   │   │   │   ├── bs2.jpg
+│   │   │   │   │   ├── bs3.png
+│   │   │   │   │   ├── bs4.png
+│   │   │   │   │   ├── ic_launcher_background.xml
+│   │   │   │   │   ├── ic_launcher_foreground.xml
+│   │   │   │   │   ├── lotte.jpg
+│   │   │   │   │   ├── r1.png
+│   │   │   │   │   ├── v1.png
+│   │   │   │   │   └── v2.png
+│   │   │   │   ├── layout/
+│   │   │   │   │   ├── activity_admin.xml
+│   │   │   │   │   ├── activity_cart.xml
+│   │   │   │   │   ├── activity_login.xml
+│   │   │   │   │   ├── activity_main.xml
+│   │   │   │   │   ├── activity_offline.xml
+│   │   │   │   │   ├── activity_owner_menu.xml
+│   │   │   │   │   ├── fragment_orders.xml
+│   │   │   │   │   ├── fragment_owner_products.xml
+│   │   │   │   │   ├── fragment_owner_stats.xml
+│   │   │   │   │   ├── fragment_owner_tables.xml
+│   │   │   │   │   ├── item_cart.xml
+│   │   │   │   │   ├── item_note.xml
+│   │   │   │   │   ├── item_order.xml
+│   │   │   │   │   ├── item_product.xml
+│   │   │   │   │   ├── item_table.xml
+│   │   │   │   │   └── item_table_manage.xml
+│   │   │   │   ├── mipmap-anydpi-v26/
+│   │   │   │   │   ├── ic_launcher.xml
+│   │   │   │   │   └── ic_launcher_round.xml
+│   │   │   │   ├── mipmap-hdpi/
+│   │   │   │   │   ├── ic_launcher.webp
+│   │   │   │   │   └── ic_launcher_round.webp
+│   │   │   │   ├── mipmap-mdpi/
+│   │   │   │   │   ├── ic_launcher.webp
+│   │   │   │   │   └── ic_launcher_round.webp
+│   │   │   │   ├── mipmap-xhdpi/
+│   │   │   │   │   ├── ic_launcher.webp
+│   │   │   │   │   └── ic_launcher_round.webp
+│   │   │   │   ├── mipmap-xxhdpi/
+│   │   │   │   │   ├── ic_launcher.webp
+│   │   │   │   │   └── ic_launcher_round.webp
+│   │   │   │   ├── mipmap-xxxhdpi/
+│   │   │   │   │   ├── ic_launcher.webp
+│   │   │   │   │   └── ic_launcher_round.webp
+│   │   │   │   ├── values/
+│   │   │   │   │   ├── colors.xml
+│   │   │   │   │   ├── strings.xml
+│   │   │   │   │   └── themes.xml
+│   │   │   │   ├── values-night/
+│   │   │   │   │   └── themes.xml
+│   │   │   │   └── xml/
+│   │   │   │       ├── backup_rules.xml
+│   │   │   │       └── data_extraction_rules.xml
+│   │   │   └── AndroidManifest.xml
+│   │   └── test/
+│   │       └── java/
+│   │           └── com/
+│   │               └── example/
+│   │                   └── appbanhang/
+│   │                       └── ExampleUnitTest.java
+│   ├── .gitignore
+│   ├── build.gradle.kts
+│   ├── google-services.json
+│   └── proguard-rules.pro
+├── gradle/
+│   ├── wrapper/
+│   │   ├── gradle-wrapper.jar
+│   │   └── gradle-wrapper.properties
+│   └── libs.versions.toml
+├── .gitignore
+├── README.md
+├── build.gradle.kts
+├── gradle.properties
+├── gradlew
+├── gradlew.bat
+├── local.properties
+└── settings.gradle.kts
+```
+
+## FILE CONTENTS
+
+### app\src\main\AndroidManifest.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/lotte"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/lotte"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppBanHang"
+        tools:targetApi="31"
+        tools:ignore="ExtraText"
+        android:name=".MyApp">
+        <activity
+            android:name=".user.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".user.CartActivity"
+            android:exported="false"
+            android:screenOrientation="landscape"/>
+
+        <activity
+        android:name=".user.MainMenu"
+        android:exported="false"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".admin.AdminMenu"
+            android:exported="false"
+            android:screenOrientation="landscape"/>
+
+
+        <activity
+            android:name=".owner.ChuQuanMenuActivity"
+            android:exported="false"
+            android:screenOrientation="landscape"/>
+
+
+
+
+        <activity
+            android:name=".OfflineActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="landscape"/>
+
+
+
+    </application>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+</manifest>
+```
+
+### app\src\main\res\color\chip_text_selector.xml
+```xml
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="#FFFFFF" android:state_selected="true"/>
+    <item android:color="#FF4D6D"/>
+</selector>
+
+```
+
+### app\src\main\res\drawable\bg_add_button.xml
+```xml
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#33FFFFFF">   <!-- màu ripple (trắng 20% opacity) -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#E91E63"/> <!-- nền đỏ -->
+        </shape>
+    </item>
+</ripple>
+
+```
+
+### app\src\main\res\drawable\bg_badge.xml
+```xml
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@android:color/holo_red_dark"/>
+</shape>
+
+```
+
+### app\src\main\res\drawable\bg_btn_qty.xml
+```xml
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FF8FA3"/>
+    <corners android:radius="12dp"/>
+</shape>
+
+```
+
+### app\src\main\res\drawable\bg_cart_item.xml
+```xml
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFFFFFFF"/>
+    <corners android:radius="16dp"/>
+</shape>
+
+```
+
+### app\src\main\res\drawable\bg_chip_selected.xml
+```xml
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FF4D6D"/>
+    <corners android:radius="24dp"/>
+</shape>
+
+```
+
+### app\src\main\res\drawable\bg_chip_selector.xml
+```xml
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true" android:drawable="@drawable/bg_chip_selected"/>
+    <item android:drawable="@drawable/bg_chip_unselected"/>
+</selector>
+
+```
+
+### app\src\main\res\drawable\bg_chip_unselected.xml
+```xml
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFFFFFFF"/>
+    <corners android:radius="24dp"/>
+    <stroke android:width="1dp" android:color="#FFE0E0"/>
+</shape>
+
+```
+
+### app\src\main\res\drawable\bg_qty_box.xml
+```xml
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFF1F2"/>
+    <corners android:radius="12dp"/>
+</shape>
+
+```
+
+### app\src\main\res\drawable\ic_launcher_background.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#3DDC84"
+        android:pathData="M0,0h108v108h-108z" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M9,0L9,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19,0L19,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M29,0L29,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M39,0L39,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M49,0L49,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M59,0L59,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M69,0L69,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M79,0L79,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M89,0L89,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M99,0L99,108"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,9L108,9"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,19L108,19"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,29L108,29"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,39L108,39"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,49L108,49"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,59L108,59"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,69L108,69"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,79L108,79"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,89L108,89"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,99L108,99"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19,29L89,29"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19,39L89,39"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19,49L89,49"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19,59L89,59"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19,69L89,69"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19,79L89,79"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M29,19L29,89"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M39,19L39,89"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M49,19L49,89"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M59,19L59,89"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M69,19L69,89"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M79,19L79,89"
+        android:strokeWidth="0.8"
+        android:strokeColor="#33FFFFFF" />
+</vector>
+
+```
+
+### app\src\main\res\drawable\ic_launcher_foreground.xml
+```xml
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path android:pathData="M31,63.928c0,0 6.4,-11 12.1,-13.1c7.2,-2.6 26,-1.4 26,-1.4l38.1,38.1L107,108.928l-32,-1L31,63.928z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endX="85.84757"
+                android:endY="92.4963"
+                android:startX="42.9492"
+                android:startY="49.59793"
+                android:type="linear">
+                <item
+                    android:color="#44000000"
+                    android:offset="0.0" />
+                <item
+                    android:color="#00000000"
+                    android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillType="nonZero"
+        android:pathData="M65.3,45.828l3.8,-6.6c0.2,-0.4 0.1,-0.9 -0.3,-1.1c-0.4,-0.2 -0.9,-0.1 -1.1,0.3l-3.9,6.7c-6.3,-2.8 -13.4,-2.8 -19.7,0l-3.9,-6.7c-0.2,-0.4 -0.7,-0.5 -1.1,-0.3C38.8,38.328 38.7,38.828 38.9,39.228l3.8,6.6C36.2,49.428 31.7,56.028 31,63.928h46C76.3,56.028 71.8,49.428 65.3,45.828zM43.4,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2c-0.3,-0.7 -0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C45.3,56.528 44.5,57.328 43.4,57.328L43.4,57.328zM64.6,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2s-0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C66.5,56.528 65.6,57.328 64.6,57.328L64.6,57.328z"
+        android:strokeWidth="1"
+        android:strokeColor="#00000000" />
+</vector>
+```
+
+### app\src\main\res\layout\activity_admin.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFF7F8">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#FF4D6D"
+        app:title="Admin Dashboard"
+        app:titleTextColor="#FFFFFF" />
+
+    <!-- TabLayout với 3 tab -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabTextColor="#6B7280"
+        app:tabSelectedTextColor="#E91E63"
+        app:tabIndicatorColor="#E91E63">
+
+        <com.google.android.material.tabs.TabItem
+            android:text="Đơn hàng" />
+
+        <com.google.android.material.tabs.TabItem
+            android:text="Đơn hàng đã xác nhận" />
+
+        <com.google.android.material.tabs.TabItem
+            android:text="Quản lý bàn" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <!-- ViewPager -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Footer -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnRefresh"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Refresh"
+            android:textAllCaps="false"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#FF4D6D"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnPrintAll"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="In tất cả hóa đơn"
+            android:textAllCaps="false"
+            android:backgroundTint="#FF4D6D"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+</LinearLayout>
+```
+
+### app\src\main\res\layout\activity_cart.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF7F8">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/back"
+            android:contentDescription="@null"/>
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Giỏ hàng"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <View
+            android:layout_width="24dp"
+            android:layout_height="24dp"/>
+    </LinearLayout>
+
+    <!-- EMPTY STATE (mặc định HIỆN) -->
+    <LinearLayout
+        android:id="@+id/viewEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@android:drawable/ic_menu_help"
+            android:contentDescription="@null"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Giỏ hàng trống"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#6B7280"/>
+    </LinearLayout>
+
+    <!-- LIST (mặc định ẨN) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp"
+        android:clipToPadding="false"
+        android:visibility="gone"/>
+
+    <!-- FOOTER: Tổng tiền + nút đặt + nút chọn phương thức thanh toán (mặc định ẨN) -->
+    <LinearLayout
+        android:id="@+id/footerBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="#FFFFFFFF"
+        android:visibility="gone">
+
+        <!-- Nút chọn phương thức thanh toán -->
+        <LinearLayout
+            android:id="@+id/layoutPaymentTrigger"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="togglePaymentMethod">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chọn phương thức thanh toán"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#333333"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end"
+                android:src="@android:drawable/ic_menu_more"
+                android:contentDescription="Mở phương thức thanh toán"/>
+        </LinearLayout>
+
+        <!-- Phương thức thanh toán (ẩn ban đầu) -->
+        <LinearLayout
+            android:id="@+id/layoutPaymentMethod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <RadioGroup
+                android:id="@+id/rgPaymentMethod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/rbCash"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tiền mặt"
+                    android:textSize="14sp"
+                    android:padding="8dp"/>
+
+                <RadioButton
+                    android:id="@+id/rbTransfer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Chuyển khoản"
+                    android:textSize="14sp"
+                    android:padding="8dp"/>
+            </RadioGroup>
+        </LinearLayout>
+
+        <!-- Tổng tiền -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvSubtotalLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tổng tiền:"
+                    android:textSize="14sp"
+                    android:textColor="#333333" />
+
+                <TextView
+                    android:id="@+id/tvTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 đ"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#E91E63" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnCheckout"
+                android:layout_width="220dp"
+                android:layout_height="56dp"
+                android:text="Đặt hàng"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:backgroundTint="#FF4D6D"
+                android:textColor="#FFFFFF"
+                android:enabled="false"
+                android:alpha="0.5"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+```
+
+### app\src\main\res\layout\activity_login.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF7F8"
+    android:gravity="center"
+    android:padding="16dp">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="App Bán Hàng"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="#E91E63"
+        android:layout_marginBottom="32dp"/>
+
+    <!-- Ô nhập email -->
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập email"
+        android:inputType="textEmailAddress"
+        android:background="@android:drawable/editbox_background"
+        android:padding="14dp"
+        android:textColor="#333333"
+        android:textColorHint="#6B7280"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Ô nhập mật khẩu -->
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập mật khẩu"
+        android:inputType="textPassword"
+        android:background="@android:drawable/editbox_background"
+        android:padding="14dp"
+        android:textColor="#333333"
+        android:textColorHint="#6B7280"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Nút Đăng nhập -->
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:text="Đăng nhập"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:backgroundTint="#FF4D6D"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="16dp"/>
+
+
+
+    <TextView
+        android:id="@+id/tvForgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quên mật khẩu?"
+        android:textSize="17sp"
+        android:textColor="#6B7280"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"/>
+
+</LinearLayout>
+```
+
+### app\src\main\res\layout\activity_main.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <!-- Top: 2 nút hai bên + thanh category ở giữa -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Nút gọi nhân viên (bên trái) -->
+        <LinearLayout
+            android:id="@+id/btnCallStaff"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="false">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/v1"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Gọi NV"
+                android:textColor="#FF4444"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Nút giỏ hàng (bên phải) -->
+        <FrameLayout
+            android:id="@+id/btnCart"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_centerVertical="true">
+
+            <!-- Nội dung chính của nút giỏ hàng -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="4dp"
+                android:clickable="false"
+
+                android:background="?attr/selectableItemBackgroundBorderless">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"
+
+                    android:src="@drawable/v2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Giỏ hàng"
+                    android:textColor="#FF4444"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Badge hiển thị số lượng -->
+            <TextView
+                android:id="@+id/tvCartBadge"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="end|top"
+                android:gravity="center"
+                android:text="0"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/bg_badge"
+                android:visibility="gone"/>
+        </FrameLayout>
+
+        <!-- Thanh category ở GIỮA (giữa hai nút) -->
+        <HorizontalScrollView
+            android:id="@+id/hsvCategories"
+            android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_toStartOf="@id/btnCart"
+            android:layout_toEndOf="@id/btnCallStaff"
+
+            android:overScrollMode="never"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp"
+            android:scrollbars="none">
+
+            <!-- Để canh giữa nội dung bên trong -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <!-- Container CATEGORY (giữ nguyên item của bạn) -->
+                <LinearLayout
+                    android:id="@+id/categoryContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:dividerPadding="0dp"
+                    android:orientation="horizontal"
+                    >
+
+                    <!-- Item 1 -->
+                    <LinearLayout
+                        android:id="@+id/btnBestSeller"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="4dp">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/bs1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:text="Bestseller"
+                            android:textColor="#FF4444"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Item 2 -->
+                    <LinearLayout
+                        android:id="@+id/btnkm"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="4dp">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/bs2" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:text="Khuyến mãi"
+                            android:textColor="#FF4444"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Item 3 -->
+                    <LinearLayout
+                        android:id="@+id/btnCM"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="4dp">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/bs4" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:text="Cơm - Mì Ý"
+                            android:textColor="#FF4444"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Item 4 -->
+                    <LinearLayout
+                        android:id="@+id/btnNuoc"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="4dp">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/bs3" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:text="Thức uống"
+                            android:textColor="#FF4444"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </FrameLayout>
+        </HorizontalScrollView>
+    </RelativeLayout>
+
+    <!-- RecyclerView sản phẩm -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvProducts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:clipToPadding="false"
+        android:scrollbars="none" />
+
+</LinearLayout>
+
+```
+
+### app\src\main\res\layout\activity_offline.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:gravity="center"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="24dp" android:background="#FFF7F8">
+
+    <ImageView
+        android:layout_width="96dp" android:layout_height="96dp"
+        android:src="@android:drawable/stat_notify_error" />
+
+    <TextView
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Mất kết nối mạng"
+        android:textSize="20sp" android:textStyle="bold"
+        android:layout_marginTop="16dp" android:textColor="#333333"/>
+
+    <TextView
+        android:id="@+id/tvHint"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Vui lòng kiểm tra Wi-Fi/4G. Chúng tôi sẽ tự động tiếp tục khi có mạng."
+        android:textSize="14sp" android:textColor="#6B7280"
+        android:gravity="center" android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnRetry"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Thử lại" android:layout_marginTop="20dp"
+        android:backgroundTint="#FF4D6D" android:textColor="#FFFFFF"/>
+</LinearLayout>
+
+```
+
+### app\src\main\res\layout\activity_owner_menu.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFF7F8">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#FF4D6D"
+        app:title="Chu Quán"
+        app:titleTextColor="#FFFFFF" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabTextColor="#6B7280"
+        app:tabSelectedTextColor="#E91E63"
+        app:tabIndicatorColor="#E91E63">
+
+        <com.google.android.material.tabs.TabItem android:text="Doanh thu"/>
+        <com.google.android.material.tabs.TabItem android:text="Quản lý bàn"/>
+        <com.google.android.material.tabs.TabItem android:text="Quản lý món"/>
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+</LinearLayout>
+
+```
+
+### app\src\main\res\layout\fragment_orders.xml
+```xml
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvGeneric"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        android:clipToPadding="false" />
+
+    <!-- Empty view -->
+    <TextView
+        android:id="@+id/tvEmpty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Chưa có đơn hàng nào"
+        android:textSize="18sp"
+        android:textColor="@android:color/darker_gray"
+        android:visibility="gone"/>
+</FrameLayout>
+
+```
+
+### app\src\main\res\layout\fragment_owner_products.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Thanh tìm kiếm đơn giản -->
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:padding="12dp" android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="0dp" android:layout_height="40dp"
+            android:layout_weight="1" android:hint="Tìm món"
+            android:background="@android:drawable/editbox_background"/>
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="80dp" android:layout_height="40dp"
+            android:text="Tìm" android:textAllCaps="false"
+            android:layout_marginStart="8dp" android:backgroundTint="#FF4D6D"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvProducts"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:padding="12dp" android:clipToPadding="false"/>
+
+        <TextView
+            android:id="@+id/tvEmpty"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="center" android:text="Chưa có món nào"
+            android:textSize="18sp" android:textColor="@android:color/darker_gray"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddProduct"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_margin="16dp" android:contentDescription="Thêm món"
+        android:layout_gravity="end"/>
+</LinearLayout>
+
+```
+
+### app\src\main\res\layout\fragment_owner_stats.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:fillViewport="true" android:background="#FFF7F8">
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="16dp">
+
+        <!-- Quick filters -->
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnToday"
+                android:layout_width="0dp" android:layout_height="44dp"
+                android:layout_weight="1" android:text="Hôm nay"
+                android:textAllCaps="false"
+                android:background="@drawable/bg_chip_selector"
+                android:textColor="@color/chip_text_selector"/>
+
+
+            <Button
+                android:id="@+id/btnThisWeek"
+                android:layout_width="0dp" android:layout_height="44dp"
+                android:layout_weight="1" android:text="Tuần này"
+                android:textAllCaps="false" android:layout_marginStart="8dp"
+                android:background="@drawable/bg_chip_selector"
+                android:textColor="@color/chip_text_selector"/>
+
+            <Button
+                android:id="@+id/btnThisMonth"
+                android:layout_width="0dp" android:layout_height="44dp"
+                android:layout_weight="1" android:text="Tháng này"
+                android:textAllCaps="false" android:layout_marginStart="8dp"
+                android:background="@drawable/bg_chip_selector"
+                android:textColor="@color/chip_text_selector"/>
+
+        </LinearLayout>
+
+        <!-- Range pickers -->
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="12dp">
+
+            <Button
+                android:id="@+id/btnFromDate"
+                android:layout_width="0dp" android:layout_height="48dp"
+                android:layout_weight="1" android:text="Từ ngày"
+                android:textAllCaps="false" android:backgroundTint="#FFFFFF"
+                android:textColor="#333333"/>
+
+            <Button
+                android:id="@+id/btnToDate"
+                android:layout_width="0dp" android:layout_height="48dp"
+                android:layout_weight="1" android:text="Đến ngày"
+                android:textAllCaps="false" android:layout_marginStart="8dp"
+                android:backgroundTint="#FFFFFF" android:textColor="#333333"/>
+
+            <Button
+                android:id="@+id/btnApply"
+                android:layout_width="120dp" android:layout_height="48dp"
+                android:text="Lọc" android:textAllCaps="false"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="#FF4D6D" android:textColor="#FFFFFF"/>
+        </LinearLayout>
+
+        <!-- Cards -->
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:id="@+id/cardRevenue"
+                android:layout_width="0dp" android:layout_height="100dp"
+                android:layout_weight="1" android:orientation="vertical"
+                android:padding="12dp" android:background="#FFFFFFFF"
+                android:elevation="2dp">
+
+                <TextView android:text="Doanh thu" android:textSize="13sp"
+                    android:textColor="#6B7280" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tvRevenue"
+                    android:text="0 đ" android:textStyle="bold" android:textSize="20sp"
+                    android:textColor="#E91E63" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardOrders"
+                android:layout_width="0dp" android:layout_height="100dp"
+                android:layout_weight="1" android:orientation="vertical"
+                android:padding="12dp" android:background="#FFFFFFFF"
+                android:elevation="2dp" android:layout_marginStart="8dp">
+
+                <TextView android:text="Số đơn" android:textSize="13sp"
+                    android:textColor="#6B7280" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tvOrderCount"
+                    android:text="0" android:textStyle="bold" android:textSize="20sp"
+                    android:textColor="#E91E63" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardAvg"
+                android:layout_width="0dp" android:layout_height="100dp"
+                android:layout_weight="1" android:orientation="vertical"
+                android:padding="12dp" android:background="#FFFFFFFF"
+                android:elevation="2dp" android:layout_marginStart="8dp">
+
+                <TextView android:text="Trung bình/đơn" android:textSize="13sp"
+                    android:textColor="#6B7280" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tvAvg"
+                    android:text="0 đ" android:textStyle="bold" android:textSize="20sp"
+                    android:textColor="#E91E63" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Best sellers -->
+        <TextView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Món bán chạy" android:textStyle="bold"
+            android:textSize="16sp" android:layout_marginTop="16dp"
+            android:textColor="#333333"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTopItems"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:paddingTop="8dp" android:clipToPadding="false"/>
+    </LinearLayout>
+</ScrollView>
+
+```
+
+### app\src\main\res\layout\fragment_owner_tables.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTables"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:padding="12dp" android:clipToPadding="false"/>
+
+    <TextView
+        android:id="@+id/tvEmpty"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_gravity="center" android:text="Chưa có bàn nào"
+        android:textSize="18sp" android:textColor="@android:color/darker_gray"
+        android:visibility="gone"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddTable"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom" android:layout_margin="16dp"
+        android:contentDescription="Thêm bàn"/>
+</FrameLayout>
+
+```
+
+### app\src\main\res\layout\item_cart.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_cart_item"
+    android:elevation="2dp">
+
+    <!-- Ảnh -->
+    <ImageView
+        android:id="@+id/imgThumb"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_foreground"
+        android:contentDescription="@string/app_name" />
+
+    <!-- Nội dung giữa -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tiện Lợi 53K"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#1F2937"/>
+
+        <TextView
+            android:id="@+id/tvSub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1 x Tiện Lợi 53K"
+            android:textSize="14sp"
+            android:textColor="#6B7280"
+            android:layout_marginTop="4dp"/>
+
+        <!-- Cụm +/- số lượng -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/btnMinus"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="−"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/bg_btn_qty"/>
+
+            <TextView
+                android:id="@+id/tvQty"
+                android:layout_width="56dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="1"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#374151"
+                android:background="@drawable/bg_qty_box"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:id="@+id/btnPlus"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="+"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/bg_btn_qty"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Giá bên phải -->
+    <TextView
+        android:id="@+id/tvLineTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="end|center_vertical"
+        android:text="212.000 đ"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#E91E63"/>
+</LinearLayout>
+
+```
+
+### app\src\main\res\layout\item_note.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ghi chú cho đơn hàng"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#333333"/>
+
+    <EditText
+        android:id="@+id/etNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập ghi chú (tùy chọn)"
+        android:lines="3"
+        android:gravity="top"
+        android:background="@android:drawable/editbox_background"
+        android:padding="8dp"/>
+</LinearLayout>
+```
+
+### app\src\main\res\layout\item_order.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header: Bàn số (trái)  +  Nhóm (Đặt lúc - Phương thức) (phải) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvTableNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Bàn số: 5"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#333333" />
+
+            <!-- Nhóm căn phải -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvTimestamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đặt lúc: 2025-08-23 14:57"
+                    android:textSize="14sp"
+                    android:textColor="#6B7280" />
+
+                <TextView
+                    android:id="@+id/tvPayment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chuyển khoản"
+                    android:textSize="14sp"
+                    android:textColor="#6B7280"
+                    android:paddingStart="8dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Body: Danh sách món và Ghi chú -->
+        <TextView
+            android:id="@+id/tvOrderDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Món: Pizza (2), Coke (1)"
+            android:textSize="14sp"
+            android:textColor="#6B7280"
+            android:layout_marginTop="8dp"
+            android:maxLines="3"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/tvNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ghi chú: Ít cay, không hành"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            android:textColor="#9E9E9E"
+            android:layout_marginTop="4dp"
+            android:visibility="gone" />
+
+        <!-- Footer: Tổng tiền -->
+        <TextView
+            android:id="@+id/tvTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tổng: 500.000 đ"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#E91E63"
+            android:layout_marginTop="8dp" />
+
+        <!-- Hành động -->
+        <LinearLayout
+            android:id="@+id/layoutActions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/btnConfirm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Xác nhận"
+                android:textAllCaps="false"
+                android:backgroundTint="#4CAF50"
+                android:textColor="#FFFFFF"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/BtnCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Hủy"
+                android:textAllCaps="false"
+                android:backgroundTint="#4CAF50"
+                android:textColor="#FFFFFF"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnPayment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Thanh toán"
+                android:textAllCaps="false"
+                android:backgroundTint="#FF4D6D"
+                android:textColor="#FFFFFF"
+                android:visibility="gone"
+                android:layout_marginStart="8dp" />
+
+            <Button
+                android:id="@+id/btnPrint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="In hóa đơn"
+                android:textAllCaps="false"
+                android:backgroundTint="#2196F3"
+                android:textColor="#FFFFFF"
+                android:visibility="gone"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+
+```
+
+### app\src\main\res\layout\item_product.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/txtName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tiện Lợi 53K"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="#222222" />
+
+            <TextView
+                android:id="@+id/txtDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="01 Gà rán\n01 Khoai tây chiên"
+                android:textSize="12sp"
+                android:textColor="#666666" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="4dp">
+
+                <!-- Cột giá -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="53.000 đ"
+                        android:textStyle="bold"
+                        android:textColor="#E91E63"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+
+                <!-- Nút cộng -->
+                <Button
+                    android:id="@+id/btnAdd"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_add_button"
+                    app:backgroundTint="@null"
+                    android:text="+"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:contentDescription="Thêm" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+
+```
+
+### app\src\main\res\layout\item_table.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <!-- Dòng 1: Bàn số -->
+        <TextView
+            android:id="@+id/tvTableName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bàn 1"
+            android:textStyle="bold"
+            android:textColor="#222222"
+            android:textSize="16sp" />
+
+        <!-- Dòng 2: Trạng thái -->
+        <TextView
+            android:id="@+id/tvTableStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Trạng thái bàn…"
+            android:textColor="#6B7280"
+            android:textSize="13sp"
+            android:layout_marginTop="4dp" />
+
+        <!-- Dòng 3: ghi chú phụ (thời gian, gọi NV, …) -->
+        <TextView
+            android:id="@+id/tvTableSub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Được đặt từ lúc…"
+            android:visibility="gone"
+            android:textColor="#9CA3AF"
+            android:textSize="12sp"
+            android:layout_marginTop="2dp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+
+```
+
+### app\src\main\res\layout\item_table_manage.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_margin="8dp" app:cardCornerRadius="10dp" app:cardElevation="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tvTableName" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:text="Bàn 1"
+            android:textStyle="bold" android:textColor="#222222" android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tvTableStatus" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:text="Trạng thái: Trống"
+            android:textColor="#6B7280" android:textSize="13sp" android:layout_marginTop="4dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/btnEdit"
+                android:layout_width="0dp" android:layout_height="40dp"
+                android:layout_weight="1" android:text="Sửa"
+                android:textAllCaps="false" android:backgroundTint="#2196F3"
+                android:textColor="#FFFFFF"/>
+
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_width="0dp" android:layout_height="40dp"
+                android:layout_weight="1" android:text="Xóa"
+                android:textAllCaps="false" android:layout_marginStart="8dp"
+                android:backgroundTint="#E91E63" android:textColor="#FFFFFF"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+
+```
+
+### app\src\main\res\mipmap-anydpi-v26\ic_launcher.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@drawable/ic_launcher_background" />
+    <foreground android:drawable="@drawable/ic_launcher_foreground" />
+    <monochrome android:drawable="@drawable/ic_launcher_foreground" />
+</adaptive-icon>
+```
+
+### app\src\main\res\mipmap-anydpi-v26\ic_launcher_round.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@drawable/ic_launcher_background" />
+    <foreground android:drawable="@drawable/ic_launcher_foreground" />
+    <monochrome android:drawable="@drawable/ic_launcher_foreground" />
+</adaptive-icon>
+```
+
+### app\src\main\res\values\colors.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
+```
+
+### app\src\main\res\values\strings.xml
+```xml
+<resources>
+    <string name="app_name">Nhóm 1</string>
+</resources>
+```
+
+### app\src\main\res\values\themes.xml
+```xml
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.AppBanHang" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Theme.AppBanHang" parent="Base.Theme.AppBanHang" />
+</resources>
+```
+
+### app\src\main\res\values-night\themes.xml
+```xml
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.AppBanHang" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    </style>
+</resources>
+```
+
+### app\src\main\res\xml\backup_rules.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?><!--
+   Sample backup rules file; uncomment and customize as necessary.
+   See https://developer.android.com/guide/topics/data/autobackup
+   for details.
+   Note: This file is ignored for devices older that API 31
+   See https://developer.android.com/about/versions/12/backup-restore
+-->
+<full-backup-content>
+    <!--
+   <include domain="sharedpref" path="."/>
+   <exclude domain="sharedpref" path="device.xml"/>
+-->
+</full-backup-content>
+```
+
+### app\src\main\res\xml\data_extraction_rules.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?><!--
+   Sample data extraction rules file; uncomment and customize as necessary.
+   See https://developer.android.com/about/versions/12/backup-restore#xml-changes
+   for details.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- TODO: Use <include> and <exclude> to control what is backed up.
+        <include .../>
+        <exclude .../>
+        -->
+    </cloud-backup>
+    <!--
+    <device-transfer>
+        <include .../>
+        <exclude .../>
+    </device-transfer>
+    -->
+</data-extraction-rules>
+```
