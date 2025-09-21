@@ -14,21 +14,25 @@
 
             <Button
                 android:id="@+id/btnToday"
-                android:layout_width="0dp" android:layout_height="40dp"
+                android:layout_width="0dp" android:layout_height="48dp"
                 android:layout_weight="1" android:text="Hôm nay"
                 android:textAllCaps="false" android:backgroundTint="#FF4D6D"
                 android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/btnThisWeek"
-                android:layout_width="0dp" android:layout_height="40dp"
-                android:layout_weight="1" android:text="Tuần này"
-                android:textAllCaps="false" android:layout_marginStart="8dp"
-                android:backgroundTint="#FF4D6D" android:textColor="#FFFFFF"/>
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="#FF4D6D"
+                android:text="Tuần này"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/btnThisMonth"
-                android:layout_width="0dp" android:layout_height="40dp"
+                android:layout_width="0dp" android:layout_height="48dp"
                 android:layout_weight="1" android:text="Tháng này"
                 android:textAllCaps="false" android:layout_marginStart="8dp"
                 android:backgroundTint="#FF4D6D" android:textColor="#FFFFFF"/>

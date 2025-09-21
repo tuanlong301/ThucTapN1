@@ -1,4 +1,6 @@
 package com.example.appbanhang.admin;
+import com.example.appbanhang.model.Order;
+import com.example.appbanhang.model.OrderBus;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -151,6 +153,7 @@ public class ConfirmedOrdersFragment extends Fragment {
                     tvEmpty.setVisibility(empty ? View.VISIBLE : View.GONE);
                     rv.setVisibility(empty ? View.GONE : View.VISIBLE);
 
+                    OrderBus.setOrders(list);
 
                     if (!TextUtils.isEmpty(highlightId)) {
                         int idx = adapter.indexOf(highlightId);
