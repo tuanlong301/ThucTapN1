@@ -153,20 +153,31 @@ public class OwnerStatsFragment extends Fragment {
             List<OrderRow> rows = new ArrayList<>();
 
             for (DocumentSnapshot d : snap.getDocuments()) {
+                // tiền: CHỈ lấy field total
                 long total = parseTotalStrict(d.get("total"));
                 revenue += total;
                 count++;
 
-                // title (bên trái)
+                // trái: tên đơn/bàn + danh sách món
                 String orderName = safeStr(d.get("name"));
                 if (TextUtils.isEmpty(orderName)) orderName = "#" + d.getId();
                 String itemsLine = buildItemsLine(d.get("items"));
 
-                // right: time + total
+                // phải: thời gian + tiền
                 long ts = 0L;
-                Object tsv = d.get("timestamp");
-                if (tsv instanceof java.util.Date) ts = ((java.util.Date) tsv).getTime();
-                else if (tsv instanceof Number) ts = ((Number) tsv).longValue();
+
+                // Ưu tiên getDate() (trả java.util.Date)
+                java.util.Date dt = d.getDate("timestamp");
+                if (dt != null) {
+                    ts = dt.getTime();
+                } else {
+                    Object tsv = d.get("timestamp");
+                    if (tsv instanceof Timestamp) {
+                        ts = ((Timestamp) tsv).toDate().getTime();
+                    } else if (tsv instanceof Number) {
+                        ts = ((Number) tsv).longValue();
+                    }
+                }
 
                 rows.add(new OrderRow(orderName, itemsLine, ts, total));
             }
@@ -181,6 +192,9 @@ public class OwnerStatsFragment extends Fragment {
             System.out.println("[STATS] Firestore error: " + err.getMessage());
         });
     }
+
+
+
 
     // ===== Items → text cho từng đơn =====
     private String buildItemsLine(Object itemsObj) {
@@ -250,8 +264,10 @@ public class OwnerStatsFragment extends Fragment {
     }
     private String fmtTime(long ts) {
         if (ts == 0) return "";
-        return new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new java.util.Date(ts));
+        return new SimpleDateFormat("dd/MM - HH:mm", Locale.getDefault())
+                .format(new java.util.Date(ts));
     }
+
 
     // ===== RecyclerView: mỗi đơn một dòng (trái: tên+items, phải: giờ+tiền) =====
     private static class OrderRow {
