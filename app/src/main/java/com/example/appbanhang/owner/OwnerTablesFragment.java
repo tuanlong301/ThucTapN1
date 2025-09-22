@@ -136,7 +136,7 @@ public class OwnerTablesFragment extends Fragment {
             edtName = form.findViewById(R.id.edt1);
             edtTk   = form.findViewById(R.id.edt2);
             edtMk   = form.findViewById(R.id.edt3);
-            edtName.setHint("Tên bàn (ví dụ: Bàn 1)");
+            edtName.setHint("Tên bàn ");
             edtTk.setHint("Tài khoản (email)"); edtTk.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
             edtMk.setHint("Mật khẩu"); edtMk.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 

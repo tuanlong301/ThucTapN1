@@ -128,7 +128,7 @@
         <!-- Best sellers -->
         <TextView
             android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Món bán chạy" android:textStyle="bold"
+            android:text="Danh sách đơn hàng" android:textStyle="bold"
             android:textSize="16sp" android:layout_marginTop="16dp"
             android:textColor="#333333"/>
 
