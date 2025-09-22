@@ -1,6 +1,6 @@
 # 🍽️ App Bán Hàng - Quản Lý Quán Ăn
 
-Ứng dụng Android hỗ trợ quản lý bán hàng và nhà hàng nhỏ, phục vụ cho cả **khách hàng**, **nhân viên/Admin** và **chủ quán**.  
+Ứng dụng Android hỗ trợ quản lý bán hàng và nhà hàng nhỏ, phục vụ cho cả **khách hàng**, **nhân viên** và **chủ quán**.  
 Dữ liệu được đồng bộ thời gian thực với **Firebase Firestore** và xác thực qua **Firebase Authentication**.
 
 ---
