@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- Hàng trên: Ảnh + thông tin cơ bản -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Ảnh món: hiển thị từ imageUrl -->
+            <ImageView
+                android:id="@+id/imgProduct"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/app_name"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <!-- Tên món -->
+            <TextView
+                android:id="@+id/txtName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                app:layout_constraintStart_toEndOf="@id/imgProduct"
+                app:layout_constraintTop_toTopOf="@id/imgProduct"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="Tiện lợi 53k" />
+
+            <!-- Category dạng chip nhỏ -->
+            <TextView
+                android:id="@+id/txtCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="6dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textSize="12sp"
+                android:textColor="#FF2962FF"
+                android:background="@drawable/bg_chip_category"
+                app:layout_constraintStart_toEndOf="@id/imgProduct"
+                app:layout_constraintTop_toBottomOf="@id/txtName"
+                tools:text="bestseller" />
+
+            <!-- Mô tả ngắn -->
+            <TextView
+                android:id="@+id/txtDesc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                android:maxLines="4"
+                android:ellipsize="end"
+                android:textSize="13sp"
+                android:textColor="#8A000000"
+                app:layout_constraintStart_toEndOf="@id/imgProduct"
+                app:layout_constraintTop_toBottomOf="@id/txtCategory"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="01 Gà rán 01 Khoai tây chiên" />
+
+            <!-- Giá -->
+            <TextView
+                android:id="@+id/txtPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:textColor="#FF2E7D32"
+                app:layout_constraintStart_toStartOf="@id/txtDesc"
+                app:layout_constraintTop_toBottomOf="@id/txtDesc"
+                tools:text="53.000 đ" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Hàng nút Sửa / Xóa -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnEdit"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:text="Sửa"
+                android:textAllCaps="false"
+                android:backgroundTint="#2962FF"
+                android:textColor="@android:color/white" />
+
+            <Space
+                android:layout_width="8dp"
+                android:layout_height="0dp" />
+
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:text="Xóa"
+                android:textAllCaps="false"
+                android:backgroundTint="#E91E63"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

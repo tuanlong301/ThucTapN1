@@ -31,12 +31,15 @@
             android:layout_width="match_parent" android:layout_height="match_parent"
             android:padding="12dp" android:clipToPadding="false"/>
 
+
         <TextView
             android:id="@+id/tvEmpty"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:layout_gravity="center" android:text="Chưa có món nào"
             android:textSize="18sp" android:textColor="@android:color/darker_gray"
             android:visibility="gone"/>
+
+
     </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -44,4 +47,5 @@
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:layout_margin="16dp" android:contentDescription="Thêm món"
         android:layout_gravity="end"/>
+
 </LinearLayout>

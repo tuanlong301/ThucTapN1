@@ -14,8 +14,9 @@ android {
         minSdk = 24
         targetSdk = 34
         versionCode = 1
-        versionName = "1.1.1"
+        versionName = "1.1.2"
 
+        vectorDrawables.useSupportLibrary = true
         // Thông tin hiển thị/trace build
         buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
 
@@ -67,7 +68,8 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.core.ktx)
     implementation("androidx.viewpager2:viewpager2:1.0.0")
-
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
