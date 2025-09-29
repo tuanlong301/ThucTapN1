@@ -1,6 +1,5 @@
 package com.example.appbanhang.user.adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -36,6 +35,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.VH> {
     private final NumberFormat money = NumberFormat.getInstance(new Locale("vi", "VN"));
     private String note = "";
 
+    private static final int MAX_QTY = 9;
+
     public CartAdapter(Context ctx, List<Object> data, OnQtyClick cb) {
         setHasStableIds(true);
         this.ctx = ctx;
@@ -47,14 +48,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.VH> {
     public long getItemId(int position) {
         Object item = data.get(position);
         if (item instanceof CartActivity.CartItem) {
-            return ((CartActivity.CartItem) item).id != null
-                    ? ((CartActivity.CartItem) item).id.hashCode()
-                    : position;
+            CartActivity.CartItem ci = (CartActivity.CartItem) item;
+            return ci.id != null ? ci.id.hashCode() : position;
         }
         return position; // NoteItem
     }
 
-    @NonNull @Override
+    @Override
+    public int getItemViewType(int position) {
+        return (data.get(position) instanceof CartActivity.NoteItem) ? 1 : 0;
+    }
+
+    @NonNull
+    @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == 1) { // NoteItem
             View v = LayoutInflater.from(ctx).inflate(R.layout.item_note, parent, false);
@@ -65,28 +71,25 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.VH> {
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return (data.get(position) instanceof CartActivity.NoteItem) ? 1 : 0;
-    }
-
-    @Override
     public void onBindViewHolder(@NonNull VH h, int pos) {
         Object item = data.get(pos);
 
         if (item instanceof CartActivity.CartItem) {
-            CartActivity.CartItem cartItem = (CartActivity.CartItem) item;
+            CartActivity.CartItem ci = (CartActivity.CartItem) item;
 
-            h.tvName.setText(cartItem.name != null ? cartItem.name : "Không có tên");
-            h.tvSub.setText("1 x " + (cartItem.name != null ? cartItem.name : "Không có tên"));
+            // Tên, phụ đề
+            h.tvName.setText(ci.name != null ? ci.name : "Không có tên");
+            h.tvSub.setText("1 x " + (ci.name != null ? ci.name : "Không có tên"));
 
-            long qty = cartItem.qty != null ? cartItem.qty : 0;
+            // Số lượng & thành tiền
+            long qty = ci.qty != null ? ci.qty : 0;
             h.tvQty.setText(String.valueOf(qty));
-
-            double line = (cartItem.price != null ? cartItem.price : 0) * qty;
+            double line = (ci.price != null ? ci.price : 0) * qty;
             h.tvLineTotal.setText(money.format(line) + " đ");
 
-            if (cartItem.imageUrl != null && !cartItem.imageUrl.isEmpty()) {
-                Glide.with(ctx).load(cartItem.imageUrl)
+            // Ảnh
+            if (ci.imageUrl != null && !ci.imageUrl.isEmpty()) {
+                Glide.with(ctx).load(ci.imageUrl)
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_foreground)
                         .error(R.drawable.ic_launcher_foreground)
@@ -95,26 +98,34 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.VH> {
                 h.ivThumb.setImageResource(R.drawable.ic_launcher_foreground);
             }
 
-            // Cập nhật trạng thái nút theo mạng + qty
+            // Bật/tắt nút theo mạng & qty
             updateButtonsEnabled(h, qty);
 
+            // Nút "+"
             h.btnPlus.setOnClickListener(v -> {
-                if (!NetworkMonitor.get(v.getContext()).hasInternetNow()) {
-                    showNoInternet(v.getContext());
-                    return;
-                }
-                int adapterPos = h.getAbsoluteAdapterPosition();
-                if (adapterPos != RecyclerView.NO_POSITION && cb != null) cb.onPlus(adapterPos);
+                if (!NetworkMonitor.get(v.getContext()).hasInternetNow()) return; // im lặng
+                int adapterPos = h.getBindingAdapterPosition();
+                if (adapterPos == RecyclerView.NO_POSITION || cb == null) return;
+
+                Object obj = data.get(adapterPos);
+                if (!(obj instanceof CartActivity.CartItem)) return;
+
+                CartActivity.CartItem curr = (CartActivity.CartItem) obj;
+                long qNow = curr.qty != null ? curr.qty : 0;
+
+                if (qNow >= MAX_QTY) return; // chạm trần → im lặng
+
+                cb.onPlus(adapterPos);
             });
 
+            // Nút "−"
             h.btnMinus.setOnClickListener(v -> {
-                if (!NetworkMonitor.get(v.getContext()).hasInternetNow()) {
-                    showNoInternet(v.getContext());
-                    return;
-                }
-                int adapterPos = h.getAbsoluteAdapterPosition();
-                if (adapterPos != RecyclerView.NO_POSITION && cb != null) cb.onMinus(adapterPos);
+                if (!NetworkMonitor.get(v.getContext()).hasInternetNow()) return;
+                int adapterPos = h.getBindingAdapterPosition();
+                if (adapterPos == RecyclerView.NO_POSITION || cb == null) return;
+                cb.onMinus(adapterPos);
             });
+
 
         } else if (item instanceof CartActivity.NoteItem) {
             CartActivity.NoteItem noteItem = (CartActivity.NoteItem) item;
@@ -130,29 +141,28 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.VH> {
         }
     }
 
-    @Override public int getItemCount() { return data != null ? data.size() : 0; }
+    @Override
+    public int getItemCount() {
+        return data != null ? data.size() : 0;
+    }
 
-    public String getNote() { return note; }
+    public String getNote() {
+        return note;
+    }
 
     private void updateButtonsEnabled(@NonNull VH h, long qty) {
         boolean online = NetworkMonitor.get(h.itemView.getContext()).hasInternetNow();
-        h.btnPlus.setEnabled(online);
-        h.btnMinus.setEnabled(online && qty > 0); // không cho trừ về 0
+        h.btnPlus.setEnabled(online && qty < MAX_QTY);
+        h.btnMinus.setEnabled(online && qty >= 1);
     }
 
-    private void showNoInternet(Context ctx) {
-        new AlertDialog.Builder(ctx)
-                .setTitle("Mất kết nối")
-                .setMessage("Không có internet. Vui lòng kiểm tra kết nối và thử lại.")
-                .setPositiveButton("OK", null)
-                .show();
-    }
 
     static class VH extends RecyclerView.ViewHolder {
         ImageView ivThumb;
         TextView tvName, tvSub, tvQty, tvLineTotal;
         TextView btnMinus, btnPlus;
         EditText etNote;
+
         VH(@NonNull View v) {
             super(v);
             ivThumb = v.findViewById(R.id.imgThumb);

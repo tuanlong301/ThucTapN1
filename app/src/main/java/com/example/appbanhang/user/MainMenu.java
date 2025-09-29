@@ -10,23 +10,29 @@ import java.util.Map;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.Transaction;
+
 
 import com.example.appbanhang.BaseActivity;
 import com.example.appbanhang.user.adapter.ProductAdapter;
 import com.example.appbanhang.R;
 import com.example.appbanhang.model.Product;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
+
 import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
+
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.SetOptions;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenu extends BaseActivity {
-
+    private static final long MAX_QTY = 9;
     private RecyclerView rvProducts;
     private final List<Product> productList = new ArrayList<>();
     private ProductAdapter adapter;
@@ -148,31 +154,58 @@ public class MainMenu extends BaseActivity {
     }
 
     /** Ghi/ tăng số lượng 1 món vào giỏ hàng Firestore */
+
     private void addToCart(Product p) {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        if (uid == null) {
-            Toast.makeText(this, "Chưa đăng nhập", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (p.getId() == null) {
-            Toast.makeText(this, "Thiếu ID sản phẩm", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        if (!requireOnline()) return;
 
-        java.util.Map<String, Object> data = new java.util.HashMap<>();
-        data.put("name", p.getName());
-        data.put("imageUrl", p.getImageUrl());
-        data.put("price", p.getPrice());
-        data.put("qty", FieldValue.increment(1));   // tăng 1
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null) return;
+        if (p == null || p.getId() == null) return;
 
-        db.collection("carts").document(uid)
-                .collection("items").document(p.getId())
-                .set(data, SetOptions.merge())
-                .addOnSuccessListener(v -> {
-                    Toast.makeText(this, "Đã thêm: " + p.getName(), Toast.LENGTH_SHORT).show();
-                })
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Thêm giỏ hàng lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show());
+        String uid = auth.getCurrentUser().getUid();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        DocumentReference docRef = db.collection("carts")
+                .document(uid)
+                .collection("items")
+                .document(p.getId());
+
+        db.runTransaction((Transaction.Function<Boolean>) transaction -> {
+            DocumentSnapshot snap = transaction.get(docRef);
+            Long curr = snap.exists() ? snap.getLong("qty") : 0L;
+            if (curr == null) curr = 0L;
+
+            // Đủ 5 rồi -> không cho cộng tiếp
+            if (curr >= MAX_QTY) {
+                return Boolean.FALSE; // báo về là đã chạm trần
+            }
+
+            long next = Math.min(curr + 1, MAX_QTY);
+
+            if (snap.exists()) {
+                transaction.update(docRef, "qty", next);
+            } else {
+                Map<String, Object> data = new HashMap<>();
+                data.put("name", p.getName());
+                data.put("imageUrl", p.getImageUrl());
+                data.put("price", p.getPrice());
+                data.put("qty", next);
+                transaction.set(docRef, data, SetOptions.merge());
+            }
+            return Boolean.TRUE; // đã cập nhật
+        }).addOnSuccessListener(changed -> {
+            if (Boolean.TRUE.equals(changed)) {
+                Toast.makeText(this, "Đã thêm món: " + p.getName(), Toast.LENGTH_SHORT).show();
+            } else {
+                new androidx.appcompat.app.AlertDialog.Builder(this)
+                        .setTitle("Giới hạn số lượng")
+                        .setMessage("Nếu muốn đặt nhiều hơn vui lòng liên hệ nhân viên  ")
+                        .setPositiveButton("OK", null)
+                        .show();
+            }
+        }).addOnFailureListener(e -> {
+            // im lặng hoặc Log.e("CART", "addToCart failed", e);
+        });
     }
 
     /** Lắng nghe tổng số lượng trong giỏ để cập nhật badge */

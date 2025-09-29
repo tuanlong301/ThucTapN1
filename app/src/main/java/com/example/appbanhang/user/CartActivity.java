@@ -71,24 +71,34 @@ public class CartActivity extends BaseActivity {
 
         // Recycler
         rv.setLayoutManager(new LinearLayoutManager(this));
+        // CartActivity.java - trong onCreate -> new CartAdapter(...):
+
         cartAdapter = new CartAdapter(this, items, new CartAdapter.OnQtyClick() {
             @Override public void onPlus(int pos) {
                 if (pos >= 0 && pos < items.size() - 1) {
-                    // Nếu offline -> CartAdapter đã chặn, ở đây vẫn an toàn
-                    changeQty((CartItem) items.get(pos), +1);
-                }
-            }
-            @Override public void onMinus(int pos) {
-                if (pos >= 0 && pos < items.size() - 1) {
                     CartItem it = (CartItem) items.get(pos);
-                    if (it.qty != null && it.qty <= 1) {
-                        deleteItem(it);
-                    } else {
-                        changeQty(it, -1);
-                    }
+                    long q = it.qty != null ? it.qty : 0;
+                    if (q >= 9) return;              // ⬅️ chặn sớm
+                    changeQty(it, +1);
                 }
             }
+            @Override
+            public void onMinus(int pos) {
+                if (pos < 0 || pos >= items.size()) return;
+                CartItem it = (CartItem) items.get(pos);
+                long q = it.qty == null ? 0 : it.qty;
+
+                if (q <= 1) {
+                    // về 1 rồi trừ nữa thì gọi hàm xoá
+                    deleteItem(it);
+                } else {
+                    // còn >1 thì giảm như bình thường
+                    changeQty(it, -1);
+                }
+            }
+
         });
+
         rv.setAdapter(cartAdapter);
 
         // Events
