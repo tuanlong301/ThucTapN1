@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.widget.ScrollView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -193,14 +193,19 @@ public class OwnerProductsFragment extends Fragment {
     // ============== Dialog Add/Edit ==============
 
     /** Dialog thêm (editProduct == null) hoặc sửa (editProduct != null). */
+    /** Dialog thêm (editProduct == null) hoặc sửa (editProduct != null). */
     private void showProductDialog(@Nullable Product editProduct) {
         boolean isEdit = (editProduct != null);
 
-        // Tạo layout dọc đơn giản cho dialog (khỏi cần XML)
+        // ScrollView để tránh tràn màn hình
+        ScrollView scroll = new ScrollView(requireContext());
+
         LinearLayout layout = new LinearLayout(requireContext());
         layout.setOrientation(LinearLayout.VERTICAL);
         int pad = (int) (16 * getResources().getDisplayMetrics().density);
         layout.setPadding(pad, pad, pad, pad);
+
+        scroll.addView(layout);
 
         final EditText etName = new EditText(requireContext());
         etName.setHint("Tên món");
@@ -232,11 +237,12 @@ public class OwnerProductsFragment extends Fragment {
             etImage.setText(nullToEmpty(editProduct.getImageUrl()));
         }
 
-        AlertDialog dialog = new AlertDialog.Builder(requireContext())
-                .setTitle(isEdit ? "Sửa món" : "Thêm món")
-                .setView(layout)
-                .setNegativeButton("Hủy", null)
-                .setPositiveButton("Lưu", null)
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(isEdit ? "Sửa món" : "Thêm món");
+        builder.setView(scroll);
+        builder.setNegativeButton("Hủy", null);
+        builder.setPositiveButton("Lưu", null);// dùng scroll thay vì layout trực tiếp
+        AlertDialog dialog = builder
                 .create();
 
         dialog.setOnShowListener(dlg -> dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
@@ -274,24 +280,22 @@ public class OwnerProductsFragment extends Fragment {
                         .collection("food_001")
                         .document(editProduct.getId())
                         .update(data)
-                        .addOnSuccessListener(x -> {
-                            Toast.makeText(getContext(), "Đã lưu", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        })
-                        .addOnFailureListener(e -> Toast.makeText(getContext(), "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                        .addOnSuccessListener(x -> dialog.dismiss())
+                        .addOnFailureListener(e ->
+                                Toast.makeText(getContext(), "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             } else {
                 FirebaseFirestore.getInstance()
                         .collection("food_001")
                         .add(data)
-                        .addOnSuccessListener(x -> {
-                            Toast.makeText(getContext(), "Đã thêm", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        })
-                        .addOnFailureListener(e -> Toast.makeText(getContext(), "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                        .addOnSuccessListener(x -> dialog.dismiss())
+                        .addOnFailureListener(e ->
+                                Toast.makeText(getContext(), "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             }
         }));
+
         dialog.show();
     }
+
 
     // ============== Delete ==============
 
