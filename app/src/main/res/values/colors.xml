@@ -2,4 +2,48 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary Pink/Rose palette -->
+    <color name="primary">#FF4D6D</color>
+    <color name="primary_dark">#E63B5A</color>
+    <color name="primary_light">#FF8FA3</color>
+    <color name="primary_surface">#FFF0F3</color>
+
+    <!-- Accent -->
+    <color name="accent">#E91E63</color>
+    <color name="accent_light">#FF6090</color>
+
+    <!-- Background -->
+    <color name="bg_page">#FFF7F8</color>
+    <color name="bg_card">#FFFFFFFF</color>
+    <color name="bg_header">#FF4D6D</color>
+
+    <!-- Text -->
+    <color name="text_primary">#1F2937</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_hint">#9CA3AF</color>
+    <color name="text_disabled">#D1D5DB</color>
+
+    <!-- Semantic -->
+    <color name="success">#10B981</color>
+    <color name="success_light">#D1FAE5</color>
+    <color name="warning">#F59E0B</color>
+    <color name="warning_light">#FEF3C7</color>
+    <color name="danger">#EF4444</color>
+    <color name="danger_light">#FEE2E2</color>
+    <color name="info">#3B82F6</color>
+    <color name="info_light">#DBEAFE</color>
+
+    <!-- Table status -->
+    <color name="table_available">#10B981</color>
+    <color name="table_occupied">#EF4444</color>
+    <color name="table_reserved">#F59E0B</color>
+
+    <!-- Divider / border -->
+    <color name="divider">#F3F4F6</color>
+    <color name="border">#E5E7EB</color>
+
+    <!-- Overlay -->
+    <color name="overlay_dark">#66000000</color>
+    <color name="overlay_light">#33FFFFFF</color>
 </resources>

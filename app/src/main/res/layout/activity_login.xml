@@ -9,65 +9,80 @@
 
     <!-- Logo -->
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:src="@drawable/lotte"
         android:scaleType="fitCenter"
         android:contentDescription="Logo"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="8dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="App Bán Hàng"
-        android:textSize="28sp"
+        android:textSize="30sp"
         android:textStyle="bold"
-        android:textColor="#E91E63"
+        android:textColor="@color/accent"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đăng nhập để tiếp tục"
+        android:textSize="14sp"
+        android:textColor="@color/text_secondary"
         android:layout_marginBottom="32dp" />
 
-    <!-- Container chứa form, giới hạn max width -->
-    <LinearLayout
+    <!-- Form card -->
+    <androidx.cardview.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="360dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/bg_card">
 
-        <!-- Email -->
-        <EditText
-            android:id="@+id/etEmail"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:hint="Nhập email"
-            android:inputType="textEmailAddress"
-            android:background="@drawable/bg_input"
-            android:textColor="#333333"
-            android:textColorHint="#9CA3AF"
-            android:textSize="15sp"
-            android:layout_marginBottom="14dp" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
 
-        <!-- Password -->
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:hint="Nhập mật khẩu"
-            android:inputType="textPassword"
-            android:background="@drawable/bg_input"
-            android:textColor="#333333"
-            android:textColorHint="#9CA3AF"
-            android:textSize="15sp"
-            android:layout_marginBottom="20dp" />
+            <EditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:hint="📧  Email"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/bg_input"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint"
+                android:textSize="15sp"
+                android:layout_marginBottom="14dp" />
 
-        <!-- Login Button -->
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="Đăng nhập"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:backgroundTint="#FF4D6D"
-            android:textColor="#FFFFFF" />
-    </LinearLayout>
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:hint="🔒  Mật khẩu"
+                android:inputType="textPassword"
+                android:background="@drawable/bg_input"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint"
+                android:textSize="15sp"
+                android:layout_marginBottom="20dp" />
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Đăng nhập"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:backgroundTint="@color/primary"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

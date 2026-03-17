@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardUseCompatPadding="true"
-    app:cardCornerRadius="14dp"
-    app:cardElevation="6dp">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/bg_card">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:textSize="12sp"
-                android:textColor="#FF2962FF"
+                android:textColor="@color/primary"
                 android:background="@drawable/bg_chip_category"
                 app:layout_constraintStart_toEndOf="@id/imgProduct"
                 app:layout_constraintTop_toBottomOf="@id/txtName"
@@ -75,7 +75,7 @@
                 android:maxLines="4"
                 android:ellipsize="end"
                 android:textSize="13sp"
-                android:textColor="#8A000000"
+                android:textColor="@color/text_secondary"
                 app:layout_constraintStart_toEndOf="@id/imgProduct"
                 app:layout_constraintTop_toBottomOf="@id/txtCategory"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +89,7 @@
                 android:layout_marginTop="10dp"
                 android:textStyle="bold"
                 android:textSize="15sp"
-                android:textColor="#FF2E7D32"
+                android:textColor="@color/accent"
                 app:layout_constraintStart_toStartOf="@id/txtDesc"
                 app:layout_constraintTop_toBottomOf="@id/txtDesc"
                 tools:text="53.000 đ" />
@@ -110,7 +110,7 @@
                 android:layout_weight="1"
                 android:text="Sửa"
                 android:textAllCaps="false"
-                android:backgroundTint="#2962FF"
+                android:backgroundTint="@color/info"
                 android:textColor="@android:color/white" />
 
             <Space
@@ -124,7 +124,7 @@
                 android:layout_weight="1"
                 android:text="Xóa"
                 android:textAllCaps="false"
-                android:backgroundTint="#E91E63"
+                android:backgroundTint="@color/danger"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 

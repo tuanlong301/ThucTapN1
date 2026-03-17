@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/bg_card">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,7 +14,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Header: Bàn số (trái)  +  Nhóm (Đặt lúc - Phương thức) (phải) -->
+        <!-- Header: Table + Timestamp + Payment -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,46 +27,53 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Bàn số: 5"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#333333" />
+                android:textColor="@color/text_primary" />
 
-            <!-- Nhóm căn phải -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:orientation="vertical"
+                android:gravity="end">
 
                 <TextView
                     android:id="@+id/tvTimestamp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Đặt lúc: 2025-08-23 14:57"
-                    android:textSize="14sp"
-                    android:textColor="#6B7280" />
+                    android:text="14:57"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_hint" />
 
                 <TextView
                     android:id="@+id/tvPayment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Chuyển khoản"
-                    android:textSize="14sp"
-                    android:textColor="#6B7280"
-                    android:paddingStart="8dp" />
+                    android:textSize="12sp"
+                    android:textColor="@color/primary"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Body: Danh sách món và Ghi chú -->
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Body -->
         <TextView
             android:id="@+id/tvOrderDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Món: Pizza (2), Coke (1)"
             android:textSize="14sp"
-            android:textColor="#6B7280"
-            android:layout_marginTop="8dp"
-            android:maxLines="3"
+            android:textColor="@color/text_secondary"
+            android:lineSpacingMultiplier="1.3"
+            android:maxLines="4"
             android:ellipsize="end" />
 
         <TextView
@@ -75,79 +83,84 @@
             android:text="Ghi chú: Ít cay, không hành"
             android:textSize="12sp"
             android:textStyle="italic"
-            android:textColor="#9E9E9E"
-            android:layout_marginTop="4dp"
+            android:textColor="@color/text_hint"
+            android:layout_marginTop="6dp"
             android:visibility="gone" />
 
-        <!-- Footer: Tổng tiền -->
+        <!-- Total -->
         <TextView
             android:id="@+id/tvTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tổng: 500.000 đ"
-            android:textSize="16sp"
+            android:textSize="17sp"
             android:textStyle="bold"
-            android:textColor="#E91E63"
-            android:layout_marginTop="8dp" />
+            android:textColor="@color/accent"
+            android:layout_marginTop="10dp" />
 
-        <!-- Hành động -->
+        <!-- Divider before actions -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#F3F4F6"
-            android:layout_marginTop="10dp" />
+            android:background="@color/divider"
+            android:layout_marginTop="12dp" />
 
+        <!-- Actions -->
         <LinearLayout
             android:id="@+id/layoutActions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="12dp">
 
             <Button
                 android:id="@+id/btnConfirm"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:text="Xác nhận"
                 android:textAllCaps="false"
-                android:backgroundTint="#4CAF50"
-                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:backgroundTint="@color/success"
+                android:textColor="@color/white"
                 android:visibility="gone" />
 
             <Button
                 android:id="@+id/BtnCancel"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:text="Hủy"
                 android:textAllCaps="false"
-                android:backgroundTint="#EF4444"
-                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:backgroundTint="@color/danger"
+                android:textColor="@color/white"
                 android:visibility="gone"
                 android:layout_marginStart="8dp" />
 
             <Button
                 android:id="@+id/btnPayment"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:text="Thanh toán"
                 android:textAllCaps="false"
-                android:backgroundTint="#FF4D6D"
-                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:backgroundTint="@color/primary"
+                android:textColor="@color/white"
                 android:visibility="gone"
                 android:layout_marginStart="8dp" />
 
             <Button
                 android:id="@+id/btnPrint"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:text="In hóa đơn"
                 android:textAllCaps="false"
-                android:backgroundTint="#2196F3"
-                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:backgroundTint="@color/info"
+                android:textColor="@color/white"
                 android:visibility="gone"
                 android:layout_marginStart="8dp" />
         </LinearLayout>

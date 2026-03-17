@@ -4,20 +4,25 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="@color/bg_page">
 
-    <!-- Top: 2 nút hai bên + thanh category ở giữa -->
-    <RelativeLayout
+    <!-- Gradient header -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_gradient_header"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp">
 
-        <!-- Nút gọi nhân viên (bên trái) -->
+        <!-- Call staff -->
         <LinearLayout
             android:id="@+id/btnCallStaff"
-            android:layout_width="80dp"
+            android:layout_width="72dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="4dp"
@@ -26,34 +31,158 @@
             android:focusable="false">
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/v1"
-                />
+                android:contentDescription="Gọi nhân viên" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="2dp"
                 android:text="Gọi NV"
-                android:textColor="#FF4444"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
         </LinearLayout>
 
-        <!-- Nút giỏ hàng (bên phải) -->
+        <!-- Categories -->
+        <HorizontalScrollView
+            android:id="@+id/hsvCategories"
+            android:fillViewport="true"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/categoryContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/btnBestSeller"
+                    android:layout_width="72dp"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/bs1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:text="Bestseller"
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnkm"
+                    android:layout_width="72dp"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/bs2" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:text="Khuyến mãi"
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnCM"
+                    android:layout_width="72dp"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/bs4" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:text="Cơm - Mì Ý"
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnNuoc"
+                    android:layout_width="72dp"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/bs3" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:text="Thức uống"
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Cart button -->
         <FrameLayout
             android:id="@+id/btnCart"
-            android:layout_width="80dp"
+            android:layout_width="72dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:clickable="true"
-            android:focusable="true"
-            android:layout_centerVertical="true">
+            android:focusable="true">
 
-            <!-- Nội dung chính của nút giỏ hàng -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,191 +190,42 @@
                 android:orientation="vertical"
                 android:padding="4dp"
                 android:clickable="false"
-
                 android:background="?attr/selectableItemBackgroundBorderless">
 
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:scaleType="centerCrop"
-
                     android:src="@drawable/v2" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="2dp"
                     android:text="Giỏ hàng"
-                    android:textColor="#FF4444"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     android:gravity="center"
-                    android:textSize="12sp" />
+                    android:textSize="11sp" />
             </LinearLayout>
 
-            <!-- Badge hiển thị số lượng -->
+            <!-- Badge -->
             <TextView
                 android:id="@+id/tvCartBadge"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_gravity="end|top"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="4dp"
                 android:gravity="center"
                 android:text="0"
-                android:textSize="12sp"
-                android:textColor="@android:color/white"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
                 android:background="@drawable/bg_badge"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </FrameLayout>
-
-        <!-- Thanh category ở GIỮA (giữa hai nút) -->
-        <HorizontalScrollView
-            android:id="@+id/hsvCategories"
-            android:fillViewport="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginEnd="0dp"
-            android:layout_toStartOf="@id/btnCart"
-            android:layout_toEndOf="@id/btnCallStaff"
-
-            android:overScrollMode="never"
-            android:paddingStart="8dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="8dp"
-            android:scrollbars="none">
-
-            <!-- Để canh giữa nội dung bên trong -->
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-
-                <!-- Container CATEGORY (giữ nguyên item của bạn) -->
-                <LinearLayout
-                    android:id="@+id/categoryContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:dividerPadding="0dp"
-                    android:orientation="horizontal"
-                    >
-
-                    <!-- Item 1 -->
-                    <LinearLayout
-                        android:id="@+id/btnBestSeller"
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="4dp">
-
-                        <ImageView
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/bs1" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:text="Bestseller"
-                            android:textColor="#FF4444"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <!-- Item 2 -->
-                    <LinearLayout
-                        android:id="@+id/btnkm"
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="4dp">
-
-                        <ImageView
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/bs2" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:text="Khuyến mãi"
-                            android:textColor="#FF4444"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <!-- Item 3 -->
-                    <LinearLayout
-                        android:id="@+id/btnCM"
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="4dp">
-
-                        <ImageView
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/bs4" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:text="Cơm - Mì Ý"
-                            android:textColor="#FF4444"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <!-- Item 4 -->
-                    <LinearLayout
-                        android:id="@+id/btnNuoc"
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="4dp">
-
-                        <ImageView
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/bs3" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:text="Thức uống"
-                            android:textColor="#FF4444"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </FrameLayout>
-        </HorizontalScrollView>
-    </RelativeLayout>
+    </LinearLayout>
 
     <!-- Search bar -->
     <EditText
@@ -254,24 +234,24 @@
         android:layout_height="44dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="4dp"
         android:hint="  Tìm kiếm món ăn..."
         android:background="@drawable/bg_input"
         android:textSize="14sp"
-        android:textColor="#333333"
-        android:textColorHint="#9CA3AF"
+        android:textColor="@color/text_primary"
+        android:textColorHint="@color/text_hint"
         android:inputType="text"
         android:imeOptions="actionSearch"
         android:maxLines="1" />
 
-    <!-- RecyclerView sản phẩm -->
+    <!-- Products -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProducts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="8dp"
+        android:padding="6dp"
         android:clipToPadding="false"
         android:scrollbars="none" />
 

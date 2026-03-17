@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:fillViewport="true" android:background="#FFF7F8">
+    android:fillViewport="true" android:background="@color/bg_page">
 
     <LinearLayout
         android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -17,14 +17,14 @@
                 android:layout_width="0dp" android:layout_height="44dp"
                 android:layout_weight="1" android:text="Hôm nay"
                 android:textAllCaps="false" android:backgroundTint="#FF4D6D"
-                android:textColor="#FFFFFF" android:textSize="13sp" />
+                android:textColor="@color/white" android:textSize="13sp" />
 
             <Button
                 android:id="@+id/btnThisWeek"
                 android:layout_width="0dp" android:layout_height="44dp"
                 android:layout_weight="1" android:text="Tuần này"
                 android:textAllCaps="false" android:layout_marginStart="6dp"
-                android:backgroundTint="#FF4D6D" android:textColor="#FFFFFF"
+                android:backgroundTint="@color/primary" android:textColor="#FFFFFF"
                 android:textSize="13sp" />
 
             <Button
@@ -32,7 +32,7 @@
                 android:layout_width="0dp" android:layout_height="44dp"
                 android:layout_weight="1" android:text="Tháng này"
                 android:textAllCaps="false" android:layout_marginStart="6dp"
-                android:backgroundTint="#FF4D6D" android:textColor="#FFFFFF"
+                android:backgroundTint="@color/primary" android:textColor="#FFFFFF"
                 android:textSize="13sp" />
         </LinearLayout>
 
@@ -47,7 +47,7 @@
                 android:layout_weight="1" android:text="Từ ngày"
                 android:textAllCaps="false"
                 android:background="@drawable/bg_btn_outline"
-                android:textColor="#6B7280" android:textSize="13sp" />
+                android:textColor="@color/text_secondary" android:textSize="13sp" />
 
             <Button
                 android:id="@+id/btnToDate"
@@ -55,14 +55,14 @@
                 android:layout_weight="1" android:text="Đến ngày"
                 android:textAllCaps="false" android:layout_marginStart="6dp"
                 android:background="@drawable/bg_btn_outline"
-                android:textColor="#6B7280" android:textSize="13sp" />
+                android:textColor="@color/text_secondary" android:textSize="13sp" />
 
             <Button
                 android:id="@+id/btnApply"
                 android:layout_width="100dp" android:layout_height="44dp"
                 android:text="Lọc" android:textAllCaps="false"
                 android:layout_marginStart="6dp"
-                android:backgroundTint="#FF4D6D" android:textColor="#FFFFFF"
+                android:backgroundTint="@color/primary" android:textColor="#FFFFFF"
                 android:textSize="13sp" />
         </LinearLayout>
 
@@ -87,7 +87,7 @@
                 <TextView
                     android:id="@+id/tvRevenue"
                     android:text="0 đ" android:textStyle="bold" android:textSize="20sp"
-                    android:textColor="#E91E63" android:layout_width="wrap_content"
+                    android:textColor="@color/accent" android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp" />
             </LinearLayout>
@@ -108,7 +108,7 @@
                 <TextView
                     android:id="@+id/tvOrderCount"
                     android:text="0" android:textStyle="bold" android:textSize="20sp"
-                    android:textColor="#E91E63" android:layout_width="wrap_content"
+                    android:textColor="@color/accent" android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp" />
             </LinearLayout>
@@ -129,7 +129,7 @@
                 <TextView
                     android:id="@+id/tvAvg"
                     android:text="0 đ" android:textStyle="bold" android:textSize="20sp"
-                    android:textColor="#E91E63" android:layout_width="wrap_content"
+                    android:textColor="@color/accent" android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp" />
             </LinearLayout>
@@ -140,7 +140,7 @@
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="Danh sách đơn hàng" android:textStyle="bold"
             android:textSize="16sp" android:layout_marginTop="18dp"
-            android:textColor="#333333" />
+            android:textColor="@color/text_primary" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTopItems"

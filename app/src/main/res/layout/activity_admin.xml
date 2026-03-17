@@ -1,42 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#FFF7F8">
+    android:background="@color/bg_page">
 
-    <!-- Toolbar -->
+    <!-- Gradient Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#FF4D6D"
+        android:background="@drawable/bg_gradient_header"
         android:elevation="4dp"
         app:title="Nhân viên"
-        app:titleTextColor="#FFFFFF" />
+        app:titleTextColor="@color/white" />
 
-    <!-- TabLayout với 3 tab -->
+    <!-- Styled Tabs -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabTextColor="#6B7280"
-        app:tabSelectedTextColor="#E91E63"
-        app:tabIndicatorColor="#E91E63">
+        android:background="@color/bg_card"
+        android:elevation="2dp"
+        app:tabTextColor="@color/text_secondary"
+        app:tabSelectedTextColor="@color/accent"
+        app:tabIndicatorColor="@color/accent"
+        app:tabIndicatorHeight="3dp"
+        app:tabRippleColor="@color/primary_surface">
 
-        <com.google.android.material.tabs.TabItem
-            android:text="Đơn hàng" />
-
-        <com.google.android.material.tabs.TabItem
-            android:text="Đơn hàng đã xác nhận" />
-
-        <com.google.android.material.tabs.TabItem
-            android:text="Quản lý bàn" />
-
+        <com.google.android.material.tabs.TabItem android:text="Đơn hàng" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <com.google.android.material.tabs.TabItem android:text="Đã xác nhận" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <com.google.android.material.tabs.TabItem android:text="Quản lý bàn" android:layout_width="wrap_content" android:layout_height="wrap_content" />
     </com.google.android.material.tabs.TabLayout>
 
-    <!-- ViewPager -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
@@ -49,8 +46,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
-        android:background="#FFFFFF"
-        android:elevation="4dp"
+        android:background="@drawable/bg_footer_rounded"
+        android:elevation="6dp"
         android:gravity="center">
 
         <Button
@@ -62,7 +59,7 @@
             android:textAllCaps="false"
             android:background="@drawable/bg_btn_outline"
             app:backgroundTint="@null"
-            android:textColor="#FF4D6D"
+            android:textColor="@color/primary"
             android:layout_marginEnd="8dp" />
 
         <Button
@@ -72,8 +69,8 @@
             android:layout_weight="1"
             android:text="In tất cả hóa đơn"
             android:textAllCaps="false"
-            android:backgroundTint="#FF4D6D"
-            android:textColor="#FFFFFF" />
+            android:backgroundTint="@color/primary"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </LinearLayout>

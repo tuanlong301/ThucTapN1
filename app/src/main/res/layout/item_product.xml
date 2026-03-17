@@ -3,28 +3,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    android:layout_margin="5dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    app:cardBackgroundColor="@color/bg_card">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imgProduct"
+        <!-- Image container with overlay -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter" />
+            android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/imgProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop" />
 
+            <!-- Gradient overlay at bottom of image -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/bg_image_overlay" />
+        </FrameLayout>
+
+        <!-- Content -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/txtName"
@@ -32,53 +46,48 @@
                 android:layout_height="wrap_content"
                 android:text="Tiện Lợi 53K"
                 android:textStyle="bold"
-                android:textSize="14sp"
-                android:textColor="#222222" />
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:maxLines="2"
+                android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/txtDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="01 Gà rán\n01 Khoai tây chiên"
-                android:textSize="12sp"
-                android:textColor="#666666" />
+                android:textSize="11sp"
+                android:textColor="@color/text_secondary"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_marginTop="2dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginTop="4dp">
+                android:layout_marginTop="6dp">
 
-                <!-- Cột giá -->
-                <LinearLayout
+                <TextView
+                    android:id="@+id/txtPrice"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:text="53.000 đ"
+                    android:textStyle="bold"
+                    android:textColor="@color/accent"
+                    android:textSize="14sp" />
 
-                    <TextView
-                        android:id="@+id/txtPrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="53.000 đ"
-                        android:textStyle="bold"
-                        android:textColor="#E91E63"
-                        android:textSize="14sp" />
-
-
-                </LinearLayout>
-
-                <!-- Nút cộng -->
                 <Button
                     android:id="@+id/btnAdd"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:background="@drawable/bg_add_button"
                     app:backgroundTint="@null"
                     android:text="+"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
                     android:gravity="center"
                     android:padding="0dp"
                     android:contentDescription="Thêm" />

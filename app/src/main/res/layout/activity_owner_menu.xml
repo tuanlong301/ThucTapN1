@@ -1,36 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#FFF7F8">
+    android:background="@color/bg_page">
 
+    <!-- Gradient Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#FF4D6D"
+        android:background="@drawable/bg_gradient_header"
         android:elevation="4dp"
         app:title="Chủ Quán"
-        app:titleTextColor="#FFFFFF" />
+        app:titleTextColor="@color/white" />
 
+    <!-- Styled Tabs -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabTextColor="#6B7280"
-        app:tabSelectedTextColor="#E91E63"
-        app:tabIndicatorColor="#E91E63">
+        android:background="@color/bg_card"
+        android:elevation="2dp"
+        app:tabTextColor="@color/text_secondary"
+        app:tabSelectedTextColor="@color/accent"
+        app:tabIndicatorColor="@color/accent"
+        app:tabIndicatorHeight="3dp"
+        app:tabRippleColor="@color/primary_surface">
 
-        <com.google.android.material.tabs.TabItem android:text="Doanh thu"/>
-        <com.google.android.material.tabs.TabItem android:text="Quản lý bàn và nhân viên"/>
-        <com.google.android.material.tabs.TabItem android:text="Quản lý món"/>
+        <com.google.android.material.tabs.TabItem android:text="Doanh thu" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <com.google.android.material.tabs.TabItem android:text="Bàn / NV" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <com.google.android.material.tabs.TabItem android:text="Sản phẩm" android:layout_width="wrap_content" android:layout_height="wrap_content" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
+
 </LinearLayout>
