@@ -247,6 +247,24 @@
         </HorizontalScrollView>
     </RelativeLayout>
 
+    <!-- Search bar -->
+    <EditText
+        android:id="@+id/etSearch"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:hint="  Tìm kiếm món ăn..."
+        android:background="@drawable/bg_input"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:textColorHint="#9CA3AF"
+        android:inputType="text"
+        android:imeOptions="actionSearch"
+        android:maxLines="1" />
+
     <!-- RecyclerView sản phẩm -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProducts"

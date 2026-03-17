@@ -7,31 +7,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp">
 
         <EditText
             android:id="@+id/edt1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:hint="Tên"
             android:inputType="textPersonName"
-            android:imeOptions="actionNext" />
+            android:imeOptions="actionNext"
+            android:background="@drawable/bg_input"
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/edt2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:hint="Tài khoản (email)"
             android:inputType="textEmailAddress"
             android:imeOptions="actionNext"
+            android:background="@drawable/bg_input"
+            android:textSize="15sp"
             android:layout_marginTop="12dp" />
 
         <EditText
             android:id="@+id/edt3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:hint="Mật khẩu"
             android:inputType="textPassword"
+            android:background="@drawable/bg_input"
+            android:textSize="15sp"
             android:layout_marginTop="12dp" />
     </LinearLayout>
 </ScrollView>

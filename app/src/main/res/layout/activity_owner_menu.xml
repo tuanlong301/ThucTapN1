@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#FF4D6D"
+        android:elevation="4dp"
         app:title="Chủ Quán"
         app:titleTextColor="#FFFFFF" />
 

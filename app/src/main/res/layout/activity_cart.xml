@@ -12,14 +12,17 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingEnd="16dp"
+        android:background="#FFFFFF"
+        android:elevation="2dp">
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:src="@drawable/back"
-            android:contentDescription="@null"/>
+            android:padding="2dp"
+            android:contentDescription="Quay lại" />
 
         <TextView
             android:id="@+id/tvTitle"
@@ -27,16 +30,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Giỏ hàng"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:gravity="center"/>
+            android:textColor="#1F2937"
+            android:gravity="center" />
 
         <View
-            android:layout_width="24dp"
-            android:layout_height="24dp"/>
+            android:layout_width="28dp"
+            android:layout_height="28dp" />
     </LinearLayout>
 
-    <!-- EMPTY STATE (mặc định HIỆN) -->
+    <!-- EMPTY STATE -->
     <LinearLayout
         android:id="@+id/viewEmpty"
         android:layout_width="match_parent"
@@ -48,76 +52,93 @@
         android:visibility="visible">
 
         <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
             android:src="@android:drawable/ic_menu_help"
-            android:contentDescription="@null"/>
+            android:alpha="0.4"
+            android:contentDescription="Giỏ trống" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:text="Giỏ hàng trống"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#6B7280"/>
+            android:textColor="#9CA3AF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Hãy thêm món từ menu nhé!"
+            android:textSize="14sp"
+            android:textColor="#D1D5DB" />
     </LinearLayout>
 
-    <!-- LIST (mặc định ẨN) -->
+    <!-- LIST -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="16dp"
+        android:padding="12dp"
         android:clipToPadding="false"
-        android:visibility="gone"/>
+        android:scrollbars="none"
+        android:visibility="gone" />
 
-    <!-- FOOTER: Tổng tiền + nút đặt + nút chọn phương thức thanh toán (mặc định ẨN) -->
+    <!-- FOOTER -->
     <LinearLayout
         android:id="@+id/footerBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:background="#FFFFFFFF"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="16dp"
+        android:background="#FFFFFF"
+        android:elevation="8dp"
         android:visibility="gone">
 
-        <!-- Nút chọn phương thức thanh toán -->
+        <!-- Payment method trigger -->
         <LinearLayout
             android:id="@+id/layoutPaymentTrigger"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="44dp"
             android:orientation="horizontal"
-            android:padding="8dp"
-            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:background="@drawable/bg_btn_outline"
             android:onClick="togglePaymentMethod">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Chọn phương thức thanh toán"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
-                android:textColor="#333333"/>
+                android:textColor="#333333" />
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="end"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@android:drawable/ic_menu_more"
-                android:contentDescription="Mở phương thức thanh toán"/>
+                android:contentDescription="Mở" />
         </LinearLayout>
 
-        <!-- Phương thức thanh toán (ẩn ban đầu) -->
+        <!-- Payment method options -->
         <LinearLayout
             android:id="@+id/layoutPaymentMethod"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="gone"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp">
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="8dp">
 
             <RadioGroup
                 android:id="@+id/rgPaymentMethod"
@@ -131,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:text="Tiền mặt"
                     android:textSize="14sp"
-                    android:padding="8dp"/>
+                    android:padding="6dp" />
 
                 <RadioButton
                     android:id="@+id/rbTransfer"
@@ -139,16 +160,17 @@
                     android:layout_height="wrap_content"
                     android:text="Chuyển khoản"
                     android:textSize="14sp"
-                    android:padding="8dp"/>
+                    android:padding="6dp" />
             </RadioGroup>
         </LinearLayout>
 
-        <!-- Tổng tiền -->
+        <!-- Total + Checkout -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:gravity="center_vertical"
+            android:layout_marginTop="12dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -161,23 +183,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tổng tiền:"
-                    android:textSize="14sp"
-                    android:textColor="#333333" />
+                    android:textSize="13sp"
+                    android:textColor="#6B7280" />
 
                 <TextView
                     android:id="@+id/tvTotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0 đ"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="#E91E63" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/btnCheckout"
-                android:layout_width="220dp"
-                android:layout_height="56dp"
+                android:layout_width="200dp"
+                android:layout_height="52dp"
                 android:text="Đặt hàng"
                 android:textAllCaps="false"
                 android:textStyle="bold"
@@ -185,7 +207,7 @@
                 android:backgroundTint="#FF4D6D"
                 android:textColor="#FFFFFF"
                 android:enabled="false"
-                android:alpha="0.5"/>
+                android:alpha="0.5" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

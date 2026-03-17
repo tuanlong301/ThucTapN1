@@ -91,12 +91,18 @@
             android:layout_marginTop="8dp" />
 
         <!-- Hành động -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F3F4F6"
+            android:layout_marginTop="10dp" />
+
         <LinearLayout
             android:id="@+id/layoutActions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="10dp">
 
             <Button
                 android:id="@+id/btnConfirm"
@@ -116,9 +122,10 @@
                 android:layout_weight="1"
                 android:text="Hủy"
                 android:textAllCaps="false"
-                android:backgroundTint="#4CAF50"
+                android:backgroundTint="#EF4444"
                 android:textColor="#FFFFFF"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:layout_marginStart="8dp" />
 
             <Button
                 android:id="@+id/btnPayment"
